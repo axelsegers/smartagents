@@ -468,6 +468,112 @@ h3 {
     }
 }
 
+/* Testimonials */
+.testimonials {
+    padding: 120px 0;
+    background: var(--dark-lighter);
+    overflow: hidden;
+}
+
+.testimonials-track {
+    display: flex;
+    gap: 30px;
+    animation: scroll-testimonials 30s linear infinite;
+}
+
+.testimonials-track:hover {
+    animation-play-state: paused;
+}
+
+@keyframes scroll-testimonials {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(calc(-100% - 30px));
+    }
+}
+
+.testimonial-card {
+    flex: 0 0 400px;
+    background: var(--dark);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 40px;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.testimonial-card:hover {
+    border-color: var(--primary);
+    box-shadow: 0 20px 40px rgba(99, 102, 241, 0.15);
+}
+
+.testimonial-quote {
+    margin-bottom: 20px;
+}
+
+.testimonial-quote svg {
+    width: 40px;
+    height: 40px;
+    fill: var(--primary);
+    opacity: 0.5;
+}
+
+.testimonial-text {
+    color: var(--light);
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin-bottom: 24px;
+}
+
+.testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.testimonial-avatar {
+    width: 50px;
+    height: 50px;
+    background: var(--gradient);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    color: var(--white);
+}
+
+.testimonial-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.testimonial-info strong {
+    color: var(--light);
+    font-weight: 600;
+}
+
+.testimonial-info span {
+    color: var(--gray-light);
+    font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+    .testimonials-track {
+        animation: none;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .testimonial-card {
+        flex: 0 0 auto;
+        width: 100%;
+        max-width: 400px;
+    }
+}
+
 /* Team */
 .team {
     padding: 120px 0;
