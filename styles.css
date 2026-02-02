@@ -479,11 +479,11 @@ h3 {
     display: flex;
     gap: 30px;
     justify-content: center;
-    flex-wrap: wrap;
 }
 
 .testimonial-card {
-    flex: 0 0 400px;
+    flex: 1 1 0;
+    max-width: 380px;
     background: var(--dark);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 20px;
@@ -548,7 +548,11 @@ h3 {
     font-size: 0.9rem;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
+    .testimonials-track {
+        flex-wrap: wrap;
+    }
+
     .testimonial-card {
         flex: 0 0 auto;
         width: 100%;
