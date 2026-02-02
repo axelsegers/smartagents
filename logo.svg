@@ -1,0 +1,40 @@
+<svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6366f1"/>
+      <stop offset="50%" style="stop-color:#0ea5e9"/>
+      <stop offset="100%" style="stop-color:#8b5cf6"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Neural network / Agent connections -->
+  <g stroke="url(#logoGradient)" stroke-width="1.5" fill="none" opacity="0.6">
+    <line x1="24" y1="8" x2="12" y2="20"/>
+    <line x1="24" y1="8" x2="36" y2="20"/>
+    <line x1="12" y1="20" x2="24" y2="24"/>
+    <line x1="36" y1="20" x2="24" y2="24"/>
+    <line x1="12" y1="20" x2="12" y2="32"/>
+    <line x1="36" y1="20" x2="36" y2="32"/>
+    <line x1="24" y1="24" x2="24" y2="40"/>
+    <line x1="12" y1="32" x2="24" y2="40"/>
+    <line x1="36" y1="32" x2="24" y2="40"/>
+  </g>
+
+  <!-- Agent nodes -->
+  <g fill="url(#logoGradient)">
+    <!-- Top node (main brain/controller) -->
+    <circle cx="24" cy="8" r="4"/>
+    <!-- Middle layer nodes -->
+    <circle cx="12" cy="20" r="3"/>
+    <circle cx="36" cy="20" r="3"/>
+    <circle cx="24" cy="24" r="3.5"/>
+    <!-- Lower layer nodes -->
+    <circle cx="12" cy="32" r="2.5"/>
+    <circle cx="36" cy="32" r="2.5"/>
+    <!-- Bottom node (output) -->
+    <circle cx="24" cy="40" r="3"/>
+  </g>
+
+  <!-- Pulse effect on main node -->
+  <circle cx="24" cy="8" r="6" fill="none" stroke="url(#logoGradient)" stroke-width="1" opacity="0.4"/>
+</svg>
