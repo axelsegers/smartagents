@@ -83,7 +83,13 @@ export function prose(blocks, { scope, resolveHref }) {
 
       switch (block.type) {
         case 'h2':
-          return html`    <h2 id="${id}" class="prose__heading">${inline(block.text, id, resolveHref)}</h2>`;
+          /* `tabindex="-1"` so a link into the body moves focus and not only the
+             viewport. Chrome and Firefox set the sequential-focus starting point
+             to a fragment's target and paper over the gap; Safari does not, so a
+             keyboard user who follows the privacy notice's clause index and then
+             presses Tab resumes at the index rather than in the clause. It costs
+             nothing: a negative tabindex is invisible to the tab order. */
+          return html`    <h2 id="${id}" class="prose__heading" tabindex="-1">${inline(block.text, id, resolveHref)}</h2>`;
         case 'quote':
           return html`    <blockquote id="${id}" class="prose__quote">
       <p id="${id}-text" class="prose__quote-text">${inline(block.text, `${id}-text`, resolveHref)}</p>

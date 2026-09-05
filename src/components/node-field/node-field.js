@@ -2,7 +2,10 @@
 //
 // The whole page shares one field in document coordinates: each element is a
 // window onto it, so the network reads as continuous from the header wedge to
-// the footer even though it is painted into separate canvases.
+// the last dark shape on the page even though it is painted into separate
+// canvases. The footer used to be the bottom of that run; it is paper now, and
+// the wedge left in its corner is too small to carry a field — see
+// `.footer-mark` in `main.css`.
 // `variant="helix"` swaps the drifting network for the rotating double helix
 // used in the Ons DNA disc.
 //

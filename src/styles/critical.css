@@ -13,8 +13,13 @@
 html {
   color-scheme: light;
   scroll-behavior: smooth;
-  /* The sticky header covers the top of the page, so anchors need the offset. */
-  scroll-padding-top: 64px;
+  /* The sticky header covers the top of the page, so anchors need the offset —
+     plus air, or the heading lands glued to the bar's underside. 64px was the
+     header's own height and nothing more: 2px of clearance at 1180px, where the
+     row is 61.7px tall, and 4px at the tablet's 72. The privacy notice's clause
+     index is what made that visible, being the one block on the site whose
+     whole job is to send people to an anchor. */
+  scroll-padding-top: 96px;
 }
 
 body {
@@ -24,7 +29,7 @@ body {
   background: var(--surface-page);
   color: var(--text-strong);
   font-family: var(--font-sans);
-  font-size: var(--text-body-lg);
+  font-size: var(--text-copy-lg);
   line-height: var(--leading-body);
   font-weight: var(--weight-book);
   -webkit-font-smoothing: antialiased;
@@ -718,20 +723,6 @@ select {
   font-size: var(--text-h1-sub);
 }
 
-/* The sentence that says what is sold.
-   Every hero on the site was an eyebrow, a headline and two buttons, and on a
-   desk that left about 550px of bare paper under the buttons and a first-time
-   visitor a full screen to scroll before learning what the company does. One
-   or two lines, at the reading measure, between the headline and the actions:
-   the headline is the claim, this is the offer. */
-.hero__lede {
-  margin-top: var(--space-8);
-  max-width: var(--measure);
-  color: var(--text-body);
-  font-size: var(--text-lead);
-  line-height: var(--leading-body);
-}
-
 .hero__actions {
   margin-top: var(--space-10);
   display: flex;
@@ -846,9 +837,12 @@ select {
      and they tighten from there so the row still holds at 768px — the
      narrowest width a tablet is held upright at. */
   /* The header is taller here than on the desk, so the offset an anchor is
-     scrolled to has to grow with it. */
+     scrolled to has to grow with it — and by the same air, not by the header's
+     height alone. 76 against a 72px row was 4px of clearance, on the band where
+     the privacy notice's clause index sits above the copy and is the reader's
+     only way around a 2820px document. */
   html {
-    scroll-padding-top: 76px;
+    scroll-padding-top: 108px;
   }
 
   .site-header {

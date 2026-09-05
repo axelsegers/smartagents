@@ -86,7 +86,6 @@ ${orbitRings('staffing-hero')}
     <div id="staffing-hero-text" class="hero__text">
       <p id="staffing-hero-eyebrow" class="page-eyebrow">${t('staffing.hero.eyebrow')}</p>
       <h1 id="staffing-hero-title">${t('staffing.hero.title')}</h1>
-      <p id="staffing-hero-lede" class="hero__lede">${t('staffing.hero.lede')}</p>
       <div id="staffing-hero-actions" class="hero__actions">
         <a id="staffing-hero-cta-talk" class="btn btn--primary" href="#contact">${t('cta.talk')}</a>
         <a id="staffing-hero-cta-tracks" class="btn btn--ghost" href="#tracks">${t('staffing.cta.tracks')} <span id="staffing-hero-cta-tracks-arrow" aria-hidden="true">&rarr;</span></a>

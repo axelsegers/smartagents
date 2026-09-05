@@ -476,6 +476,17 @@ function isCurrentNavItem(key, pageId) {
   return key === pageId;
 }
 
+/**
+ * Which `aria-current` a marked nav item takes. `page` says "this link is the
+ * page you are on"; an article is in the Inzichten section but is not the
+ * Inzichten index, and a link that navigates away must not claim to be the
+ * page. `true` is the token for that — the item is current in some other
+ * sense — and it leaves the visual marker alone, which is right in both cases.
+ */
+function navCurrentValue(key, pageId) {
+  return key === pageId ? 'page' : 'true';
+}
+
 export function siteHeader({ t, lang, alternates, pageId }) {
   // Every section anchor is written against the homepage, so the header works
   // the same from a detail page as it does from the homepage itself: on `/nl/`
@@ -495,7 +506,7 @@ export function siteHeader({ t, lang, alternates, pageId }) {
   const navLinks = items
     .filter(({ key }) => BAR_ITEMS.has(key))
     .map(
-      ({ key, href, label, current }) => html`<a id="nav-link-${key}" class="nav-link nav-link--${key}${current ? ' is-current' : ''}" href="${href}"${current ? raw(' aria-current="page"') : ''}>${label}</a>`
+      ({ key, href, label, current }) => html`<a id="nav-link-${key}" class="nav-link nav-link--${key}${current ? ' is-current' : ''}" href="${href}"${current ? raw(` aria-current="${navCurrentValue(key, pageId)}"`) : ''}>${label}</a>`
     );
 
   // The disclosure is two panels in one: a compact dropdown from the point the
@@ -505,7 +516,7 @@ export function siteHeader({ t, lang, alternates, pageId }) {
   // two ways to reach a person. All three are display:none above the phone
   // breakpoint, so the dropdown stays a plain list of links.
   const sheetLinks = items.map(
-    ({ key, href, label, current }) => html`<a id="nav-sheet-link-${key}" class="nav-sheet__item${current ? ' is-current' : ''}" href="${href}"${current ? raw(' aria-current="page"') : ''}>${label}</a>`
+    ({ key, href, label, current }) => html`<a id="nav-sheet-link-${key}" class="nav-sheet__item${current ? ' is-current' : ''}" href="${href}"${current ? raw(` aria-current="${navCurrentValue(key, pageId)}"`) : ''}>${label}</a>`
   );
 
   return html`<header id="site-header" class="site-header">
@@ -557,51 +568,136 @@ export function mobileActions({ t, lang }) {
  * court to be directly and permanently accessible. "Permanently" is what makes
  * this the footer rather than the privacy notice: the footer is on every page.
  *
- * It is three short stacks rather than one run-on line, because a disclosure is
- * looked up rather than read: who we are, how to reach us, where we are
- * registered. The facts are the register's own, read off KBO/BCE for enterprise
- * number 1037.114.694 (seat Mijnschoolstraat 18, 3580 Beringen; legal form
- * besloten vennootschap) and the competent enterprise court from the FPS
- * Justice territorial-competence lookup for Beringen (Ondernemingsrechtbank
- * Antwerpen, afdeling Hasselt). Change one only against the register.
+ * It used to spend a full dark band and three stacked columns on that, which is
+ * a screen of navy under every page for information nobody arrives wanting. It
+ * is two rows of paper now, about 110px in all.
  *
- * The street and the company name are `t()` keys with the same value in all
- * three languages, so nothing here is hard-coded text: only the city line, the
- * legal form and the court name actually translate, and they must stay able to.
+ * Row one is the ways to reach a person: the two the disclosure duty asks for
+ * on the left, and on the right the two destinations a reader may want that the
+ * header does not carry. It briefly also carried the site's six page names, and they were
+ * cut: the header is sticky, so five of the six are on screen at every scroll
+ * position, and a second copy of a list that is already permanently visible is
+ * not navigation, it is six more tab stops at the foot of every page.
  *
- * The privacy notice leads the footer nav, ahead of the customer zone and
- * LinkedIn. It is the one link in the footer a reader may be looking for
- * because of something the site did to them rather than something they want
- * from it, and a notice nobody can find is not a notice.
+ * Inzichten is the sixth, and it stays. `BAR_ITEMS` drops it from the header
+ * row because four service names fill that row, and the phone sheet that does
+ * carry it is `display: none` above 1180px — so with the page names gone there
+ * was exactly one link to the section left in a desk page, on the homepage.
+ * A section with no route into it from five of the site's pages is a section
+ * nobody reaches.
+ *
+ * The customer zone is not linked from here, or from anywhere public. It is a
+ * password gate: the people who use it are given the URL, and a link to it in
+ * the footer of every page advertises a locked door to everyone else.
+ *
+ * Row two is the disclosure as a single microline, with the privacy notice
+ * opposite it and the copyright closing the corner the mark opens. A disclosure
+ * is looked up, not read — what it needs is to be findable and complete, and
+ * one line holding every fact in the order the register states them is both, at
+ * a tenth of the page three columns cost. The notice sits here rather than with
+ * the two links above it because it is the same kind of information: a reader
+ * looking for what the site does with their data is already reading the row
+ * that says who is doing it.
+ *
+ * The facts are the register's own, read off KBO/BCE for enterprise number
+ * 1037.114.694 (seat Mijnschoolstraat 18, 3580 Beringen; legal form besloten
+ * vennootschap) and the competent enterprise court from the FPS Justice
+ * territorial-competence lookup for Beringen (Ondernemingsrechtbank Antwerpen,
+ * afdeling Hasselt). Change one only against the register. The street and the
+ * company name are `t()` keys with the same value in all three languages, so
+ * nothing here is hard-coded text: only the city line, the legal form and the
+ * court name actually translate, and they must stay able to. The copyright year
+ * is the build's, not a string in three files that goes stale on 1 January.
+ *
+ * The dark field survives as one small wedge in the bottom-left corner holding
+ * the mark — the header's wedge turned over, so the page opens and closes on
+ * the same shape. It is a stamp rather than a link: the header is sticky, so
+ * the brand one click from home is never off screen, and a second home link at
+ * the foot of the page is one more thing in the tab order for nothing.
  */
-export function siteFooter({ t, lang }) {
+export function siteFooter({ t, lang, pageId }) {
   const privacy = privacyPath(lang);
+  const insights = insightsIndexPath(lang);
+
+  // Both of these can be the page you are standing on, and on both of those
+  // pages this is the only link to it in the chrome: the header bar drops
+  // Inzichten (`BAR_ITEMS`) and never carried the notice at all, and the phone
+  // sheet that does carry Inzichten is `display: none` above 1180px. So the
+  // footer is where `aria-current` has to be said, the way the bar, the sheet
+  // and the language switcher all say it.
+  // `pageId === 'insights'` and not `isCurrentNavItem`: that helper answers
+  // "is this nav item's *section* the one you are in", which is true on all
+  // four articles too, and this link goes to the index rather than to them.
+  // `aria-current="page"` means this page; on an article it told a screen
+  // reader that a link navigating away was the page it was already on.
+  const onInsights = raw(pageId === 'insights' ? ' aria-current="page"' : '');
+  const onPrivacy = raw(pageId === 'privacy' ? ' aria-current="page"' : '');
+
+  // The disclosure at its legal minimum: who, where, under which number, before
+  // which court. Four facts, and each one is there because a statute asks for
+  // it — art. 2:20 WVV wants the name, the legal form, the precise seat, the
+  // enterprise number and "RPR" followed by the seat of the court; art. III.74
+  // WER puts the enterprise number on every website of a registered entity; and
+  // art. XII.6 WER adds the VAT identification, which in Belgium is the
+  // enterprise number with `BE` in front of it, and the e-mail address, which
+  // is the row above.
+  //
+  // What came out was wording. "Besloten vennootschap" is what "BV"
+  // abbreviates and 2:20 takes the abbreviation, so the line said the legal
+  // form twice. "RPR Ondernemingsrechtbank Antwerpen, afdeling Hasselt" named
+  // the court where the statute asks only for its seat after the letters RPR.
+  // The street and the town are one address and are printed as one item, though
+  // they stay two keys because `schema.mjs` needs the street on its own for
+  // `PostalAddress.streetAddress`.
+  //
+  // One label does double duty and it is worth knowing which: the enterprise
+  // number and the VAT number are the same identifier in Belgium, the second
+  // being the first with `BE` in front of it, so `footer.vat` states III.74's
+  // ondernemingsnummer and XII.6's btw-identificatienummer in one string. That
+  // is the only place where a required word was folded rather than dropped. If
+  // it ever has to say "btw" in as many words, budget about 34px for it and
+  // re-measure the line.
+  //
+  // Together: 1131px of type down to 727, which is what puts the whole
+  // disclosure on one line from 1261px up rather than two everywhere under
+  // 1780. `.footer-micro` in `main.css` carries the per-language figures and
+  // the one caveat that matters — the line is measured in the platform face,
+  // because no Geist binary is shipped yet.
+  //
+  // The facts are separated by the gap between them and by nothing else. They
+  // used to carry a `·` in an `::after`, which put a break opportunity behind
+  // the dot and so left one stranded at the end of every wrapped line: at
+  // 11.5px a dangling mark reads as a speck of dirt. A register line separates
+  // perfectly well on spacing, and spacing cannot strand.
+  const seat = [
+    ['name', t('footer.company')],
+    ['address', `${t('footer.street')}, ${t('footer.city')}`],
+    ['vat', t('footer.vat')],
+    ['court', t('footer.rpr')]
+  ].map(
+    ([part, value]) => html`      <span id="site-footer-seat-${part}" class="footer-micro__item">${value}</span>`
+  );
 
   return html`<footer id="site-footer" class="site-footer">
-  <sa-node-field id="site-footer-nodes"></sa-node-field>
-  <div id="site-footer-identity" class="site-footer__identity">
-    <address id="site-footer-seat" class="footer-block">
-      <span id="site-footer-seat-name" class="footer-block__lead">${t('footer.company')}</span>
-      <span id="site-footer-seat-form">${t('footer.legalForm')}</span>
-      <span id="site-footer-seat-street">${t('footer.street')}</span>
-      <span id="site-footer-seat-city">${t('footer.city')}</span>
+  <div id="site-footer-top" class="site-footer__row site-footer__top">
+    <address id="site-footer-contact" class="footer-contact">
+      <a id="site-footer-reach-mail" class="footer-contact__link" href="mailto:${EMAIL}">${EMAIL}</a>
+      <a id="site-footer-reach-call" class="footer-contact__link" href="${PHONE_HREF}">${PHONE}</a>
     </address>
-    <div id="site-footer-reach" class="footer-block">
-      <a id="site-footer-reach-mail" class="footer-block__lead" href="mailto:${EMAIL}">${EMAIL}</a>
-      <a id="site-footer-reach-call" href="${PHONE_HREF}">${PHONE}</a>
-    </div>
-    <div id="site-footer-register" class="footer-block">
-      <span id="site-footer-register-number">${t('footer.vat')}</span>
-      <span id="site-footer-register-court">${t('footer.rpr')}</span>
-    </div>
-  </div>
-  <div id="site-footer-bar" class="site-footer__bar">
-    <span id="site-footer-copyright">${t('footer.legal')}</span>
-    <nav id="site-footer-nav" aria-label="${t('a11y.footerNav')}">
-${privacy ? html`      <a id="site-footer-link-privacy" href="${privacy}">${t('footer.privacy')}</a>
-` : ''}      <a id="site-footer-link-secured" href="/secured/">${t('footer.customerZone')}</a>
-      <a id="site-footer-link-linkedin" href="${LINKEDIN_URL}" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+    <nav id="site-footer-nav" class="footer-nav" aria-label="${t('a11y.footerNav')}">
+${insights ? html`      <a id="site-footer-link-insights" href="${insights}"${onInsights}>${t('nav.insights')}</a>
+` : ''}      <a id="site-footer-link-linkedin" href="${LINKEDIN_URL}" target="_blank" rel="noopener noreferrer">LinkedIn<span id="site-footer-link-linkedin-hint" class="visually-hidden"> (${t('a11y.newTab')})</span></a>
     </nav>
+  </div>
+  <div id="site-footer-base" class="site-footer__row site-footer__base">
+    <div id="site-footer-mark" class="footer-mark" aria-hidden="true">${logoMark('field', 'site-footer-logo')}</div>
+    <div id="site-footer-seat" class="footer-micro">
+${join(seat)}
+    </div>
+    <div id="site-footer-legalese" class="footer-legalese">
+${privacy ? html`      <a id="site-footer-link-privacy" href="${privacy}"${onPrivacy}>${t('footer.privacy')}</a>
+` : ''}      <span id="site-footer-copyright" class="footer-legalese__copyright">${t('footer.legal', { year: String(new Date().getFullYear()) })}</span>
+    </div>
   </div>
 </footer>`;
 }

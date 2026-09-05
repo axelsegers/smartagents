@@ -8,6 +8,30 @@
 //     the only external host in a built public page is the LinkedIn href in the
 //     footer, and it is a link, not a request. `localStorage` appears only under
 //     /secured/, which is password-gated and internal.
+//   • Art. 13 is answered item by item, 13(2)(e) included: "Wat we verzamelen"
+//     ends by saying that nothing here is obligatory and what follows from not
+//     giving it. That was the one sub-article the notice did not answer, which
+//     is the kind of gap a DPO reading it notices first.
+//   • The two ways to reach a person are both links. The number was plain text
+//     and four ordinary spaces, so it broke across two lines at a 768px tablet
+//     in English, at 500px in French and at 1024 in Dutch — and it was the one
+//     SmartAgents phone number on the site that was not a `tel:`, on the page
+//     where it is an art. 13(1)(a) contact detail rather than a convenience.
+//     `.prose a[href^="tel:"]` is `white-space: nowrap`, which is the same
+//     answer the footer's legal microline already gives.
+//   • The clause says "no cookies *of our own*", not "no cookies", and the two
+//     strings outside this file that summarise it — `privacy.description`, which
+//     is the page's own search snippet, and `faq.data.a`, which ships as
+//     `FAQPage` structured data — carry the same qualifier. They did not, for a
+//     round: the body conceded that touching the form loads Turnstile, which may
+//     place a technical value of its own, while the snippet a reviewer reads
+//     first said none ever is.
+//   • /secured/ does set one cookie, and the notice says so. `export_session` is
+//     written by `functions/secured/login.js` — HttpOnly, Secure, SameSite=Strict,
+//     `Max-Age=604800`, scoped to the secured path. Two drafts of the Cookies
+//     clause said this site sets no cookies at all, which is false in the
+//     absolute on a page whose whole posture is that every claim is read off the
+//     code. Seven days is that Max-Age, not a rounding.
 //   • Turnstile loads on the first interaction with the form and never before —
 //     `contact-form.js` binds it to `focusin` with `{ once: true }`.
 //   • The rate limiter keys on the caller's IP and stores the counter in
@@ -20,28 +44,44 @@
 // code enforces it, so it has to be honoured by hand in Slack and the mailbox.
 // Shorten the number here if that is not realistic.
 //
+// The opening sentence is not in here. It is `privacy.lede` in src/i18n, printed
+// in the head as the standfirst every other page on the site carries — it is the
+// one line that says what the document is, and as the first block of the body it
+// sat under the clause index at every width below 1000px, which put the summary
+// after its own table of contents. Everything from the first `h2` down is here.
+//
+// One href in the copy is not a URL: `clause:NN` is the NNth `h2` of this
+// notice, resolved in privacy.mjs against the same derivation the clause index
+// uses. A cross-reference inside a document nobody reads end to end has to be a
+// link — "zie hieronder" is useless to a reader who arrived at that clause from
+// the index — and hand-writing the anchor would be hand-keeping a number the
+// rest of this page is generated precisely to avoid. The ordinal is safe
+// because the three languages carry the same eight clauses in the same order.
+//
 // The copy is authored with the shared `prose` vocabulary (src/pages/prose.mjs),
 // which is what lets a Dutch or French sentence carry its apostrophes unescaped.
 import { p, h2, list } from '../prose.mjs';
 
-const CONTROLLER = 'SmartAgents';
+const CONTROLLER = 'SmartAgents BV';
 const VAT = 'BE 1037.114.694';
 const EMAIL = 'info@smartagents.be';
 const PHONE = '+32 11 11 10 20';
+/* Repeated from `components/contact-form/contact-form.mjs` rather than imported
+   from it: that module imports the privacy page for the form's own consent
+   line, so importing it back from here would close a cycle and put these
+   constants in the temporal dead zone depending on which side is evaluated
+   first. Two strings, and the number is the same one in the footer. */
+const PHONE_HREF = 'tel:+3211111020';
 
 /* ------------------------------------------------------------------ *
  * Nederlands
  * ------------------------------------------------------------------ */
 
 const nl = [
-  p`Deze pagina legt uit welke persoonsgegevens smartagents.be verwerkt, waarom,
-    en wat u daaraan kunt doen. Ze beschrijft wat de website vandaag effectief
-    doet, niet wat hij zou kunnen doen.`,
-
   h2`Wie is verantwoordelijk`,
-  p`${CONTROLLER}, ${VAT}, gevestigd in Beringen, België, is de
+  p`${CONTROLLER}, ${VAT}, Mijnschoolstraat 18, 3580 Beringen, België, is de
     verwerkingsverantwoordelijke. U bereikt ons op
-    [${EMAIL}](mailto:${EMAIL}) of op ${PHONE}. We hebben geen
+    [${EMAIL}](mailto:${EMAIL}) of op [${PHONE}](${PHONE_HREF}). We hebben geen
     functionaris voor gegevensbescherming aangesteld: daarvoor zijn we te klein,
     en uw vraag komt bij een van de twee zaakvoerders terecht.`,
 
@@ -59,6 +99,10 @@ const nl = [
     `**Gewone serverlogs** bij onze hostingpartner, die horen bij het uitleveren
      van een webpagina.`
   ]),
+  p`U bent niet verplicht ons iets te geven. Het formulier invullen is een
+    keuze; laat u het staan, dan verandert er niets en missen we alleen de
+    gegevens die we nodig hebben om u te antwoorden. Bellen of mailen kan
+    natuurlijk ook.`,
   p`We verzamelen niets anders. Er is geen analytics, geen tracking, geen
     advertentiepixel en geen profilering op deze website. We nemen ook geen
     beslissingen over u op een geautomatiseerde manier.`,
@@ -85,7 +129,8 @@ const nl = [
   ]),
   p`Cloudflare en Slack zijn bedrijven die gegevens ook buiten de Europese
     Economische Ruimte kunnen verwerken. Dat gebeurt op basis van de
-    standaardcontractbepalingen van de Europese Commissie. n8n Cloud draait in
+    standaardcontractbepalingen van de Europese Commissie; een kopie daarvan
+    kunt u bij ons opvragen via [${EMAIL}](mailto:${EMAIL}). n8n Cloud draait in
     de EU-regio.`,
 
   h2`Hoe lang we het bijhouden`,
@@ -98,14 +143,18 @@ const nl = [
      weggeschreven en daarna gewist.`,
     `**Serverlogs** vallen onder de bewaartermijnen van onze hostingpartner.`
   ]),
-  p`Wilt u eerder weg, dan volstaat een mail. Zie hieronder.`,
+  p`Wilt u eerder weg, dan volstaat een mail. Zie [Uw rechten](clause:07).`,
 
   h2`Cookies`,
-  p`Deze website plaatst zelf geen cookies, en er staat dan ook geen
-    cookiebanner. Als u het contactformulier aanraakt, laadt de spamcontrole van
-    Cloudflare, en die kan daarbij zelf een technisch gegeven plaatsen dat ze
-    nodig heeft om de controle uit te voeren. Raakt u het formulier niet aan,
-    dan gebeurt dat niet.`,
+  p`Op de publieke pagina's van deze website plaatsen we zelf geen cookies, en er
+    staat dan ook geen cookiebanner. Als u het contactformulier aanraakt, laadt
+    de spamcontrole van Cloudflare, en die kan daarbij zelf een technisch gegeven
+    plaatsen dat ze nodig heeft om de controle uit te voeren. Raakt u het
+    formulier niet aan, dan gebeurt dat niet.`,
+  p`Er is één uitzondering, en die ligt buiten het publieke deel van de site. Wie
+    op het afgeschermde gedeelte inlogt, krijgt daarbij één strikt noodzakelijke
+    sessiecookie die na zeven dagen vervalt. Die is er alleen om de aanmelding te
+    onthouden; hij volgt u niet en hij komt niet op een publieke pagina terecht.`,
   p`Uw browser bewaart wel pagina's en afbeeldingen van deze site zodat ze de
     tweede keer sneller openen. Dat blijft op uw eigen toestel, bevat geen
     persoonsgegevens, en u wist het met de gewone knop om browsergegevens te
@@ -134,13 +183,10 @@ const nl = [
  * ------------------------------------------------------------------ */
 
 const en = [
-  p`This page explains what personal data smartagents.be processes, why, and
-    what you can do about it. It describes what the site actually does today,
-    not what it could do.`,
-
   h2`Who is responsible`,
-  p`${CONTROLLER}, ${VAT}, based in Beringen, Belgium, is the data controller.
-    You can reach us at [${EMAIL}](mailto:${EMAIL}) or on ${PHONE}. We have not
+  p`${CONTROLLER}, ${VAT}, Mijnschoolstraat 18, 3580 Beringen, Belgium, is the data controller.
+    You can reach us at [${EMAIL}](mailto:${EMAIL}) or on
+    [${PHONE}](${PHONE_HREF}). We have not
     appointed a data protection officer: we are too small to need one, and your
     question reaches one of the two founders.`,
 
@@ -158,6 +204,9 @@ const en = [
     `**Ordinary server logs** at our hosting provider, of the kind that come
      with serving a web page.`
   ]),
+  p`You are under no obligation to give us anything. Filling in the form is a
+    choice; leave it and nothing changes, except that we do not have what we
+    would need in order to answer you. Calling or mailing works just as well.`,
   p`We collect nothing else. There is no analytics, no tracking, no advertising
     pixel and no profiling on this site. We also make no automated decisions
     about you.`,
@@ -184,7 +233,8 @@ const en = [
   ]),
   p`Cloudflare and Slack are companies that may also process data outside the
     European Economic Area. That happens under the European Commission's
-    standard contractual clauses. n8n Cloud runs in the EU region.`,
+    standard contractual clauses; mail [${EMAIL}](mailto:${EMAIL}) for a copy of
+    them. n8n Cloud runs in the EU region.`,
 
   h2`How long we keep it`,
   list([
@@ -196,13 +246,20 @@ const en = [
      seconds and deleted afterwards.`,
     `**Server logs** fall under our hosting provider's retention terms.`
   ]),
-  p`If you would rather we removed it sooner, an e-mail is enough. See below.`,
+  p`If you would rather we removed it sooner, an e-mail is enough. See
+    [Your rights](clause:07).`,
 
   h2`Cookies`,
-  p`This site sets no cookies of its own, which is why there is no cookie
-    banner. If you interact with the contact form, Cloudflare's spam check
-    loads, and it may itself place a technical value it needs in order to run
-    the check. If you do not touch the form, that does not happen.`,
+  p`On the public pages of this site we set no cookies of our own, which is why
+    there is no cookie banner. If you interact with the contact form,
+    Cloudflare's spam check loads, and it may itself place a technical value it
+    needs in order to run the check. If you do not touch the form, that does not
+    happen.`,
+  p`There is one exception, and it sits outside the public part of the site.
+    Signing in to the password-protected area sets a single strictly necessary
+    session cookie that expires after seven days. It is there to remember the
+    sign-in and nothing else; it does not follow you, and it never reaches a
+    public page.`,
   p`Your browser does keep pages and images from this site so that they open
     faster the second time. That stays on your own device, holds no personal
     data, and clears with the ordinary button for clearing browsing data.`,
@@ -229,14 +286,11 @@ const en = [
  * ------------------------------------------------------------------ */
 
 const fr = [
-  p`Cette page explique quelles données à caractère personnel smartagents.be
-    traite, pourquoi, et ce que vous pouvez faire à ce sujet. Elle décrit ce que
-    le site fait réellement aujourd'hui, pas ce qu'il pourrait faire.`,
-
   h2`Qui est responsable`,
-  p`${CONTROLLER}, ${VAT}, établie à Beringen, en Belgique, est le responsable
+  p`${CONTROLLER}, ${VAT}, Mijnschoolstraat 18, 3580 Beringen, en Belgique, est le responsable
     du traitement. Vous nous joignez à [${EMAIL}](mailto:${EMAIL}) ou au
-    ${PHONE}. Nous n'avons pas désigné de délégué à la protection des données :
+    [${PHONE}](${PHONE_HREF}). Nous n'avons pas désigné de délégué à la
+    protection des données :
     nous sommes trop petits pour y être tenus, et votre question arrive chez
     l'un des deux fondateurs.`,
 
@@ -257,6 +311,10 @@ const fr = [
     `**Des journaux de serveur ordinaires** chez notre hébergeur, de ceux qui
      accompagnent la remise d'une page web.`
   ]),
+  p`Vous n'êtes tenu de rien nous fournir. Remplir le formulaire est un choix ;
+    si vous ne le faites pas, rien ne change, si ce n'est que nous n'avons pas ce
+    qu'il nous faudrait pour vous répondre. Un appel ou un e-mail fait tout aussi
+    bien l'affaire.`,
   p`Nous ne recueillons rien d'autre. Il n'y a sur ce site ni analytique, ni
     traçage, ni pixel publicitaire, ni profilage. Nous ne prenons pas non plus
     de décision automatisée à votre sujet.`,
@@ -283,8 +341,9 @@ const fr = [
   ]),
   p`Cloudflare et Slack sont des sociétés susceptibles de traiter des données
     en dehors de l'Espace économique européen. Cela se fait sur la base des
-    clauses contractuelles types de la Commission européenne. n8n Cloud tourne
-    dans la région UE.`,
+    clauses contractuelles types de la Commission européenne ; vous pouvez nous
+    en demander une copie à [${EMAIL}](mailto:${EMAIL}). n8n Cloud tourne dans la
+    région UE.`,
 
   h2`Combien de temps nous le gardons`,
   list([
@@ -299,14 +358,20 @@ const fr = [
      hébergeur.`
   ]),
   p`Si vous préférez que nous l'effacions plus tôt, un e-mail suffit. Voyez
-    ci-dessous.`,
+    [Vos droits](clause:07).`,
 
   h2`Cookies`,
-  p`Ce site ne dépose aucun cookie de son fait, et c'est pourquoi il n'y a pas
-    de bandeau cookies. Si vous interagissez avec le formulaire de contact, le
-    contrôle antispam de Cloudflare se charge, et il peut lui-même déposer une
-    valeur technique dont il a besoin pour effectuer ce contrôle. Si vous ne
-    touchez pas au formulaire, cela n'arrive pas.`,
+  p`Sur les pages publiques de ce site, nous ne déposons aucun cookie de notre
+    fait, et c'est pourquoi il n'y a pas de bandeau cookies. Si vous interagissez
+    avec le formulaire de contact, le contrôle antispam de Cloudflare se charge,
+    et il peut lui-même déposer une valeur technique dont il a besoin pour
+    effectuer ce contrôle. Si vous ne touchez pas au formulaire, cela n'arrive
+    pas.`,
+  p`Il y a une exception, et elle se situe hors de la partie publique du site.
+    Toute personne qui se connecte à l'espace protégé par mot de passe reçoit un
+    seul cookie de session strictement nécessaire, qui expire après sept jours.
+    Il ne sert qu'à mémoriser la connexion : il ne vous suit pas et n'arrive
+    jamais sur une page publique.`,
   p`Votre navigateur conserve en revanche des pages et des images de ce site
     pour qu'elles s'ouvrent plus vite la deuxième fois. Cela reste sur votre
     appareil, ne contient pas de données personnelles, et s'efface avec le

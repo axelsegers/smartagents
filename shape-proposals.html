@@ -1,0 +1,492 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Donkere vormen — twintig voorstellen</title>
+<link rel="stylesheet" href="src/styles/tokens.css">
+<style>
+  /* Kladpagina. Zit niet in de build en niets linkt ernaar: hij bestaat om een
+     richting te kiezen voor de donkere vormen die de site overal gebruikt — in
+     hero's, in de goot naast een lijst, onder een paneel. Kleuren, type en radii
+     komen uit de echte src/styles/tokens.css, en het knooppuntennetwerk is de
+     echte <sa-node-field> uit src/components, dus wat hier staat is wat het op
+     de site zou worden.
+
+     Serveer vanaf de repo-root — `python3 -m http.server 8010` — anders laadt de
+     module niet en blijft elke vorm vlak marineblauw. Dat is trouwens precies
+     hoe de vormen eruitzien voordat JS aankomt, dus het is ook de eerlijke
+     test. */
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--sa-paper);
+    color: var(--sa-ink);
+    font-family: var(--font-sans);
+    font-size: var(--text-copy);
+    line-height: var(--leading-body);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page { max-width: 1320px; margin: 0 auto; padding: 64px var(--gutter-page) 160px; }
+  .page > header { margin-bottom: 20px; }
+  h1 {
+    font-size: var(--text-h1-sub); font-weight: var(--weight-display);
+    letter-spacing: var(--track-h2); line-height: var(--leading-h2); margin: 0 0 18px;
+  }
+  .page > header p { color: var(--text-body); margin: 0 0 12px; max-width: 82ch; }
+  .page > header b { color: var(--text-strong); font-weight: var(--weight-semibold); }
+  code { font-family: var(--font-mono); font-size: 0.92em; color: var(--text-body); }
+
+  /* The key, and the glossary under it, in the hairline row idiom the site uses
+     for every other list. */
+  .key { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0 40px; margin: 40px 0 0; padding: 0; list-style: none; }
+  .key li { padding: 16px 0; border-top: 1px solid var(--sa-line-2); }
+  .key b { display: block; font-weight: var(--weight-semibold); font-size: var(--text-ui); }
+  .key span { color: var(--text-muted); font-size: var(--text-meta); }
+
+  .glossary { margin: 34px 0 0; padding: 0; columns: 2; column-gap: 48px; }
+  .glossary div { break-inside: avoid; display: grid; grid-template-columns: 78px minmax(0, 1fr); gap: 0 14px; padding: 11px 0; border-top: 1px solid var(--sa-line-2); }
+  .glossary dt { font-family: var(--font-mono); font-size: var(--text-micro); color: var(--text-strong); }
+  .glossary dd { margin: 0; color: var(--text-muted); font-size: var(--text-meta); line-height: var(--leading-snug); }
+
+  /* The contact sheet. Twenty silhouettes at the ratio each one is used at,
+     which is the only way to see whether two of them are the same shape twice —
+     the cove and the hood were, for three drafts, and reading them one at a time
+     never showed it. */
+  .sheet { display: grid; grid-template-columns: repeat(5, 1fr); gap: 26px 20px; margin: 40px 0 0; }
+  .sheet a { display: block; text-decoration: none; color: inherit; }
+  .sheet__box { display: grid; place-items: center; height: 150px; border: 1px dashed var(--sa-line-3); border-radius: var(--radius-chip); }
+  .sheet svg { display: block; }
+  .sheet path { fill: var(--sa-field); }
+  .sheet b { display: block; margin-top: 8px; font-family: var(--font-mono); font-size: var(--text-nano); font-weight: 400; color: var(--text-muted); }
+  .sheet a:hover .sheet__box { border-color: var(--sa-cyan); }
+  .sheet a:hover b { color: var(--text-accent); }
+
+  /* Group heads: the section-heading idiom — 2px cyan rule, 22px of air. */
+  .group { margin: 104px 0 0; }
+  .group__rule { width: 46px; height: 2px; background: var(--sa-cyan); }
+  .group h2 { font-size: var(--text-h2-sm); font-weight: var(--weight-display); letter-spacing: var(--track-h2); margin: 22px 0 10px; }
+  .group p { color: var(--text-body); margin: 0; max-width: 62ch; }
+
+  .prop { padding-top: 40px; border-top: 1px solid var(--sa-line-2); margin-top: 56px; }
+  .prop__head { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; margin-bottom: 24px; }
+  .prop__no { font-family: var(--font-mono); font-size: var(--text-micro); color: var(--text-accent); }
+  .prop__name { font-size: var(--text-h3); font-weight: var(--weight-semibold); letter-spacing: var(--track-h3); margin: 0; }
+  .prop__intent { color: var(--text-muted); font-size: var(--text-meta); }
+
+  /* Two tracks, and the note lives in the left one with the drawing it is about.
+     Spanning the note across the top instead leaves about 450px of bare paper
+     beside it on every one of the twenty rows, which is the emptiness the design
+     README refuses at page scale. */
+  .prop__body { display: grid; grid-template-columns: 340px minmax(0, 1fr); gap: 44px; align-items: start; }
+  .prop__aside { position: sticky; top: 24px; }
+  .prop__note { color: var(--text-body); font-size: var(--text-meta); line-height: var(--leading-body-tight); margin: 22px 0 24px; }
+  .prop__note b { color: var(--text-strong); font-weight: var(--weight-semibold); }
+  .prop__note i { font-style: italic; }
+
+  /* The drawing: the silhouette alone, its box dashed around it, every weld run
+     drawn in cyan on the edge it is welded to. */
+  .draw__frame { display: block; }
+  .draw__box { fill: none; stroke: var(--sa-line-3); stroke-width: 1; stroke-dasharray: 3 4; }
+  .draw__path { fill: var(--sa-field); }
+  .draw__weld { stroke: var(--sa-cyan); stroke-width: 3; }
+  .prop__data { display: grid; grid-template-columns: 68px minmax(0, 1fr); gap: 0 14px; margin: 18px 0 0; font-size: var(--text-nano); }
+  .prop__data dt { color: var(--text-faint); }
+  .prop__data dd { margin: 0; color: var(--text-body); font-family: var(--font-mono); }
+
+  /* The dark field itself. The same two elements as the site: a slot that sizes
+     the box, and the clipped .field inside it carrying the node network. Every
+     slot names one length and an aspect ratio, never two lengths — see the note
+     at the head of shape-proposals.shapes.js. */
+  .field-slot { position: absolute; pointer-events: none; }
+  .field { position: absolute; inset: 0; background: var(--surface-dark); }
+  sa-node-field { display: block; width: 100%; height: 100%; }
+
+  /* ---- the mocks ------------------------------------------------- */
+  .prop__stage { overflow-x: auto; }
+  .mock { position: relative; min-width: 860px; border: 1px solid var(--sa-line-2); background: var(--surface-page); }
+  .mock--clip { overflow: hidden; }
+  .mock__inner { position: relative; z-index: 1; padding: 40px 44px; }
+
+  .eyebrow { color: var(--text-muted); font-size: var(--text-meta-sm); margin: 0 0 12px; }
+  .claim { font-size: var(--text-h2); font-weight: var(--weight-display); letter-spacing: var(--track-display); line-height: var(--leading-h2); margin: 0 0 26px; max-width: 330px; }
+  .acts { display: flex; gap: 10px; flex-wrap: wrap; }
+  .btn { font-size: var(--text-ui-sm); font-weight: var(--weight-medium-plus); padding: 10px 16px; border-radius: var(--radius-button); border: 1px solid var(--border-button); color: var(--text-strong); }
+  .btn--fill { background: var(--action-primary-bg); color: var(--action-primary-fg); border-color: var(--action-primary-bg); }
+
+  .rule { width: 46px; height: 2px; background: var(--sa-cyan); }
+  /* The mocks' own headings are decoration inside a proposal, so they are
+     paragraphs: a real h4 inside the proposal's h3 scrambles the outline. */
+  .mock__title { font-size: var(--text-h3); font-weight: var(--weight-semibold); letter-spacing: var(--track-h3); margin: 22px 0 18px; color: var(--text-strong); }
+  .mock__title--sm { font-size: var(--text-h5); letter-spacing: var(--track-h5); margin: 0 0 16px; }
+  .rows { list-style: none; margin: 0; padding: 0; max-width: 460px; }
+  .rows li { display: flex; justify-content: space-between; gap: 24px; padding: 15px 0; border-top: 1px solid var(--sa-line-2); font-size: var(--text-ui-sm); }
+  .rows span { color: var(--text-faint); }
+  .mock p.copy { color: var(--text-body); max-width: 300px; margin: 0 0 14px; }
+  .mock p.copy--prose { max-width: 420px; }
+
+  /* The panel mock: the shape hangs off the panel's own box, so the slot is a
+     child of the panel and the panel does not clip. */
+  .panel-stage { padding: 84px 108px 148px; }
+  .panel { position: relative; border: 1px solid var(--sa-line-2); border-radius: var(--radius-panel); background: var(--surface-raised); padding: 30px 34px; }
+  .panel .rows li:first-child { border-top: none; }
+
+  @media (max-width: 1320px) {
+    .prop__body { grid-template-columns: 1fr; gap: 28px; }
+    .prop__aside { position: static; max-width: 340px; }
+    .key, .glossary { grid-template-columns: 1fr; }
+    .sheet { grid-template-columns: repeat(3, 1fr); }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+<header>
+  <h1>Donkere vormen — twintig voorstellen</h1>
+  <p>Het donkere veld is het merk, en de site heeft er vandaag vijftien
+     silhouetten van: de petal, de tegenlob en de smalle variant die de telefoon
+     ervoor in de plaats krijgt, de boog en twee kiezels op de staffingpagina, de
+     schijf en de blob bij Ons DNA, de steen en de koepel op de trainingspagina,
+     het blad en de wig naast het aanbod, de rug op de SDLC-pagina, de wand op de
+     procespagina en de plaat achter de stapel. Hieronder staan er twintig bij,
+     in drie families: <b>aan een paginarand gelast</b>, <b>aan een blok
+     gelast</b> en <b>vrij zwevend</b>.</p>
+  <p>Elke vorm staat er twee keer: één keer alleen, met zijn doos eromheen en de
+     lassen in cyaan, en één keer in de context waar hij voor bedoeld is. De
+     tweede is de enige die telt — een silhouet beoordelen zonder de tekst
+     ernaast is precies hoe de drie mislukte kammen op de privacyverklaring door
+     de keuring kwamen.</p>
+  <p>Geen ervan is met de hand als <code>d</code>-string geschreven.
+     <code>shape-proposals.shapes.js</code> zet ze op als een ring van ankers —
+     een punt, de richting waarin de omtrek er doorheen loopt, en hoe vol de
+     bocht is — en lost de handgrepen op. Dat is de discipline die
+     <code>clipDefs()</code> in woorden vastlegt, hier afgedwongen in plaats van
+     beloofd: <b>een knik midden in een kromme kan niet ontstaan</b>, want een
+     anker heeft één raaklijn en beide handgrepen liggen erop; en de
+     krommingsstraal loopt door over elke las heen, want die verhouding wordt
+     uitgerekend in plaats van geschat.</p>
+  <p>Eén cijfer verdient uitleg, want het is het cijfer dat het verschil maakt
+     tussen een silhouet dat getekend lijkt en een dat benaderd lijkt:
+     <b>bocht</b>, hoe ver de raaklijn draait binnen één boog. Gemeten over de
+     vijftien bestaande vormen loopt de mediaan van 31° tot 95° en de uitschieter
+     per vorm van 63° tot 143°; drie ervan komen boven de 130° en de rest blijft
+     onder de 110°. Een kubische boog die veel verder dan een kwartslag moet
+     draaien kan zijn kromming daarbij niet vasthouden: hij loopt door het midden
+     bijna recht en doet het draaien aan de twee uiteinden, en dat rechte stuk is
+     precies wat het oog als een vlakke plek leest. Wie dat wil zien: de eerste
+     versie van de baai deed 166° in één boog en van het tij 147°. Elke vorm hier
+     blijft onder de 96°, en dat is strenger dan de site zelf — de rug op de
+     SDLC-pagina en de koepel op de trainingspagina gaan er ruim overheen, allebei
+     om een bewuste knik heen. Het is dus een plafond dat vlakke plekken
+     uitsluit, geen weergave van het bestaande werk. Het is ook niet gehaald door
+     de kromme te knippen — dan is het dezelfde kromme — maar door er een anker
+     in te zetten en de kromming er opnieuw over te verdelen.</p>
+  <p><b>Geen enkele notitie hieronder noemt een getal dat de pagina zelf kan
+     meten.</b> Lassen, vulling, bereik, bogen, bocht, boog en naad worden bij
+     het renderen van de vorm afgelezen en onder de tekening gezet. Drie versies
+     van dit bestand hadden notities die een vorm beschreven die er niet meer
+     stond, en op een pagina waarvan de hele stelling is dat de cijfers gemeten
+     zijn in plaats van bekeken, is dat het ene gebrek dat de rest ongeloofwaardig
+     maakt.</p>
+  <p><b>Wat hier niet beslist wordt: de telefoon.</b> De twintig zijn getekend
+     voor een bureau. De site heeft daar een apart antwoord voor — de petal wordt
+     onder 620px vervangen door een eigen, veel smallere vorm — en item 11 van de
+     ontwerpnotitie zegt waarom dat geen detail is: een doos waarvan de
+     verhouding aan zichzelf wordt overgelaten, gaat over het bereik van 1,72
+     breed-op-hoog naar 0,59, en dan leest hetzelfde silhouet als iets anders.
+     Elke doos hier houdt zijn verhouding vast, wat die kant van het probleem
+     dichtzet; welke verhouding op een telefoon de juiste is, is een tweede vraag
+     en die staat open. De mocks hiernaast houden een ondergrens van 860px en
+     schuiven daaronder in hun eigen kader in plaats van te herschikken: onder
+     ongeveer 840px loopt de tekst erin terug de vormen in, en een mock die zijn
+     eigen voorstel tegenspreekt is erger dan een mock die schuift.
+     Eén ding houden ze niet: de <b>lettergrootte</b>. De maten in een mock staan
+     in pixels, maar de hoogte van een blok is nog altijd wat de tekst erin
+     inneemt, en drie vormen — de baai, de zuil en de beugel — leiden hun breedte
+     af van die hoogte. Op 110% van de huidige grootte loopt de eerste vorm weer
+     tegen een regel aan. Deze pagina is dus gezet in de letter die vandaag
+     rendert, het platform-schrift; als Geist geleverd wordt, moet dit opnieuw
+     gemeten worden — net als de discloseregel in de voettekst, waar de
+     ontwerpnotitie hetzelfde voorbehoud maakt.</p>
+  <ul class="key">
+    <li><b>Aan een rand</b><span>Gelast aan een paginarand, zoals de petal en de
+      boog. Acht stuks. De rand doet het werk: de vorm hoeft nergens te
+      beginnen.</span></li>
+    <li><b>Aan een blok</b><span>Gelast aan de voet, de flank of de bovenlijn van
+      een paneel. Zes stuks. Het paneel houdt de rechte kant, de vorm de
+      getekende.</span></li>
+    <li><b>Vrij</b><span>Nergens aan gelast. Zes stuks. De site heeft er twee, en
+      die lezen alleen omdat de boog ernaast aan drie kanten vastzit.</span></li>
+  </ul>
+  <dl class="glossary" id="glossary">
+    <div><dt>lassen</dt><dd>Aan welke randen van zijn doos de vorm vastzit, en
+      over welk stuk ervan.</dd></div>
+    <div><dt>doos</dt><dd>De verhouding breedte staat tot hoogte van de doos, en
+      die is vast: elke doos krijgt één maat plus een <code>aspect-ratio</code>,
+      nooit twee maten.</dd></div>
+    <div><dt>vulling</dt><dd>Hoeveel van de doos marineblauw is. Boven ongeveer
+      driekwart houdt de vorm op vorm te zijn en wordt hij de grond.</dd></div>
+    <div><dt>bereik</dt><dd>Hoe ver het silhouet in zijn doos reikt. Wat buiten de
+      doos valt, wordt er recht afgesneden.</dd></div>
+    <div><dt>bogen</dt><dd>Aantal kubische bogen waar de ring uit bestaat.</dd></div>
+    <div><dt>bocht</dt><dd>De hoogste en de middelste draaiing van de raaklijn
+      binnen één boog, in graden. Zie hierboven.</dd></div>
+    <div><dt>flanken</dt><dd>Hoe ver elke boog afzonderlijk van zijn eigen koorde
+      staat. Een strakke flank ligt op een paar procent, een ronde op tien, een
+      punt op dertig. Dit is de rij waar een notitie die iets over een flank
+      beweert aan afgemeten hoort te worden.</dd></div>
+    <div><dt>boog</dt><dd>Hoe ver de vrije rand van de rechte lijn tussen zijn
+      twee lassen staat. Alleen ingevuld als die twee lassen op <i>verschillende</i>
+      randen liggen en ver genoeg uit elkaar: bij een vorm die langs één rand
+      gelast is, is die lijn de las zelf en meet het getal iets anders. Waar het
+      wél geldt, is het een aflezing en geen norm — de ontwerpnotitie noemt een
+      vijfde van de spanwijdte als werkgetal voor een vorm die van hoek tot hoek
+      is getrokken, en dáár leest minder als een zwarte driehoek.</dd></div>
+    <div><dt>holte</dt><dd>Hoe diep de omtrek onder zijn eigen omhullende duikt,
+      als deel van de diagonaal van de vorm. 0% is bol over de hele omtrek. Dit
+      is de rij die "één holte" en "geen holte" controleerbaar maakt, en zonder
+      die rij is een vrije vorm met een deuk van 4% aan zijn schouder niet te
+      onderscheiden van een die er geen heeft.</dd></div>
+    <div><dt>naad</dt><dd>De grootste sprong in krommingsstraal over een anker
+      dat geen hoek is. 1,00 is een naad die het oog niet kan vinden. De
+      bestaande vormen lopen tot 9,3, en dat cijfer telt alleen ankers mee waar
+      de kromming aan beide kanten van nul verschilt — waar een boog in een
+      rechte lijn of in een buigpunt overgaat is de verhouding een deling door
+      nul en zegt ze niets. Vijf vormen hier staan boven 1,2 — de scherf, de spil,
+      de kiel, het spoor en de bolster — en bij alle vijf is de sprong de prijs
+      van een kenmerk dat de vorm anders niet heeft: een punt, twee punten, een
+      strakke flank, een buik, een hap. Onder 1,2 valt er niets te melden en
+      meldt de notitie niets.</dd></div>
+  </dl>
+  <div class="sheet" id="sheet"></div>
+</header>
+<main id="proposals"></main>
+<p id="closing" style="color:var(--text-muted);font-size:var(--text-meta);margin:72px 0 0;max-width:68ch">
+  Geen van de twintig vouwt zichzelf en geen van de twintig kruist zichzelf; dat
+  is per vorm gecontroleerd en staat daarom nergens per vorm.
+</p>
+</div>
+
+<svg id="clip-defs" width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute"><defs id="clip-defs-list"></defs></svg>
+
+<script type="module">
+import { SHAPES } from './shape-proposals.shapes.js';
+import './src/components/node-field/node-field.js';
+
+const GROUPS = [
+  { cat: 'edge', title: 'Aan een paginarand', lead:
+    `De vorm hangt aan de rand van de pagina en heeft daar zijn hoeken. Alles wat
+     de site vandaag in een hero zet, zit in deze familie. De valkuil staat in de
+     ontwerpnotitie: een vorm die de hele hoek vult is geen vorm meer maar de
+     grond waar de pagina op staat, en een vorm die van hoek tot hoek is
+     getrokken met een flauwe boog leest als een zwarte driehoek.` },
+  { cat: 'panel', title: 'Aan een blok', lead:
+    `De vorm hangt aan de voet, de flank of de bovenlijn van een paneel in plaats
+     van aan de pagina. Twee redenen om dat te willen: het paneel geeft een rechte
+     kant om tegenaan te lassen, en de vorm blijft meebewegen met het blok in
+     plaats van met het venster. De koepel onder het aanbod op de trainingspagina
+     is het enige voorbeeld dat de site vandaag heeft. Eén regel geldt overal in
+     deze familie: een las hoort op een recht stuk rand, en de afgeronde hoek van
+     een paneel is dat niet.` },
+  { cat: 'free', title: 'Vrij zwevend', lead:
+    `Nergens aan vast. Dit is de moeilijkste familie en de reden staat in de
+     ontwerpnotitie: de twee kiezels op de staffingpagina lezen alleen omdat de
+     boog ernaast aan boven, rechts en onder vastzit — het paar zegt dat de grond
+     stukken heeft losgelaten, en daar is grond voor nodig. Een vrije vorm alleen
+     op een pagina is een vlek. In elke mock hieronder staat daarom de val uit
+     voorstel 01 tegen de rechterrand, klein en dichtbij: op de staffingpagina
+     zitten de kiezels ín de doos van de boog, en dat nabij zijn is wat het paar
+     laat lezen. Twee vrije vormen naast elkaar: nooit.` }
+];
+
+const el = (tag, cls, html) => {
+  const node = document.createElement(tag);
+  if (cls) node.className = cls;
+  if (html !== undefined) node.innerHTML = html;
+  return node;
+};
+
+const ratio = (v) => v.toFixed(2).replace('.', ',');
+const deg = (v) => `${v.toFixed(1).replace('.', ',')}°`;
+
+/* One clipPath per shape, in the box's own unit space, exactly as `clipDefs()`
+ * emits them. */
+document.getElementById('clip-defs-list').innerHTML = SHAPES.map((s) =>
+  `<clipPath id="${s.id}" clipPathUnits="objectBoundingBox"><path d="${s.d}"/></clipPath>`
+).join('');
+
+const EDGE_NAMES = { left: 'links', right: 'rechts', top: 'boven', bottom: 'onder' };
+
+/* The drawing is struck at the ratio the mock's own box works out to, not at a
+ * convenient one. A clip path in object-bounding-box units is a shape *of its
+ * box*: the same `d` in a box twice as wide is a different silhouette. Fitted
+ * into 340 by 210 and no more. */
+function drawing(shape) {
+  const h = Math.round(Math.min(210, 340 / shape.aspect));
+  const w = Math.round(h * shape.aspect);
+  const welds = shape.stats.welds.map(([edge, from, to]) => {
+    const pts = {
+      left: [0, from, 0, to], right: [1, from, 1, to],
+      top: [from, 0, to, 0], bottom: [from, 1, to, 1]
+    }[edge];
+    return `<line class="draw__weld" x1="${pts[0]}" y1="${pts[1]}" x2="${pts[2]}" y2="${pts[3]}" vector-effect="non-scaling-stroke"/>`;
+  }).join('');
+
+  const bb = shape.stats.bbox;
+  const st = shape.stats;
+  const weldText = st.welds.length
+    ? st.welds.map(([edge, from, to]) => `${EDGE_NAMES[edge]} ${ratio(from)}–${ratio(to)}`).join(' · ')
+    : 'geen';
+
+  const frame = el('div');
+  frame.innerHTML =
+    `<svg class="draw__frame" viewBox="0 0 1 1" preserveAspectRatio="none"
+          width="${w}" height="${h}" aria-hidden="true">
+       <rect class="draw__box" x="0" y="0" width="1" height="1" vector-effect="non-scaling-stroke"/>
+       <path class="draw__path" d="${shape.d}"/>
+       ${welds}
+     </svg>`;
+  const data = el('dl', 'prop__data');
+  data.innerHTML =
+    `
+       <dt>lassen</dt><dd>${weldText}</dd>
+       <dt>doos</dt><dd>${ratio(shape.aspect)} : 1</dd>
+       <dt>vulling</dt><dd>${(st.fill * 100).toFixed(0)}% van de doos</dd>
+       <dt>bereik</dt><dd>x ${ratio(bb[0])}–${ratio(bb[2])} · y ${ratio(bb[1])}–${ratio(bb[3])}</dd>
+       <dt>bogen</dt><dd>${st.segments} · bocht ${deg(st.turnMax)} / ${deg(st.turnMed)}</dd>
+       <dt>boog</dt><dd>${st.bowSpan > 0.5 && st.bowCross
+         ? `${(st.bow * 100).toFixed(0)}% · ${st.bowEdges.map((e) => EDGE_NAMES[e]).join(' → ')}`
+         : '—'}</dd>
+       <dt>flanken</dt><dd>${st.segBows.map((b) => (b * 100).toFixed(1).replace('.', ',')).join(' · ')}%</dd>
+       <dt>holte</dt><dd>${(st.hollow * 100).toFixed(1).replace('.', ',')}% van de diagonaal</dd>
+       <dt>naad</dt><dd>${ratio(st.worstJoin)}× straal</dd>`;
+  return { frame, data };
+}
+
+function slot(shape) {
+  const node = el('div', 'field-slot');
+  node.setAttribute('style', shape.slot);
+  node.setAttribute('aria-hidden', 'true');
+  node.innerHTML = `<div class="field" style="clip-path: url(#${shape.id})"><sa-node-field></sa-node-field></div>`;
+  return node;
+}
+
+const MOCKS = {
+  hero: () => `<div class="mock__inner" style="min-height:452px">
+      <p class="eyebrow">AI-native SDLC</p>
+      <p class="claim">Digitale collega's die nooit slapen.</p>
+      <div class="acts"><span class="btn btn--fill">Plan een gesprek</span><span class="btn">Bekijk wat we doen →</span></div>
+    </div>`,
+  rows: () => `<div class="mock__inner">
+      <div class="rule"></div>
+      <p class="mock__title">Wat we doen</p>
+      <ul class="rows">
+        <li>Opleidingen<span>Ontdek →</span></li>
+        <li>AI staffing en coaching<span>Ontdek →</span></li>
+        <li>AI-native SDLC<span>Ontdek →</span></li>
+        <li>AI-native businessprocessen<span>Ontdek →</span></li>
+      </ul>
+    </div>`,
+  article: () => `<div class="mock__inner">
+      <div class="rule"></div>
+      <p class="mock__title">Wat een agent wel en niet overneemt</p>
+      <p class="copy copy--prose">Mail, facturen, offertes, aanbestedingen, calculaties. Dat is het
+        werk waar een digitale collega vandaag iets aan toevoegt, en het is ook
+        het werk waar u het snelst ziet of het klopt.</p>
+      <p class="copy copy--prose">We zeggen eerlijk waar AI niets toevoegt. Wat niet gebruikt wordt,
+        halen we er weer uit.</p>
+      <p class="copy copy--prose">Een agent die niemand nakijkt is geen collega maar een risico. Daarom
+        staat er bij elke stap een mens die beslist.</p>
+    </div>`,
+  panelNarrow: () => `<div class="panel-stage"><div class="panel">
+      <p class="mock__title mock__title--sm">Wat uw management hoort</p>
+      <ul class="rows" style="max-width:none">
+        <li>Week 1</li>
+        <li>Week 4</li>
+        <li>Week 12</li>
+      </ul>
+    </div></div>`,
+  panel: () => `<div class="panel-stage"><div class="panel">
+      <p class="mock__title mock__title--sm">Wat uw management hoort</p>
+      <ul class="rows">
+        <li>Week 1<span>Wat er nu misloopt</span></li>
+        <li>Week 4<span>Wat een agent overnam</span></li>
+        <li>Week 12<span>Wat het opleverde</span></li>
+      </ul>
+    </div></div>`,
+  prose: () => `<div class="mock__inner" style="min-height:340px">
+      <div class="rule"></div>
+      <p class="mock__title">Ons DNA</p>
+      <p class="copy">We bouwen digitale collega's. Geen demo's, geen pilots die blijven
+        hangen, maar werk dat maandag doorloopt.</p>
+      <p class="copy">We zeggen eerlijk waar AI niets toevoegt, en ook wanneer u ons
+        niet nodig hebt.</p>
+    </div>`
+};
+
+/* The welded shape every free proposal is shown beside: small, and close enough
+ * to read as the thing it came off. */
+const COMPANION = {
+  ...SHAPES.find((s) => s.id === 'lobeFall'),
+  slot: 'inset: 5% 0 auto auto; width: 228px; aspect-ratio: 1.02;'
+};
+
+const sheet = document.getElementById('sheet');
+sheet.innerHTML = SHAPES.map((shape, i) => {
+  const h = Math.round(Math.min(132, 190 / shape.aspect));
+  const w = Math.round(h * shape.aspect);
+  return `<a href="#prop-${shape.id}">
+    <span class="sheet__box"><svg viewBox="0 0 1 1" preserveAspectRatio="none"
+      width="${w}" height="${h}" aria-hidden="true"><path d="${shape.d}"/></svg></span>
+    <b>${String(i + 1).padStart(2, '0')} ${shape.name} · ${ratio(shape.aspect)} : 1</b>
+  </a>`;
+}).join('');
+
+const main = document.getElementById('proposals');
+let no = 0;
+
+for (const group of GROUPS) {
+  const head = el('section', 'group');
+  head.innerHTML = `<div class="group__rule"></div><h2>${group.title}</h2><p>${group.lead}</p>`;
+  main.append(head);
+
+  for (const shape of SHAPES.filter((s) => s.cat === group.cat)) {
+    no += 1;
+    const prop = el('article', 'prop');
+    prop.id = `prop-${shape.id}`;
+    prop.innerHTML =
+      `<div class="prop__head">
+         <span class="prop__no">${String(no).padStart(2, '0')}</span>
+         <h3 class="prop__name">${shape.name}</h3>
+         <span class="prop__intent">${shape.intent}</span>
+       </div>`;
+
+    const body = el('div', 'prop__body');
+    const aside = el('div', 'prop__aside');
+    const { frame, data } = drawing(shape);
+    aside.append(frame, el('p', 'prop__note', shape.note), data);
+    body.append(aside);
+
+    const stage = el('div', 'prop__stage');
+    const mock = el('div', `mock${shape.context.startsWith('panel') ? '' : ' mock--clip'}`);
+    mock.innerHTML = MOCKS[shape.context]();
+    const host = shape.context.startsWith('panel') ? mock.querySelector('.panel') : mock;
+    if (shape.cat === 'free') host.append(slot(COMPANION));
+    if (shape.mockStyle) {
+      const inner = mock.querySelector(shape.context.startsWith('panel') ? '.panel' : '.mock__inner');
+      inner.setAttribute('style', `${inner.getAttribute('style') || ''};${shape.mockStyle}`);
+    }
+    host.append(slot(shape));
+    stage.append(mock);
+    body.append(stage);
+
+    prop.append(body);
+    main.append(prop);
+  }
+}
+</script>
+</body>
+</html>

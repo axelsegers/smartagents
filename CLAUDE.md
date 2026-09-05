@@ -178,20 +178,226 @@ Nothing here is a GitHub Action, so a green local build is the only signal.
   `npm run check:slides` is the other half: it opens every deck in headless
   Chrome and measures each slide, because a slide with a line too many is
   clipped by the stage's `overflow: hidden` and nothing static can see that.
-- **The privacy notice is the article layout without the article.** It is the
-  second page with no hero and no dark shape, for the reason the insights have
-  none: a 540px navy shape between the header and the first paragraph is a
-  screen to scroll past before reading. `.article--single` collapses the
-  article's two-column grid, because there is no "read next" from a legal
-  notice. It is also the only page with no contact section — a notice that
-  explains what happens to the data you hand over should not close by asking for
-  more of it, so the route for exercising a right is a `mailto:` in the body.
-  Everything it claims is read off the code: no cookies and no third-party
-  request on a public page, Turnstile loaded on first form interaction only, and
-  the rate-limit key on the caller's IP expiring after exactly 7200 seconds. The
-  24-month retention is the one number nothing enforces — it is a promise kept
-  by hand in Slack and the mailbox. `src/pages/privacy/body.mjs` records which
-  is which; keep it true if either half changes.
+- **The privacy notice is the article layout, rail and all.** It has no hero,
+  for the reason the insights have none: a 540px navy shape between the header
+  and the first paragraph is a screen to scroll past before reading. What it
+  does have is the rail, and what is in the rail is not a "read next" — there is
+  no next from a legal notice — but the notice's own clauses. That is the one
+  piece of navigation a legal page needs (nobody reads a privacy statement end
+  to end; they arrive wanting one thing) and it is what answers the page's real
+  problem: without it the notice was a 1022px column of GDPR prose, 133
+  characters to the line and the longest measure on the site, with 354px of
+  empty paper beside it for four fifths of its height — the "single column with
+  the rest of the band empty" the design README refuses at page scale. The list
+  is generated from the same array `prose()` renders and derives its anchors the
+  same way, so a heading added to `body.mjs` appears in the index with no second
+  edit and the two can never name different ids. It is a `<nav>`, not the
+  article's `<aside>`: eight in-page links whose whole purpose is navigation do
+  not belong in a `complementary` landmark. It is also **first in the DOM** and
+  put back on the right by `order` on a desk — an index belongs before the thing
+  it indexes, and the other way round a phone's tab order ran through the whole
+  notice before reaching the index sitting under the headline. Seven things are
+  load-bearing, each with its rule in main.css under `.notice`:
+  - **There is no dark shape on this page**, and it is the only page on the
+    public site with a `.section--orbits` and no silhouette. Two were drawn and
+    both are gone — a crest in the air beside the head, through three drafts,
+    and a mirrored close standing on the footer's hairline. What the drafts
+    taught is kept in item 11 of the design README even though the shapes are
+    not, because every one of the three failures is a failure a new silhouette
+    can repeat. The rings are the whole of the brand here.
+  - **The rings stick.** `.orbits--notice` is the one orbit set on the site that
+    is not nailed to its section: the origin is `position: sticky` at `top: 50vh`
+    and the arcs hold the right flank the whole way down, because the outermost
+    ring is 845px in radius against a 2820px section and an origin nailed
+    anywhere in it leaves a third of the page with no ground under it. Its
+    `top` is **clamped** (`clamp(380px, 50vh, 520px)`) and that clamp is
+    load-bearing: plain `50vh` walks the origin down as the window grows taller
+    while the clause index stays pinned at 96px, so *which rings cross the index
+    is a function of viewport height* — at 900 tall it is rings 01 and 02, at
+    1100 ring 03 arrives, at 1600 ring 04 arrives too. Ring 03 is the heaviest
+    of the five and deliberately undimmed, so a taller window reintroduced the
+    artefact the dimming exists to remove, with a heavier arc. Held under the
+    height at which ring 03's window opens — struck off the rail's top-left
+    corner, lowest at **534px on a 1280px-wide page**, so 520 leaves 14px — the
+    crossing set is 01 and 02 at every height, which is what makes two dim rules
+    a complete answer instead of one that happens to hold at 900. Six review
+    passes measured this across widths, where the crossings move under 5px;
+    height was the axis that mattered. The cap's own cost is at the other end:
+    the field reaches viewport y 1365 and no further, so a window over ~1500px
+    tall has bare paper under the arcs. Raising it to get that back breaks the
+    crossing set and the ring weights with it. Three
+    details carry it. The layer takes `overflow: clip` and not `hidden` —
+    `hidden` makes it a scroll container and a sticky child would never move, the
+    same pair of declarations and the same reason as `.shell`. It is the
+    *origin* that sticks and not the layer, because a sticky box is in flow and
+    a sticky layer would add a screen of height to the section, where a 0x0
+    origin costs nothing and is still a containing block for the rings. And the
+    horizontal placement is `margin-left`, because on a sticky box `left` is an
+    inset for horizontal stickiness rather than a position. Two consequences are
+    paid for in the same rule. The layer is masked to nothing over its last
+    200px, because held against the viewport the rings are still at full radius
+    when the section's bottom edge arrives and four arcs stopping dead on one
+    horizontal line read as a seam. And **rings 01 and 02 are dimmed to 6% and
+    10%** from their drawn 10% and 20%: the rings and the clause index are now
+    both anchored to the viewport, so those two arcs stand across the same eight
+    labels for the whole section and never move relative to them, and an arc at
+    the weight of the rules it crosses, held still, is a stray column rule in a
+    table rather than ground. The offender is the cyan one, not the innermost —
+    sampled, it composites to rgb(209,228,235) against hairlines at
+    rgb(228,230,233) while ring 01 is a dead heat at rgb(231,232,233). Scoped to
+    two rings and not taken out of the layer's opacity, because rings 03, 04 and
+    05 have no crossing of the rail at any height inside the clamp or any width
+    from 1024 to 2560, and they are the only ground in the gap the wide-cap
+    decision leaves open — those are **widths**, and that decision is the
+    "measure is capped below 1000px" bullet further down: 190px at 1600 wide,
+    510 at 1920, 1150 at 2560. The `top` cap's own cost, two sentences up, is
+    quoted at *heights*. Same numerals, two axes; say which every time.
+    Under `prefers-reduced-motion` the origin stops being
+    sticky and falls back to the 34% it was struck at before it stuck: a layer
+    held against the viewport while the page moves past it is scroll-coupled
+    motion, and it is the only such motion on the site. The clause rail is
+    sticky too and is deliberately not treated that way — it is navigation a
+    reader is using, and a decoration is the half that can be given up.
+  - **There is no phone override on the rings**, and every other orbit set on
+    the site has one. The reasoning behind those — push the origin out so the
+    strong inner rings leave the reading measure — is half true and the
+    conclusion does not follow: moving the origin out also shortens the vertical
+    reach the outer rings need to arrive. Counted at 390px, rows of the measure
+    each ring crosses at 98% against 150%: ring 02 (cyan) 490 → 651, ring 03
+    (the darkest ink ring) 72 → 845. It is worse on every ring but the one it
+    was aimed at. `.orbits--insights` carries the same override and the same
+    reversal and is left alone — see the follow-ups.
+  - **The head sits outside the article grid.** It was put there for a
+    silhouette that had to weld to the page edge, and it is kept because the
+    head reads as the notice's own block — headline, standfirst and date across
+    the content width, the copy below in the article's column.
+  - **The measure is capped below 1000px and deliberately not above it.** Below
+    1000px the article grid collapses and the column takes the whole page: at
+    999px the notice ran 112 characters to the line against 74 one pixel
+    earlier, so the block is held to the desk's own 780px. Above ~1500px the
+    column is capped at the prose measure while the rail stays welded to the
+    right gutter, so the gap between them grows with the window — 510px at 1920
+    — and that is left alone. Capping the block closed the gap and opened a
+    worse one: the rail left the page gutter, which is the one thing
+    `.article__rail` promises, and this page alone stopped matching the four
+    insight pages on the same grid. If it is ever
+    worth solving it is worth solving for the article layout as a whole.
+  - **The standfirst is `privacy.lede` in `src/i18n`, not the body's first
+    paragraph.** It is the sentence that says what the document is; as the first
+    block of the body it read as one paragraph of twenty-one and, below 1000px,
+    arrived after the index of the thing it summarises.
+  - **Below 1000px the index goes above the notice** in two columns, and the
+    body ends on a "Terug naar de inhoud ↑" link: down there the index scrolls
+    away with the first clause a reader jumps to, and there is nothing else on
+    the site to get back to it with. On a desk the rail is sticky and the link
+    is hidden.
+  The copy carries one authored href that is not a URL: `clause:NN` is the NNth
+  clause of the notice, resolved in `privacy.mjs` from the same derivation the
+  index is built from, so a cross-reference ("zie hieronder", useless to a reader
+  who arrived at that clause from the index) is a link without a hand-kept
+  anchor. An ordinal with no clause behind it fails the build. Both ways to reach
+  a person in the body are links too, and the number is `white-space: nowrap`
+  (`.prose a[href^="tel:"]`) for the reason every fact in the footer's legal
+  microline is: four ordinary spaces make a phone number five words to a line
+  breaker, and it broke across two lines at an English tablet, a French phone and
+  a Dutch laptop. `PHONE_HREF` is repeated in `body.mjs` rather than imported
+  from `contact-form.mjs`, which imports the privacy page back and would close a
+  cycle.
+  Three things say where the reader is. `scroll-padding-top` went from the
+  header's own height and nothing more (2px of clearance at 1180px, 4 at the
+  tablet's 72px row) to 96px on the desk and 108 on the tablet, so a clause
+  lands with air under the bar. `.prose__heading:target` takes the pull quote's
+  cyan rule stood back up, which answers the click. And
+  `components/clause-index/clause-index.js` — `<sa-clause-index>`, wrapping the
+  list, lazily loaded like every other component — puts `aria-current="location"`
+  on the row whose clause the reader is in, which answers the scrolling that
+  follows. All three degrade to eight working links. The component's one real
+  trap is the foot of the document: the last clauses of a long notice never
+  cross the line, because the page runs out of scroll before they reach it, so
+  on a 1440x900 desk the index said "Cookies" to a reader looking straight at
+  "Uw rechten" — and said it to anyone who pressed those rows too, which is an
+  index lying about the row just pressed. At the floor the hash decides if there
+  is one *and its heading is still on screen*, and the last heading on screen
+  decides otherwise; a `hashchange` listener catches a press that moves no
+  pixels. The "still on screen" half is not belt and braces: a hash outlives the
+  press that set it, so honoured unconditionally the mark travelled backwards —
+  press clause five, read on to the end, and at the floor it jumped back to a
+  heading 376px above the top of the screen.
+  **The spy owns both marks, and paper owns neither.** `:target` and the row's
+  `aria-current` are the same 2px cyan rule with different lifetimes — one set
+  by the last hash, one tracking the scroll — so left alone they name different
+  clauses in the same viewport: click a row, scroll back 200px, and the rail
+  marks one clause while the copy marks another 300px away. The component stamps
+  `data-clause-spy` on the root and the stylesheet stands `:target` down under
+  it, which leaves `:target` as the no-JS half and as the only mark the four
+  insight pages have. Both are reset in `@media print`: they are screen state
+  that outlives the gesture that set it, so whichever was live when Print was
+  pressed came out on the PDF as a stray rule in the margin and a contents list
+  with seven grey rows and one black one — two people printing the same legal
+  notice getting two different documents.
+  The **Cookies clause** is the one place this page has been factually wrong:
+  two drafts said the site sets no cookies at all, and `functions/secured/login.js`
+  sets `export_session` for seven days on `/secured/`. The clause is scoped to
+  the public pages now and names that one — as are `privacy.description`, which
+  is the page's own search snippet, and `faq.data.a`, which ships as `FAQPage`
+  structured data and is therefore the sentence an answer engine quotes. On a
+  page whose whole posture is that every claim is read off the code, an absolute
+  has to be checked against the
+  whole repo and not just `src/`. It is also the only page with no contact section — a notice that
+- **The footer is paper, and about 110px of it.** It was a dark band carrying a
+  full `sa-node-field` and three stacked columns of micro type, which spent a
+  screen of navy under every page in the site on the one block nobody scrolls
+  down wanting. It is two rows on a hairline now, 111px from about 850px up: the two
+  ways to reach a person, Inzichten and LinkedIn on the first, and on the second the WER/WVV disclosure as a single
+  11.5px microline with the privacy notice and the copyright opposite it. What
+  is left of the dark field is `.footer-mark`, a small wedge in the bottom-left
+  corner holding the logo — the header's wedge turned over, so the page opens
+  and closes on the same shape. It carries no node field: the header masks its
+  own into the 100px tail past the wordmark, and this wedge's tail is 46px on a
+  desk, which is a flat navy plate rather than a window onto anything. Its cut
+  follows the header's, which moves four times: the row grows at 1180px, which
+  shallows the slope the header draws without changing its cut; the cut itself
+  changes at 1000px and again at 767px; and the wedge's own height drops with
+  the stack at 800px, which shallows what the same run draws. There is a rule
+  for each, and the run is stated in pixels rather than as a share of the wedge,
+  because it is the header's run that has to be matched and the two boxes are
+  different widths. Measure both boxes before touching it: two drafts of this
+  got the premise wrong, one leaving a 180px band and one leaving the phone. Five things are
+  load-bearing.
+  - **The base row is a grid, and that is what keeps the wedge in the corner.**
+    Flex breaks a line on what its items *want* to be — their max-content size —
+    before it lets any of them shrink, so the link group pushed itself onto a
+    line of its own below the wedge and left the wedge floating in the middle of
+    the block. Three tracks (`auto minmax(0, 1fr) auto`) cannot wrap.
+  - **The row keeps no block padding**, so its bottom edge is the page's and the
+    wedge can reach it. What holds type off that edge is padding on the type.
+    The row above it does carry padding, because it wraps on a phone.
+  - **The microline's separator is the gap and never a character.** Each fact is
+    `white-space: nowrap`, so a break falls only between two facts. The `·` the
+    facts used to carry put the break opportunity behind the dot and stranded
+    one at the end of every wrapped line.
+  - **The disclosure is at its legal minimum, and that is what buys the single
+    line.** Art. 2:20 WVV asks for the name, the legal form, the precise seat,
+    the enterprise number and "RPR" followed by the *seat of the court*; art.
+    III.74 WER puts the enterprise number on every website of a registered
+    entity; art. XII.6 WER adds the VAT identification and an e-mail address.
+    Four facts carry all of it. "Besloten vennootschap" went because "BV" is
+    what it abbreviates and 2:20 takes the abbreviation, and the court's full
+    name went because the statute asks only for its seat. One label does double
+    duty: the enterprise number and the VAT number are the same identifier in
+    Belgium, so `footer.vat` answers III.74 and XII.6 in one string. 1131px of
+    type became 727, which is one line from 1261px up in Dutch, 1248 in French
+    and 1230 in English, instead of two everywhere below 1780. **The Dutch line
+    clears 1280 by 18px**, and it is measured in the platform face because no
+    Geist binary is shipped — supplying Geist, or adding a fact, or touching
+    this row's gaps, means measuring it again.
+  - **800px is where the base row changes shape**, and it is a height threshold
+    rather than a line-count one. Stacking does not buy a single line back —
+    the widest full-width row below 800 is 720px against 781 of type — it buys
+    a two-line block that is wide instead of one that is narrow, and it costs
+    about 40px of footer. Above the threshold the block beside the wedge is
+    shorter; below it the column would stop fitting two facts to a line and the
+    facts would land one per line, which is what the stack exists to prevent.
 - **`src/pages/prose.mjs` is the long-form vocabulary, and it is not the
   insights'.** Two page families run long enough to need headings, quotes and
   lists — the articles and the privacy notice — so it sits a level above both.
@@ -441,6 +647,47 @@ Nothing here is a GitHub Action, so a green local build is the only signal.
   stubbed at `globalThis.fetch`, so it needs no network and no secrets. Add a
   field to the form or a rule to `validatePayload` and this is what tells you
   the other half disagrees.
+- **`.orbits--insights` pushes its origin to 150% on a phone and the number is
+  probably backwards.** The same override was tried on the privacy notice and
+  dropped: measured there, moving the origin out lifts the innermost ring off
+  the reading measure but shortens the vertical reach the outer rings need, so
+  the cyan ring gains 161 rows of crossing and the darkest ink ring gains the
+  column's whole height. The insights index has not been measured against its
+  own geometry — its section is a third the height and its origin starts at 104%
+  rather than 98% — so the rule stands there and the comment says so. Measure it
+  before copying either number to a third page.
+- **`--measure-prose` is 100ch, and 100ch is 128 characters.** The token caps
+  every `.article__main` on the site — the four insight pages and the privacy
+  notice — and it only bites above about 1500px, where the grid would otherwise
+  give the column more. There it resolves to 1022px, which at the body size is
+  128 characters to the line, not 100: at 1920 the notice is a 128-character
+  column with 510px of gutter beside it, which is the measure the design README
+  calls "long by the usual measure, and the client's call". The README names the
+  lever (the body size and this token) and 78ch would put it at about 100
+  characters. It is left alone here because lowering it changes the four
+  articles' measure at every desk width, which is a decision the client made,
+  not one to take silently while fixing a legal page.
+- **The orbit rings are hidden under `forced-colors: active`, site-wide.** A
+  forced palette substitutes a system colour for every border and drops the
+  alpha with it, so five hairlines drawn at 5–11% precisely to sit under the
+  type came back as `CanvasText` at the layer's full 0.8 — ground designed to be
+  barely there rendering as the strongest line on the screen, through the
+  reading column. A decoration has no weight it can be given in a palette it
+  does not choose, so it goes, the way `@media print` already drops it.
+  `.cycle__phase` on the AI-native SDLC page is the other half of the same
+  thought: that figure carries meaning, so a forced palette gets a border it can
+  keep instead. The privacy notice is only where this landed hardest — a sticky
+  origin puts the same arcs on every screen of a 2820px document rather than
+  behind one hero — but the rule is not scoped to it, because no orbit set on
+  the site means anything.
+- **There is a print stylesheet, and it exists for one page.** A GDPR notice is
+  the page most likely to be saved as a PDF — by a DPO, a procurement reviewer,
+  a client's lawyer — and until the block at the foot of `main.css` existed that
+  print carried a solid navy shape, the orbit rings, the sticky header, the
+  phone's action bar and a rail beside a column. The rules are written for every
+  page rather than scoped to that one, because nothing in them is
+  page-specific: hide what is chrome or texture, unstack what is a share of a
+  viewport that no longer exists, and print the href after an off-page link.
 - **Validation**: `scripts/check-dist.mjs` is the gatekeeper. It checks unresolved
   templates, broken internal links, missing alt text, undefined CSS custom
   properties, robots meta, the full hreflang contract, the routing table, and the
@@ -471,7 +718,11 @@ Nothing here is a GitHub Action, so a green local build is the only signal.
   time (`--cropOffset` is in points; an odd-dimension AVIF renders as its alt
   text in Gecko), are in the `image-pipeline` skill.
 - Geist is named first in `--font-sans` but no binaries were supplied, so the
-  platform face is what renders. Ask the client for the WOFF2 files.
+  platform face is what renders. Ask the client for the WOFF2 files. One thing
+  is measured against the face that renders today and has to be re-measured
+  when they arrive: the footer's disclosure line clears a 1280px laptop by 18px
+  in Dutch, and the same string sets 12px wider in some faces. See
+  `.footer-micro` in `main.css`.
 - All four service rows link out, through `servicePath()` in
   `src/layouts/base.mjs`, which is the one place the homepage rows and the nav
   bar both ask. Procesoptimalisatie is gone: it was one row standing for two

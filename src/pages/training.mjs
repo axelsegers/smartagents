@@ -115,7 +115,6 @@ ${orbitRings('training-hero')}
     <div id="training-hero-text" class="hero__text">
       <p id="training-hero-eyebrow" class="page-eyebrow">${t('training.hero.eyebrow')}</p>
       <h1 id="training-hero-title">${t('training.hero.title')}</h1>
-      <p id="training-hero-lede" class="hero__lede">${t('training.hero.lede')}</p>
       <div id="training-hero-actions" class="hero__actions">
         <a id="training-hero-cta-talk" class="btn btn--primary" href="#contact">${t('cta.talk')}</a>
         <a id="training-hero-cta-offer" class="btn btn--ghost" href="#offer">${t('training.cta.offer')} <span id="training-hero-cta-offer-arrow" aria-hidden="true">&rarr;</span></a>

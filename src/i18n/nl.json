@@ -8,6 +8,7 @@
   "a11y.language": "Taal",
   "a11y.menuNav": "Navigatie in het menu",
   "a11y.languageMenu": "Taal in het menu",
+  "a11y.newTab": "opent in een nieuw tabblad",
 
   "nav.menu": "Menu",
   "nav.home": "Home",
@@ -20,7 +21,6 @@
   "cta.moreInfo": "Ontdek",
   "cta.send": "Verstuur",
 
-  "hero.lede": "Wij trainen uw teams in AI, zetten AI-native engineers in uw projecten en bouwen de workflows en agents die het werk overnemen. Voor Belgische organisaties die willen weten wat AI vandaag echt oplevert, en waar het niets toevoegt.",
   "hero.claim": "Digitale collega's die nooit slapen",
 
   "section.services": "Wat we doen",
@@ -83,7 +83,7 @@
   "faq.where.q": "Werken jullie bij ons op kantoor of remote?",
   "faq.where.a": "Allebei, en dat kiest u. We zitten in Beringen en werken voor Belgische organisaties, van KMO tot enterprise. Trainingen, coaching en staffing lopen in het Nederlands, het Engels en het Frans.",
   "faq.data.q": "Wat gebeurt er met onze gegevens?",
-  "faq.data.a": "Op deze site staan geen cookies, geen analytics en geen tracking; er vertrekt geen enkel verzoek naar een derde partij tot u het contactformulier gebruikt. Wat er dan met uw bericht gebeurt, wie het te zien krijgt en hoe lang we het bijhouden, staat in ons privacybeleid. In een project werken we in uw eigen omgeving en op uw eigen systemen.",
+  "faq.data.a": "Op de publieke pagina's van deze site staan geen eigen cookies, geen analytics en geen tracking; er vertrekt geen enkel verzoek naar een derde partij tot u het contactformulier gebruikt. Wat er dan met uw bericht gebeurt, wie het te zien krijgt en hoe lang we het bijhouden, staat in ons privacybeleid. In een project werken we in uw eigen omgeving en op uw eigen systemen.",
   "article.tag.news": "Nieuws",
   "article.tag.ai": "AI",
   "article.tag.tips": "Tips",
@@ -137,7 +137,6 @@
   "training.hero.eyebrow": "Training",
   "training.hero.title": "Leer AI gebruiken als een professional",
 
-  "training.hero.lede": "Twee cursussen: AI voor business teams en agentic engineering voor developers. Bij u op kantoor of remote, in groepen van 5 tot 20, met oefeningen op het werk dat uw mensen deze week op tafel hebben.",
   "training.cta.offer": "Bekijk het aanbod",
 
   "training.why.title": "Waarom investeren in AI-training?",
@@ -206,7 +205,6 @@
   "staffing.hero.eyebrow": "AI staffing en coaching",
   "staffing.hero.title": "Een AI-native engineer in uw team",
 
-  "staffing.hero.lede": "Een engineer die AI elke dag gebruikt, draait mee in uw sprints, uw repository en uw review. Of coaching voor uw eigen developers en business teams, op het werk dat er vandaag ligt.",
   "staffing.cta.tracks": "Bekijk het aanbod",
 
   "staffing.tracks.title": "Wat we doen",
@@ -246,7 +244,6 @@
   "processes.hero.eyebrow": "AI-native businessprocessen",
   "processes.hero.title": "Van uw taken naar herbruikbare workflows",
 
-  "processes.hero.lede": "We nemen één proces dat elke week terugkomt van begin tot eind door, en laten workflows, skills en agents achter die uw eigen team draait. We zeggen ook waar AI er niets aan toevoegt.",
   "processes.cta.phases": "Bekijk de aanpak",
 
   "processes.phases.title": "Hoe een traject verloopt",
@@ -280,7 +277,6 @@
   "sdlc.hero.eyebrow": "AI-native SDLC",
   "sdlc.hero.title": "Van traditionele SDLC naar AI-native",
 
-  "sdlc.hero.lede": "Wij begeleiden softwareteams van traditioneel naar agentic naar AI-native: de processen, de gates in uw CI/CD, en vooral de mensen die er elke dag in werken.",
   "sdlc.cta.journey": "Bekijk de weg ernaartoe",
 
   "sdlc.issues.title": "Wat we vandaag zien",
@@ -295,15 +291,14 @@
   "sdlc.issue.tooling.body": "Elk team werkt anders, er is geen gedeelde manier van werken, en de gemiddelde developer krijgt te weinig toegang tot AI om er vlot mee te leren werken.",
 
   "sdlc.journey.title": "De weg ernaartoe",
-  "sdlc.journey.lede": "We volgen het AI-native SDLC-playbook van Anthropic. Het knelpunt verdwijnt niet, het verschuift: elke stap heeft er een van zichzelf, en overslaan gaat niet. Maturiteit en vertrouwen zijn waar de rest op steunt.",
-  "sdlc.journey.note": "Dit is de ideale vorm. In de praktijk blijven er haperingen in de keten, en dat hoort erbij.",
+  "sdlc.journey.lede": "We volgen het AI-native SDLC-playbook van Anthropic. Het knelpunt verdwijnt niet, het verschuift.",
 
   "sdlc.stage.traditional.title": "Traditioneel",
-  "sdlc.stage.traditional.body": "Bouwen is het knelpunt. Alles ervoor en alles erna wacht op de mensen die de code schrijven.",
+  "sdlc.stage.traditional.body": "Bouwen is het knelpunt.",
   "sdlc.stage.agentic.title": "Agentic",
-  "sdlc.stage.agentic.body": "Agents nemen het bouwen over en het knelpunt verschuift naar de uiteinden: wat u precies vraagt, en wie het nakijkt. Dit is de stap waarin uw mensen anders gaan werken.",
+  "sdlc.stage.agentic.body": "Agents bouwen. Het knelpunt schuift naar wat u vraagt en wie het nakijkt.",
   "sdlc.stage.native.title": "AI-native",
-  "sdlc.stage.native.body": "Een mens staat aan de twee uiteinden: die bepaalt de intentie en aanvaardt het resultaat. Daartussen bewaken gates de kwaliteit, automatisch.",
+  "sdlc.stage.native.body": "Een mens bepaalt de intentie en aanvaardt het resultaat.",
 
   "sdlc.phase.requirements": "Vereisten",
   "sdlc.phase.design": "Ontwerp",
@@ -361,20 +356,21 @@
   "team.cta.title": "Zullen we kennismaken?",
   "team.cta.body": "Vertel kort wat er beter kan lopen. U krijgt een van ons twee aan tafel, en we zeggen ook wanneer u ons niet nodig hebt.",
 
-  "footer.legal": "© 2026 SmartAgents",
+  "footer.legal": "© {year} SmartAgents",
   "privacy.title": "Privacybeleid · SmartAgents",
-  "privacy.description": "Welke persoonsgegevens smartagents.be verwerkt, waarom, wie ze te zien krijgt en hoe lang we ze bijhouden. Geen analytics, geen tracking, geen cookies.",
-  "privacy.eyebrow": "Privacy",
+  "privacy.description": "Welke persoonsgegevens smartagents.be verwerkt, waarom, wie ze te zien krijgt en hoe lang we ze bijhouden. Geen analytics, geen tracking en geen eigen cookies op de publieke pagina's.",
+  "privacy.eyebrow": "Juridisch",
   "privacy.heading": "Privacybeleid",
+  "privacy.lede": "Deze pagina legt uit welke persoonsgegevens smartagents.be verwerkt, waarom, en wat u daaraan kunt doen. Ze beschrijft wat de website vandaag effectief doet, niet wat hij zou kunnen doen.",
   "privacy.updated": "Laatst bijgewerkt op 3 september 2026",
+  "privacy.clauses": "Inhoud van dit beleid",
+  "privacy.backToClauses": "Terug naar de inhoud",
   "footer.privacy": "Privacybeleid",
-  "footer.customerZone": "Klantenzone",
   "footer.company": "SmartAgents BV",
-  "footer.legalForm": "Besloten vennootschap",
   "footer.street": "Mijnschoolstraat 18",
   "footer.city": "3580 Beringen, België",
-  "footer.vat": "Ondernemings- en btw-nummer BE 1037.114.694",
-  "footer.rpr": "RPR Ondernemingsrechtbank Antwerpen, afdeling Hasselt",
+  "footer.vat": "Ondernemingsnummer BE 1037.114.694",
+  "footer.rpr": "RPR Antwerpen, afdeling Hasselt",
 
   "notfound.title": "Pagina niet gevonden",
   "notfound.description": "Deze pagina bestaat niet (of niet meer).",

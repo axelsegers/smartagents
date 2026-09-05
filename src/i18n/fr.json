@@ -8,6 +8,7 @@
   "a11y.language": "Langue",
   "a11y.menuNav": "Navigation du menu",
   "a11y.languageMenu": "Langue, dans le menu",
+  "a11y.newTab": "s'ouvre dans un nouvel onglet",
 
   "nav.menu": "Menu",
   "nav.home": "Accueil",
@@ -20,7 +21,6 @@
   "cta.moreInfo": "Découvrir",
   "cta.send": "Envoyer",
 
-  "hero.lede": "Nous formons vos équipes à l'IA, plaçons des ingénieurs AI-native dans vos projets et construisons les workflows et les agents qui reprennent le travail. Pour les organisations belges qui veulent savoir ce que l'IA rapporte vraiment aujourd'hui, et où elle n'apporte rien.",
   "hero.claim": "Des collègues numériques qui ne dorment jamais",
 
   "section.services": "Ce que nous faisons",
@@ -83,7 +83,7 @@
   "faq.where.q": "Travaillez-vous chez nous ou à distance ?",
   "faq.where.a": "Les deux, et c'est vous qui choisissez. Nous sommes établis à Beringen et travaillons pour des organisations belges, de la PME au grand groupe. Formation, coaching et staffing se donnent en néerlandais, en anglais et en français.",
   "faq.data.q": "Qu'advient-il de nos données ?",
-  "faq.data.a": "Ce site ne pose aucun cookie, n'utilise aucun outil de mesure d'audience et ne fait aucun suivi ; aucune requête vers un tiers ne quitte la page tant que vous n'utilisez pas le formulaire de contact. Ce qu'il advient alors de votre message, qui le voit et combien de temps nous le conservons figure dans notre politique de confidentialité. Dans un projet, nous travaillons dans votre propre environnement et sur vos propres systèmes.",
+  "faq.data.a": "Les pages publiques de ce site ne posent aucun cookie de notre fait, n'utilisent aucun outil de mesure d'audience et ne font aucun suivi ; aucune requête vers un tiers ne quitte la page tant que vous n'utilisez pas le formulaire de contact. Ce qu'il advient alors de votre message, qui le voit et combien de temps nous le conservons figure dans notre politique de confidentialité. Dans un projet, nous travaillons dans votre propre environnement et sur vos propres systèmes.",
   "article.tag.news": "Actualités",
   "article.tag.ai": "IA",
   "article.tag.tips": "Conseils",
@@ -137,7 +137,6 @@
   "training.hero.eyebrow": "Formation",
   "training.hero.title": "Apprenez à utiliser l'IA comme un professionnel",
 
-  "training.hero.lede": "Deux formations : l'IA pour les équipes business, et l'agentic engineering pour les développeurs. Chez vous ou à distance, en groupes de 5 à 20, avec des exercices sur le travail que vos équipes ont sur la table cette semaine.",
   "training.cta.offer": "Voir notre offre",
 
   "training.why.title": "Pourquoi investir dans la formation à l'IA ?",
@@ -206,7 +205,6 @@
   "staffing.hero.eyebrow": "AI staffing et coaching",
   "staffing.hero.title": "Un ingénieur AI-native dans votre équipe",
 
-  "staffing.hero.lede": "Un ingénieur qui utilise l'IA tous les jours, dans vos sprints, votre dépôt et vos revues. Ou du coaching pour vos propres développeurs et équipes business, sur le travail qui est devant eux aujourd'hui.",
   "staffing.cta.tracks": "Voir ce que nous faisons",
 
   "staffing.tracks.title": "Ce que nous faisons",
@@ -246,7 +244,6 @@
   "processes.hero.eyebrow": "Processus métier AI-native",
   "processes.hero.title": "De vos tâches à des workflows réutilisables",
 
-  "processes.hero.lede": "Nous reprenons de bout en bout un processus qui revient chaque semaine, et laissons derrière nous des workflows, des skills et des agents que votre équipe fait tourner elle-même. Nous disons aussi où l'IA n'apporte rien.",
   "processes.cta.phases": "Voir la démarche",
 
   "processes.phases.title": "Comment se déroule un projet",
@@ -280,7 +277,6 @@
   "sdlc.hero.eyebrow": "SDLC AI-native",
   "sdlc.hero.title": "Du SDLC traditionnel à l'AI-native",
 
-  "sdlc.hero.lede": "Nous accompagnons les équipes logicielles du traditionnel à l'agentic puis à l'AI-native : les processus, les gates dans votre CI/CD, et surtout les personnes qui y travaillent chaque jour.",
   "sdlc.cta.journey": "Voir le chemin à parcourir",
 
   "sdlc.issues.title": "Ce que nous voyons aujourd'hui",
@@ -295,15 +291,14 @@
   "sdlc.issue.tooling.body": "Chaque équipe travaille à sa façon, il n'y a pas de manière de travailler commune, et le développeur moyen a trop peu accès à l'IA pour apprendre à s'en servir correctement.",
 
   "sdlc.journey.title": "Le chemin vers l'AI-native",
-  "sdlc.journey.lede": "Nous suivons le playbook AI-native SDLC d'Anthropic. Le goulot d'étranglement ne disparaît pas, il se déplace : chaque étape a le sien, et vous ne pouvez pas sauter d'étape. La maturité et la confiance sont ce sur quoi le reste repose.",
-  "sdlc.journey.note": "C'est la forme idéale. Dans la pratique, il reste des accrocs dans la chaîne, et cela en fait partie.",
+  "sdlc.journey.lede": "Nous suivons le playbook SDLC AI-native d’Anthropic. Le goulet ne disparaît pas, il se déplace.",
 
   "sdlc.stage.traditional.title": "Traditionnel",
-  "sdlc.stage.traditional.body": "La construction est le goulot d'étranglement. Tout ce qui précède et tout ce qui suit attend les personnes qui écrivent le code.",
+  "sdlc.stage.traditional.body": "Le développement est le goulet.",
   "sdlc.stage.agentic.title": "Agentic",
-  "sdlc.stage.agentic.body": "Les agents reprennent la construction et le goulot d'étranglement se déplace vers les deux extrémités : ce que vous demandez exactement, et qui le relit. C'est l'étape où la façon de travailler de vos équipes change.",
+  "sdlc.stage.agentic.body": "Les agents développent. Le goulet passe à la demande et à la relecture.",
   "sdlc.stage.native.title": "AI-native",
-  "sdlc.stage.native.body": "Une personne se tient aux deux extrémités : elle fixe l'intention et accepte le résultat. Entre les deux, des gates veillent automatiquement à la qualité.",
+  "sdlc.stage.native.body": "Une personne définit l’intention et accepte le résultat.",
 
   "sdlc.phase.requirements": "Exigences",
   "sdlc.phase.design": "Conception",
@@ -361,20 +356,21 @@
   "team.cta.title": "On fait connaissance ?",
   "team.cta.body": "Dites-nous brièvement ce qui pourrait mieux tourner. Vous aurez l'un de nous deux à table, et nous vous dirons aussi quand vous n'avez pas besoin de nous.",
 
-  "footer.legal": "© 2026 SmartAgents",
+  "footer.legal": "© {year} SmartAgents",
   "privacy.title": "Politique de confidentialité · SmartAgents",
-  "privacy.description": "Quelles données à caractère personnel smartagents.be traite, pourquoi, qui les voit et combien de temps nous les gardons. Pas d'analytique, pas de traçage, pas de cookies.",
-  "privacy.eyebrow": "Confidentialité",
+  "privacy.description": "Quelles données à caractère personnel smartagents.be traite, pourquoi, qui les voit et combien de temps nous les gardons. Pas d'analytique, pas de traçage et aucun cookie de notre fait sur les pages publiques.",
+  "privacy.eyebrow": "Juridique",
   "privacy.heading": "Politique de confidentialité",
+  "privacy.lede": "Cette page explique quelles données à caractère personnel smartagents.be traite, pourquoi, et ce que vous pouvez faire à ce sujet. Elle décrit ce que le site fait réellement aujourd'hui, pas ce qu'il pourrait faire.",
   "privacy.updated": "Dernière mise à jour le 3 septembre 2026",
+  "privacy.clauses": "Sommaire de cette politique",
+  "privacy.backToClauses": "Retour au sommaire",
   "footer.privacy": "Confidentialité",
-  "footer.customerZone": "Espace client",
   "footer.company": "SmartAgents BV",
-  "footer.legalForm": "Société à responsabilité limitée",
   "footer.street": "Mijnschoolstraat 18",
   "footer.city": "3580 Beringen, Belgique",
-  "footer.vat": "Numéro d'entreprise et de TVA BE 1037.114.694",
-  "footer.rpr": "RPM Tribunal de l'entreprise d'Anvers, division Hasselt",
+  "footer.vat": "Numéro d'entreprise BE 1037.114.694",
+  "footer.rpr": "RPM Anvers, division Hasselt",
 
   "notfound.title": "Page introuvable",
   "notfound.description": "Cette page n'existe pas (ou plus).",

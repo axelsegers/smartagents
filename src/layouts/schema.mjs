@@ -51,8 +51,9 @@ const FOUNDERS = [
 /**
  * The registered seat, split into the fields schema.org wants.
  *
- * The footer prints `footer.street` and `footer.city` because a reader reads an
- * address as two lines; a `PostalAddress` wants the town and the postcode apart.
+ * The footer prints the two as one line, because a reader reads an address as a
+ * line; a `PostalAddress` wants the street, the town and the postcode apart,
+ * which is the only reason they are still two keys.
  * They are the register's own values (KBO/BCE, enterprise number 1037.114.694)
  * and are the same in all three languages, so they are constants here rather
  * than keys — only the country's *name* translates, and `addressCountry` takes

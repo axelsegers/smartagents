@@ -13,7 +13,8 @@ const COMPONENTS = {
   'sa-accordion': () => import('./components/accordion/accordion.js'),
   'sa-lazy-video': () => import('./components/lazy-video/lazy-video.js'),
   'sa-node-field': () => import('./components/node-field/node-field.js'),
-  'sa-contact-form': () => import('./components/contact-form/contact-form.js')
+  'sa-contact-form': () => import('./components/contact-form/contact-form.js'),
+  'sa-clause-index': () => import('./components/clause-index/clause-index.js')
 };
 
 const loading = new Set();

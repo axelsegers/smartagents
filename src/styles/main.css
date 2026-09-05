@@ -265,7 +265,7 @@
     border-radius: var(--radius-button);
     background: var(--action-primary-bg);
     color: var(--action-primary-fg);
-    font-size: var(--text-body-lg);
+    font-size: var(--text-copy-lg);
   }
 
   .nav-toggle__panel .lang-switcher {
@@ -359,7 +359,7 @@
   margin-bottom: var(--space-12);
   max-width: var(--measure);
   color: var(--text-body);
-  font-size: var(--text-lead);
+  font-size: var(--text-lede);
   line-height: var(--leading-body);
 }
 
@@ -421,7 +421,7 @@
 
 .row__body {
   color: var(--text-body);
-  font-size: var(--text-body-lg);
+  font-size: var(--text-copy-lg);
   line-height: var(--leading-body);
 }
 
@@ -495,7 +495,7 @@ a.row:hover .row__cue {
 .numbered p {
   margin-top: var(--space-3);
   color: var(--text-body);
-  font-size: var(--text-body);
+  font-size: var(--text-copy);
   line-height: var(--leading-body-tight);
 }
 
@@ -1363,7 +1363,7 @@ a.article-row:hover .article-row__image {
   margin-bottom: var(--space-11);
   max-width: var(--measure);
   color: var(--text-body);
-  font-size: var(--text-lead);
+  font-size: var(--text-lede);
   line-height: var(--leading-body);
 }
 
@@ -1613,104 +1613,367 @@ a.article-row:hover .article-row__image {
 
 /* ------------------------------------------------------------------ *
  * Footer
+ *
+ * Paper on a hairline, two rows, about 110px of page in all. It was a dark
+ * band with three stacked columns of micro type in it, which put a screen of
+ * navy under every page in the site for the one block nobody scrolls down
+ * wanting. What is left of the field is the wedge in the corner.
  * ------------------------------------------------------------------ */
 
 .site-footer {
   position: relative;
-  display: grid;
-  gap: var(--space-8);
   margin-top: var(--section-rhythm);
-  padding: var(--space-8) var(--gutter-page);
-  background: var(--surface-dark);
-  color: var(--text-on-dark-muted);
-  font-size: var(--text-micro);
+  border-top: 1px solid var(--border-hairline);
+  background: var(--surface-page);
+  color: var(--text-muted);
 }
 
-/* The footer is another window onto the dark field, so the text sits above it. */
-.site-footer > div {
-  position: relative;
+/* The gutter is the row's and not the footer's, so the hairline between the two
+   rows runs the full width of the page the way the one above the footer does.
+   Held inside the footer it stopped at the gutter, which read as an accident
+   next to a wedge that bleeds past it.
+
+   No block padding on either row: the second row's own height is the bottom
+   edge of the page, which is what lets the wedge reach the corner. What keeps
+   type off that edge is padding on the type — `.footer-micro` and
+   `.footer-legalese` below — not padding on the row. */
+.site-footer__row {
+  padding-inline: var(--gutter-page);
 }
 
-/* The legal disclosure (WER art. III.74) is three short stacks, not a
-   paragraph: a reader who comes here is looking one fact up, and a run-on line
-   of grey micro type is the one thing that would make that harder. They wrap
-   into a column on a phone at the same gap the rest of the site stacks at. */
-.site-footer__identity {
+/* Two rows on one hairline, 57 and 53: the top row carries text at reading
+   weight and the base row carries the microline, so the taller of the two is
+   the one with something to read in it. */
+/* Block padding here and not on the base row: this row may wrap to two lines on
+   a phone, and without it the first line sat on the hairline the footer opens
+   with and a focus ring drew 5px up into the section above. The base row is the
+   one that has to stay flush, because its bottom edge is the page's and that is
+   what the wedge reaches. */
+.site-footer__top {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-6) var(--gap-column);
-}
-
-.footer-block {
-  display: grid;
-  gap: var(--space-1);
-  align-content: start;
-  /* `<address>` is italic by default and this one is a postal address, not an
-     aside. */
-  font-style: normal;
-  line-height: var(--leading-snug);
-}
-
-/* Every line in a stack is a 24px row, the two that are links included. WCAG
-   2.2 SC 2.5.8 puts a 24x24 floor under a standalone target, and a footer link
-   is one — the inline-text exception covers a link inside a sentence, which
-   these are not. Taking the height on the row rather than on the two links
-   that strictly need it keeps the three stacks on a single rhythm instead of
-   leaving the one you can click looser than the two beside it. */
-.footer-block > * {
-  display: flex;
+  gap: var(--space-4) var(--space-7);
   align-items: center;
-  min-height: 24px;
+  justify-content: space-between;
+  min-height: 57px;
+  padding-block: var(--space-3);
+  border-bottom: 1px solid var(--border-hairline);
 }
 
-/* One line per stack in the field's full-strength ink, so three columns of
-   micro type keep a shape to scan by instead of reading as an even grey. */
-.site-footer .footer-block__lead {
-  color: var(--text-on-dark);
+/* The base row is a grid and not a flex row, and that is the whole reason the
+   wedge is reliably in the corner. Flex breaks a line on what its items *want*
+   to be — their max-content size — before any of them is allowed to shrink, so
+   the link group's 390px pushed itself onto a line of its own below the wedge
+   at every width between about 700 and 1000px, and the wedge was left floating
+   in the middle of the block with paper under it. Three grid tracks cannot
+   wrap: the outer two take what they need, the middle one takes the rest, and
+   when the rest is not enough the outer two shrink toward their own min-content
+   rather than leaving the row. `minmax(0, 1fr)` because a `1fr` track's floor
+   is min-content, and the microline's min-content is its longest fact. */
+.site-footer__base {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-4) var(--space-6);
+  min-height: 53px;
+}
+
+.footer-nav,
+.footer-contact {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4) var(--space-7);
+  align-items: center;
+}
+
+/* A step under the contact pair beside it, so the two facts a reader might
+   actually use read first. */
+.footer-nav a {
+  font-size: var(--text-meta);
+}
+
+/* `<address>` is the element for the document's own contact details, and it is
+   italic by default. */
+.footer-contact {
+  font-style: normal;
+}
+
+/* Cyan is the hover, not the resting state. A link is `--text-accent` by
+   default on this site, which is right in a paragraph and wrong in a footer:
+   five cyan links in two rows is the loudest block on a page whose job is to be
+   quiet. So the footer sets its own ink and the accent is what a pointer buys.
+
+   The steps down the page are the hierarchy: the contact pair in the strongest
+   ink, the links beside it a step under, and the disclosure faintest. Nothing
+   is the same weight as the thing above it.
+
+   WCAG 2.2 SC 2.5.8 puts a 24x24 floor under a standalone target and every
+   link here is one — the inline-text exception covers a link inside a sentence,
+   which none of these are. 32 rather than the 24 that clears it exactly: the
+   floor is a floor, and the rows have the room. */
+.site-footer a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  transition: color var(--dur-tint) ease;
+  color: var(--text-body);
+}
+
+.site-footer .footer-contact__link {
+  color: var(--text-strong);
+  font-size: var(--text-ui-sm);
   font-weight: var(--weight-medium-plus);
 }
 
-/* Copyright and the three links, under a hairline: the same separation the
-   rest of the site does its dividing with, in the on-navy step. */
-.site-footer__bar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-5) var(--space-7);
-  align-items: center;
-  justify-content: space-between;
-  padding-top: var(--space-6);
-  border-top: 1px solid var(--border-on-dark);
+.site-footer .footer-legalese a {
+  color: var(--text-muted);
 }
 
-.site-footer nav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-7);
-}
-
-/* Same 24px floor as the stacks above, for the same reason. */
-.site-footer nav a {
-  display: inline-flex;
-  align-items: center;
-  min-height: 24px;
-}
-
-.site-footer a {
-  transition: color var(--dur-tint) ease;
-  color: inherit;
-}
-
+/* Last, and after every resting colour above it: the same specificity in a
+   later rule is what decides this, and when the legalese's own colour was
+   written below the hover the three links a reader is most likely to reach for
+   down here were the three with no hover at all. */
 .site-footer a:hover {
-  color: var(--sa-cyan-bright);
+  color: var(--sa-cyan);
 }
 
-/* The phone's own line, the one the hero splits on. Three stacks across 350px
-   land two-and-one, which reads as a ragged half-grid rather than as three
-   groups, so below it they are one column. */
-@media (max-width: 620px) {
-  .site-footer__identity {
-    display: grid;
-    gap: var(--space-6);
+/* The bookend: the header's wedge turned over and stood in the bottom-left
+   corner of the page, holding the mark. It bleeds back through the page gutter
+   with a negative margin, so the plate reaches the left edge of the screen.
+
+   The mark is centred in the *shape*, not in the box the shape is clipped out
+   of, and not on the page gutter. It used to pay the bleed back as padding, so
+   it stood at 64px on a 136px plate whose drawn mass ends around 56 — it read
+   as a mark shoved into the tail with a third of the plate empty behind it. The
+   left edge it lined up with is the header logo's, eight sections up the page,
+   which nothing sees; the imbalance inside a 136px stamp is the only thing
+   anyone does.
+
+   Centring is `padding-right: run / 2` with `justify-content: center`, because
+   half the run is exactly what the diagonal takes off the plate: a trapezoid of
+   width `w` and run `r` has the same area as a rectangle of width `w - r/2`,
+   and its centroid sits within a pixel of that rectangle's centre in every band
+   below. So the padding and the cut are struck from one number, `--wedge-run`,
+   and a band that changes the cut cannot forget to move the mark with it.
+
+   `translateY(2px)` on the mark covers the two small biases pulling it high:
+   the drawn ink is 1.75 units above the middle of its own 48-unit viewBox (the
+   halo reaches y=1.5, the bottom node stops at 43), which is ~1px at 26px, and
+   the trapezoid's centroid is 0.5-2.1px below its box's, depending on the band.
+   Two is within a pixel of right everywhere and does not need a band of its own.
+
+   `align-self: end` with a height of its own rather than a stretched track: the
+   microline runs to three lines on a narrow desk, and a wedge stretched to that
+   is a navy block rather than a stamp. Hung from the foot of its grid area it
+   stays the same size whatever the line does, and the foot of that area is the
+   foot of the page. It is the grid that guarantees the second half of that —
+   see `.site-footer__base`.
+
+   The cut is the mirror of the header's — long edge on the bottom, narrowing
+   upward — and at the same slope: 50px of run over 53 of rise against the
+   header's 50.2 over 52.7. Clearance of the slope is no longer the number to
+   watch, because centring the mark took it from 9px at the box's top-right
+   corner to a little over 30, but it is still what a wider mark would run out
+   of first: at the wedge's widest the slope stands at x=100 alongside the top
+   of the mark, and the mark's box ends at 68.
+
+   No node field in it. The header masks its own into the tail past the
+   wordmark, which is a little over 100px of shape; there is no tail here at all
+   now the mark stands in the middle — the plate is a stamp, not a window, which
+   is what the header itself becomes below the desk. */
+.footer-mark {
+  --wedge-run: 50px;
+
+  display: flex;
+  align-self: end;
+  align-items: center;
+  justify-content: center;
+  width: clamp(104px, 11.5vw, 136px);
+  height: 53px;
+  margin-left: calc(-1 * var(--gutter-page));
+  padding-right: calc(var(--wedge-run) / 2);
+  background: var(--surface-dark);
+  clip-path: polygon(0 0, calc(100% - var(--wedge-run)) 0, 100% 100%, 0 100%);
+}
+
+.footer-mark .logo {
+  flex: none;
+  width: 26px;
+  height: 26px;
+  transform: translateY(2px);
+}
+
+/* The header's wedge is not one shape, and a bookend has to be the same shape
+   turned over or the two stop reading as one mark. It changes four times, so
+   this follows it four times — as `--wedge-run` alone, which the cut and the
+   mark's centring both read.
+
+   The run is given in pixels rather than as a share of the wedge, and that is
+   the point: the header's slanted edge travels a fixed distance and this one
+   has to travel the same, while both boxes change width with the viewport. As
+   percentages the two drifted apart across a band even where the breakpoints
+   agreed — 0.82 against the header's 0.83 at 1180 and 0.69 against the same
+   0.83 at 1001, because the wedge is `11.5vw` in there and the header's is not.
+
+   Measured run over rise, header against footer, band by band:
+
+     >=1181   50.2/52.7 = 0.95   50/53 = 0.94
+     <=1180   50.2/60.7 = 0.83   44/53 = 0.83   the header's row grows; its cut does not change
+     <=1000   28.8/71   = 0.41   19/53 = 0.36   the header's cut changes
+      ..801   23.1/71   = 0.33
+     <=800    23.1/71   = 0.32   14/44 = 0.32   the footer's own height drops with the stack
+     <=767    38.2/60.7 = 0.63   29/44 = 0.66   the header's cut changes again
+     <=620    38.2/55   = 0.69
+
+   Two drafts of this rule got the premise wrong before the measurements were
+   taken. The first fired a shallow cut at 1180 believing the header's cut
+   changed there — it does not; 1180 grows the header's row and nothing else,
+   and the result was a 180px band across the desk-to-tablet range where the
+   header carried a 45-degree diagonal and this one a lazy one. The second
+   fixed that and stopped at 1000, leaving the phone — where both shapes are on
+   one screen at once — 32% apart. Measure both boxes before touching this. */
+@media (max-width: 1180px) {
+  .footer-mark {
+    --wedge-run: 44px;
+  }
+}
+
+@media (max-width: 1000px) {
+  .footer-mark {
+    --wedge-run: 19px;
+  }
+}
+
+/* Below 800 the wedge is 44px rather than 53 (the stack, further down), so the
+   same run draws a steeper edge and the band needs its own. */
+@media (min-width: 768px) and (max-width: 800px) {
+  .footer-mark {
+    --wedge-run: 14px;
+  }
+}
+
+@media (max-width: 767px) {
+  .footer-mark {
+    --wedge-run: 29px;
+  }
+}
+
+/* The whole disclosure as one line: the middle track of the base row, so it
+   takes whatever the wedge and the links leave and nothing it does can push
+   either of them off the row.
+
+   It is one line from 1261px up in Dutch, 1248 in French and 1230 in English —
+   the four facts and their three gaps measure 781 / 761 / 748px, and at 1280
+   the track is 799. Eighteen pixels of slack in the binding language, which is
+   thin: `--font-sans` names Geist first and no Geist binary is shipped, so this
+   is measured in the platform face, and the same line runs 793px in Lucida
+   Grande. Re-measure when the WOFF2 files arrive, and after any change to the
+   copy or to this row's gaps. Below that the line is two, and the wrap is built
+   to read rather than to be avoided. Each fact is `nowrap`, so a break can only fall
+   between two of them — never inside a court's name — and the separator is the
+   gap rather than a character, so nothing can be stranded at a line end. The
+   `·` these facts used to carry did exactly that: the break opportunity sat
+   behind the dot, so every wrapped line ended in a speck of dirt at 11.5px.
+
+   `padding-block` here rather than on the row: the row has none, so the wedge
+   can reach the corner, and at three lines the first line sat under the hairline
+   and the last one on the last pixel of the page, where a focus ring has
+   nowhere to draw. */
+.footer-micro {
+  display: flex;
+  flex-wrap: wrap;
+  /* The gap is the separator, so it has to be wider than a word space or two
+     facts read as one phrase: 18px against the 3.2px space inside them. */
+  gap: 4px 18px;
+  padding-block: var(--space-3);
+  color: var(--text-faint);
+  font-size: var(--text-nano);
+  line-height: var(--leading-snug);
+}
+
+.footer-micro__item {
+  white-space: nowrap;
+}
+
+/* Opposite the microline: the privacy notice and the copyright. It sits in an
+   `auto` track, which can shrink toward its own min-content when the row is
+   tight — as a flex item sized to max-content it hung off the right edge of a
+   phone, and the shell clips both axes, so there was nothing to scroll to
+   reveal it. `align-self: end` puts its last line on the microline's last line
+   rather than centring the group against a block two or three lines taller
+   than it. */
+.footer-legalese {
+  align-self: end;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4) var(--space-6);
+  align-items: center;
+  justify-content: flex-end;
+  padding-block: var(--space-3);
+  font-size: var(--text-meta-sm);
+}
+
+/* The copyright is not a link and must not read as one: a step fainter than
+   the notice beside it, and stood off far enough that the eye stops before it
+   reaches it. */
+.footer-legalese__copyright {
+  margin-inline-start: var(--space-5);
+  color: var(--text-faint);
+}
+
+/* 800px is where the base row changes shape. Below it the microline takes a
+   full-width row of its own and the wedge and the links share the one under it
+   — still the last row, so the stamp is still in the corner.
+
+   The threshold is height, not line count. Stacking costs a gap and the wedge's
+   own height, about 40px, and it does not buy a single line back: the widest
+   full-width row below 800 is 720px against 781 of type, so the disclosure is
+   two lines down there whatever the layout. What it buys is a line that is two
+   lines wide instead of two lines *narrow* — the column beside the wedge is
+   408px at 834 and 337 at 768, and a fact cannot break inside itself, so at 768
+   the four facts land one per line. Measured: the footer is 111px unstacked at
+   856 in all three languages (132 in Dutch at 834, where `vat` and `court`
+   stop sharing a line), and 167 stacked. So the two-line block wins on height
+   until the column stops fitting two facts, and 800 is where that is true in
+   every language at once.
+
+   This rule used to fire at 1000px, which was right for the six-fact
+   disclosure and 200px too early for the four-fact one. */
+@media (max-width: 800px) {
+  .site-footer__base {
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas:
+      'micro micro'
+      'mark  links';
+    row-gap: var(--space-4);
+  }
+
+  /* The smaller stamp: down here it stands beside a single line of links rather
+     than a block of type, and 53px of navy against a 24px row is a plate. */
+  .footer-mark {
+    grid-area: mark;
+    height: 44px;
+  }
+
+  .footer-micro {
+    grid-area: micro;
+  }
+
+  .footer-legalese {
+    grid-area: links;
+  }
+
+  /* No line down here is wide enough to hold the court's name whole, so a fact
+     has to be allowed to break inside itself after all. */
+  .footer-micro__item {
+    white-space: normal;
+  }
+
+  /* The margin that stands the copyright off the notice costs the pair the
+     five pixels it needs to stay on one line beside the wedge; the 18px gap
+     between them is separation enough on a row of two items. */
+  .footer-legalese__copyright {
+    margin-inline-start: 0;
   }
 }
 
@@ -1917,7 +2180,7 @@ sa-node-field {
 .offer-course__body {
   margin-top: var(--space-7);
   color: var(--text-body);
-  font-size: var(--text-body-lg);
+  font-size: var(--text-copy-lg);
   line-height: var(--leading-body);
 }
 
@@ -1936,7 +2199,7 @@ sa-node-field {
   padding-block: var(--space-4);
   border-top: 1px solid var(--border-hairline);
   color: var(--text-body);
-  font-size: var(--text-body);
+  font-size: var(--text-copy);
   line-height: var(--leading-body-tight);
 }
 
@@ -2060,9 +2323,18 @@ sa-node-field {
 }
 
 /* On a phone the rows are the full column, so an origin a few percent out is
-   only a few dozen pixels: the two innermost rings would cut straight through
-   the reading measure. Pushing the origin off the edge by half a viewport
-   leaves the outer, faintest arcs as the only ones that reach in. */
+   only a few dozen pixels and every ring crosses the reading measure square on.
+   Pushed off by half a viewport the inner two still reach in, but at a glancing
+   angle near the column's far edge instead of through its middle.
+
+   That is the reasoning this was written on and it is half the story. Moving
+   the origin out also shortens the vertical reach the outer rings need, so
+   rings that could not reach the column start doing so. The same override was
+   tried on the privacy notice and dropped for it: counted there, the cyan ring
+   gained 161 rows of crossing and the darkest ink ring gained the column's
+   whole height. Whether it does the same here has not been measured against
+   this page's own geometry — its section is a third the height and the origin
+   starts from 104% — so it stands, and CLAUDE.md records it as a follow-up. */
 @media (max-width: 620px) {
   .orbits--insights .orbits__origin {
     left: 150%;
@@ -2171,7 +2443,7 @@ sa-node-field {
 .tour__body {
   max-width: var(--measure);
   color: var(--text-body);
-  font-size: var(--text-lead);
+  font-size: var(--text-lede);
   line-height: var(--leading-body);
 }
 
@@ -2568,7 +2840,7 @@ sa-node-field {
 .track__body {
   max-width: 56ch;
   color: var(--text-body);
-  font-size: var(--text-lead);
+  font-size: var(--text-lede);
   line-height: var(--leading-body);
 }
 
@@ -2619,7 +2891,7 @@ sa-node-field {
   gap: var(--space-8);
   max-width: 62ch;
   color: var(--text-body);
-  font-size: var(--text-body-lg);
+  font-size: var(--text-copy-lg);
   line-height: var(--leading-body);
 }
 
@@ -2638,7 +2910,7 @@ sa-node-field {
 .page-cta__body {
   max-width: var(--measure);
   color: var(--text-body);
-  font-size: var(--text-lead);
+  font-size: var(--text-lede);
   line-height: var(--leading-body);
 }
 
@@ -2980,7 +3252,7 @@ sa-node-field {
 .article-lede {
   max-width: 62ch;
   color: var(--text-muted);
-  font-size: var(--text-lead);
+  font-size: var(--text-lede);
 }
 
 /* Where the other detail pages put their buttons. An article's next action is
@@ -3023,18 +3295,513 @@ sa-node-field {
   max-width: var(--measure-prose);
 }
 
-/* The privacy notice takes the article's column and not its rail: there is no
-   "read next" from a legal notice, and a 260px column of paper beside one reads
-   as a rail that failed to render. */
-.article--single {
-  grid-template-columns: minmax(0, 1fr);
+/* ------------------------------------------------------------------ *
+ * The privacy notice
+ *
+ * It takes the article's layout whole, rail included. What goes in the rail is
+ * the notice's own clauses rather than a "read next", which is the one piece of
+ * navigation a legal page genuinely needs and the only thing that answers the
+ * page's real problem: without it the notice was a 1022px column — 133
+ * characters to the line, the longest measure on the site — with 354px of empty
+ * paper beside it for four fifths of its height. The rail brings the column
+ * back to the article's 980px and puts something in the gutter at the same
+ * time.
+ * ------------------------------------------------------------------ */
+
+/* The head sits outside the article grid. That was drawn for a silhouette
+   welded to the page edge — the article column is capped at the prose measure,
+   so on a desk its right edge is 350px inboard of the page — and it is kept
+   because the head is the notice's own block and reads as one: the headline,
+   the standfirst and the date span the content width while the copy below them
+   takes the article's column and its rail. Nothing about the type changes
+   either way; the headline keeps the article's 26ch and the standfirst its 62.
+
+   There is no dark shape on this page. One was drawn, went through three drafts
+   and was removed: see item 11 of the design README for what those drafts
+   taught, which is worth keeping even though the shape is not. The rings are
+   the whole of the brand here now. */
+
+/* The index is first in the DOM (see `clauseRail()`), so on a desk it is put
+   back on the right by order rather than the phone layout being the exception.
+   Grid places by order, so nothing else has to be said. */
+.notice__clauses {
+  order: 2;
 }
+
+/* An insight opens on a paragraph and this body opens on a heading, so the
+   64px a heading carries above itself put the notice's first clause 64px below
+   the rail's title beside it — two columns visibly failing to start on the same
+   line. */
+.notice__head + .article .prose > :first-child {
+  margin-top: 0;
+}
+
+/* No cap at the wide end, and that is a decision rather than an omission. Past
+   about 1500px the column is held at the prose measure while the rail stays
+   welded to the right page gutter, so the gap between them grows with the
+   window — 190px at 1600, 510 at 1920. Capping the block closed that gap and
+   opened a worse one: the rail left the page gutter, which is the one thing
+   `.article__rail` promises ("its right edge is the nav's and the footer's"),
+   and this page alone stopped matching the four insight pages built on the same
+   grid. The gap belongs inside the
+   block, where a wide gutter reads as air; the surplus outside it does not.
+   If this is ever worth solving it is worth solving for the article layout as a
+   whole, not for one page. */
+
+/* The scroll-spy wraps the list rather than replacing it. A plain block, not
+   `display: contents`: with no box of its own the lazy-loader's
+   IntersectionObserver never sees it and the component never loads at all. The
+   list inside keeps every rule it had — the multicol below 1000px included —
+   because a block between the two changes nothing about either. */
+sa-clause-index {
+  display: block;
+}
+
+/* The clause the reader is in, marked by `<sa-clause-index>` and by nothing else
+   if that never loads. The mark is the pull quote's cyan rule stood back up,
+   which is what the landed heading takes too, so the row and the heading say the
+   same thing in the same way.
+
+   The rest of the list steps back rather than the current row stepping forward.
+   `.rail-row` already inherits `--text-strong`, so a `color: var(--text-strong)`
+   on the current row was a no-op and the whole state came down to a 2px bar
+   nine pixels into the gutter — under-signalled in a stack of eight rows set
+   identically. Dimming the others is the one change that reads at a glance
+   without making the index louder than the copy beside it. */
+.notice__clauses:has([aria-current]) .rail-row__title {
+  color: var(--text-muted);
+  transition: color var(--dur-tint) ease;
+}
+
+.notice__clauses .rail-row[aria-current] {
+  border-left: 2px solid var(--sa-cyan);
+  margin-left: calc(-1 * var(--space-3) - 2px);
+}
+
+.notice__clauses .rail-row[aria-current] .rail-row__title,
+.notice__clauses .rail-row:hover .rail-row__title,
+.notice__clauses .rail-row:focus-visible .rail-row__title {
+  color: var(--text-strong);
+}
+
+/* The ring lands on the link box rather than 3px outside it, so it stops at the
+   rail's right edge — which is the nav's and the footer's. The row's own 9px of
+   left padding is what keeps it off the glyphs. */
+.notice__clauses .rail-row:focus-visible {
+  outline-offset: 0;
+}
+
+/* One line each, and no date: a clause has none. The article rail's 18px of row
+   padding is sized for a title over a date; eight single lines at that pitch is
+   505px of rail for eight short labels, which reads as a sparse list rather
+   than as an index. */
+.notice__clauses .rail-row {
+  display: block;
+  padding: var(--space-4) 0;
+}
+
+/* Two things the article rail gets away with at three rows and this one does
+   not at eight.
+
+   The hairline moves off the row and onto the item under it. On the row it
+   travelled with the row's own 3px hover shift, which in a stack of eight tight
+   rules is a visible stagger — and it is the item, not the link, that is the
+   thing being separated from the next one. That also lets the link's wash have
+   horizontal padding of its own without the rules losing the rail's right edge,
+   which is the nav's and the footer's: at zero padding the wash's left edge
+   landed exactly on the first glyph. The bleed is on the left only — padded on
+   both sides, the wash and the focus ring overhung that same right edge by
+   10px, which is the thing this rule exists to protect. */
+.notice__clause-list > li {
+  border-bottom: 1px solid var(--border-hairline);
+}
+
+.notice__clauses .rail-row {
+  padding-left: var(--space-3);
+  border-bottom: 0;
+  margin-left: calc(-1 * var(--space-3));
+}
+
+/* The article rail's last rule is followed by "Alle artikelen →". This list ends
+   on it, and a hairline under the last item of a list closes nothing. */
+.notice__clause-list > li:last-child {
+  border-bottom: 0;
+}
+
+/* Where the reader landed. The rail cannot say it — below 1000px it is off
+   screen by the time it would matter — so the heading says it itself, in the
+   one mark the site already uses for emphasis in running copy: the pull quote's
+   cyan rule, stood back up. It survives an anchor click and nothing else, which
+   is exactly the case the index exists for. */
+/* Where the reader landed, and then where the reader is. `:target` is the no-JS
+   half and the only mark on the four insight pages; on the notice
+   `<sa-clause-index>` stamps `data-clause-spy` on the root and takes both marks
+   over, because the two have different lifetimes and the same 2px cyan rule.
+   `:target` is set by the last hash and outlives it while the row's mark tracks
+   the scroll, so left alone they name different clauses in the same viewport —
+   click a row, scroll back 200px, and the rail marks one clause while the copy
+   marks another. */
+html:not([data-clause-spy]) .prose__heading:target,
+.prose__heading.is-current-clause {
+  padding-left: var(--space-6);
+  border-left: 2px solid var(--sa-cyan);
+  margin-left: calc(-1 * var(--space-6) - 2px);
+}
+
+/* The mark is hung 20px into the gutter, and below 620px the gutter *is* 20px:
+   the rule landed on the viewport's own edge, 18px from the heading it marks,
+   reading as a stray line rather than as an indicator. */
+@media (max-width: 620px) {
+  html:not([data-clause-spy]) .prose__heading:target,
+  .prose__heading.is-current-clause {
+    padding-left: var(--space-4);
+    margin-left: calc(-1 * var(--space-4) - 2px);
+  }
+}
+
+/* Hidden wherever the rail is beside the copy and always in view. */
+.notice__back {
+  display: none;
+  padding-top: var(--space-13);
+  font-size: var(--text-ui-sm);
+  font-weight: var(--weight-medium-plus);
+}
+
+/* Under 1000px the article's rail drops below the article, which is right for a
+   "read next" and wrong for an index — a table of contents at the foot of a
+   2820px notice is a table of contents nobody reaches. So this one goes first
+   instead, and pays for the place by getting shorter: two columns and half the
+   row padding turn eight rows into four, about 190px, against the 420 a stacked
+   rail would have put between the headline and the first paragraph.
+
+   `order` rather than a second markup order. The index is *first* in the DOM
+   (see `clauseRail()`), because that is where an index belongs for a reader
+   with no stylesheet and for the order a screen reader follows; on a desk it is
+   `order: 2` and the two orders deliberately differ, which costs a keyboard
+   user one extra stop before the prose and saves a phone user eight. */
+@media (max-width: 1000px) {
+  /* Tighter than the article's own stacked gap: 104px between a "read next" and
+     the piece above it is right, and 104px between an index and the thing it
+     indexes is a gap the reader has to cross twice. */
+  .notice__head + .article {
+    gap: var(--space-13);
+  }
+
+  .article__rail.notice__clauses {
+    order: 0;
+    max-width: none;
+  }
+
+  /* The measure, which is the reason this band needed a rule of its own. The
+     article grid collapses at 1000px and the column takes the whole page with
+     it: at 999px the notice ran 899px to the line — about 112 characters, the
+     longest measure anywhere on the site, on the copy least able to carry it —
+     against 899's own 74 one pixel earlier. Held to the desk's own 780px there
+     is no cliff, and the leftover reads as page margin, because down here there
+     is no rail welded to the right edge for it to look like a hole beside.
+
+     640 and not the desk's own 780: the cap has to match the column one pixel
+     *above* the line, which is 591px at 1001, not the column at some other
+     width entirely. At 780 the cliff was still there and still running the
+     wrong way — one pixel narrower made the line 24 characters longer, which is
+     the type getting harder to read as the window shrinks.
+
+     The cap is on the block and not on the prose column, so the index's own
+     rules end where the paragraphs do: capped separately, the two-abreast index
+     ran 414px to a rule against a 780px column and the eye ran the rule out
+     past the copy to nothing. */
+  .notice__head + .article {
+    max-width: 591px;
+  }
+
+  /* And the standfirst with it. Left at 62ch its box was 654px against a 591px
+     block, so between 950 and 999px the line that introduces the notice ran
+     wider than the notice — 7px past the block's right edge in Dutch. */
+  .notice__lede {
+    max-width: 591px;
+  }
+
+  /* Multicol rather than a grid, because a grid fills row-major and every
+     printed table of contents runs column-major: down the left column the
+     reader got clauses 1, 3, 5, 7 rather than the document's own order. It also
+     balances itself if a ninth clause is ever added. */
+  .notice__clause-list {
+    columns: 2;
+    column-gap: var(--gap-column);
+  }
+
+  .notice__clause-list > li {
+    break-inside: avoid;
+  }
+
+  .notice__clauses .rail-row__title {
+    font-size: var(--text-ui-sm);
+  }
+
+  /* Every row's hairline closes a column here, so the last one has work to do
+     again. */
+  .notice__clause-list > li:last-child {
+    border-bottom: 1px solid var(--border-hairline);
+  }
+
+  /* Not the rail's micro-caption any more: at 899px it was a 13px faint label
+     over a full-width block, which is a caption over a table rather than the
+     name of a section. */
+  .article__rail-title.notice__clause-title {
+    padding-bottom: var(--space-6);
+    color: var(--text-strong);
+    font-size: var(--text-ui);
+  }
+
+  .notice__back {
+    display: block;
+  }
+}
+
+/* Two abreast stops paying here, and the threshold is French's rather than
+   Dutch's: "Combien de temps nous le gardons" takes two lines at every width
+   from 553px down, so across that band the right column's rules sit 26px below
+   the left's and the block reads as two unrelated tables. It goes single-line
+   again at 554, which is the number. NL and EN are single-line at 501, so they
+   lose nothing by taking the widest language's. */
+@media (max-width: 553px) {
+  .notice__clause-list {
+    columns: 1;
+  }
+}
+
+/* Struck from off the right edge, and stuck there. Every other orbit set on the
+   site is nailed to its section and scrolls away with it, which is right for a
+   hero and for a list that is one screen tall. This section is 2820px, and an
+   origin nailed anywhere in it leaves one end of the notice out of the rings'
+   reach: the outermost is 845px in radius, so wherever it is struck a third of
+   the page has no ground under it at all.
+
+   So the origin sticks to the viewport instead and the arcs sweep the right
+   flank the whole way down. Nothing else changes about them — same rings, same
+   dimming, same faint hairlines. What changes is that the reading column now
+   travels past a field that is holding still, which is the one thing a
+   scrolling page can do with a fixed decoration that a fixed decoration cannot
+   do on its own.
+
+   Three details make it work:
+
+   `overflow: clip` on the layer rather than `hidden`. Both clip the rings to
+   the section, and this page needs that — the footer is painted under this
+   section's stacking context, so a ring that escaped the box would cross it.
+   But `hidden` makes the layer a scroll container, and a sticky child sticks to
+   its nearest scroll container: inside a box that never scrolls it would never
+   move. `.shell` carries the same pair of declarations for the same reason, and
+   notes that its own fallback costs only the stick; this one costs more, and it
+   is worth the number. On an engine without `clip` the origin resolves once
+   against a box that never scrolls and nails at document y 504 at 900 tall —
+   measured — so the arcs reach 1349 and the last 1524px of the section, 54% of
+   it, has no ground at all. From 1040 tall up, where the clamp is at its
+   ceiling, it nails at 574 instead and the bare share is 1454px, 52%. The
+   viewport belongs on that number the way it belongs on every other one here. The `reduce` rule below is the deliberate version of the same
+   fallback struck at a better place: 34% leaves 1015px bare, a third of it.
+
+   `top` is clamped, and the clamp is the load-bearing part of it. Plain `50vh`
+   walks the origin down as the window grows taller while the clause index stays
+   pinned at 96px, so *which rings cross the index is a function of viewport
+   height* — measured at 1440 wide, scrolled: at 900 tall rings 01 and 02 cross
+   and nothing else does; at 1100 ring 03 arrives; at 1600 ring 04 arrives and
+   ring 01 has left. Ring 03 is 11% ink, the heaviest of the five and the one
+   deliberately left undimmed, so a taller window reintroduced the exact artefact
+   the dimming below exists to remove, with a heavier arc.
+
+   Solving for it: a ring of radius R crosses the rail's band only while the
+   origin sits inside a window of `top` values particular to that R, and the
+   binding edge is ring 03's. That edge is struck off the rail's *top-left*
+   corner — `96 + sqrt(530² - dx²)`, where 96 is the rail's own pin and dx is the
+   origin's distance from its left edge — so it moves with the page's width and
+   not with anything else. Measured, it is lowest at **1280px wide: 534.0**, not
+   at 1440 (536.2), because dx peaks where the 5% gutter stops growing and caps
+   at 64. 520 leaves 14px under the lowest of them.
+
+   Two things the number is *not* sensitive to, both easy to assume. It does not
+   move with the index's own height: doubling the rail to 785px leaves the edge
+   at 536.2 to the decimal. What a taller index does instead is open a *second*
+   window from the rail's bottom edge, which lowering the cap makes worse rather
+   than better — so an index that grows past roughly double today's wants this
+   re-derived from both corners, not this one number re-measured. And 380 at the
+   floor is cosmetic: below 760px of viewport the rail's visible band is clipped
+   by the viewport before ring 03 can reach it either way.
+
+   What the cap costs is the top of the range. Held at 520 the field reaches
+   viewport y 1365 and no further, so a window taller than that has bare paper
+   under the arcs — 235px at 1600, 635px at 2000. That is the same failure the
+   stickiness was introduced to fix, moved from the document's axis onto the
+   viewport's, and it is the right trade only because it starts above 1500px of
+   viewport height while the collision it prevents starts at 1100. Raising the
+   cap to get the coverage back breaks the crossing set; the ring weights below
+   would have to be re-derived with it.
+
+   The *origin* is what sticks, not the layer. A sticky box is in normal flow,
+   so a sticky layer would add a screen of height to the section; the origin is
+   0x0 and costs nothing. The rings are absolutely positioned against it, and a
+   sticky box is a containing block for them, so they follow it for free.
+
+   `margin-left` and not `left` for the horizontal placement. On a sticky box
+   `left` is an inset for horizontal stickiness against the scrollport, which is
+   not a position at all on a page that does not scroll sideways. */
+.orbits--notice {
+  overflow: hidden;
+  overflow: clip;
+  opacity: 0.8;
+  /* The clip has to be softened at the foot, which is the one cost of making
+     the origin stick. Nailed to the section the rings curved away to nothing
+     before its bottom edge ever reached them; held against the viewport they
+     are still at full radius when the edge arrives, and four arcs stopping dead
+     on one horizontal line read as a seam across the paper. The top edge needs
+     nothing — it is the header's hairline, and an arc that stops there reads as
+     an arc going behind the bar. */
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 200px), transparent);
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 200px), transparent);
+}
+
+.orbits--notice .orbits__origin {
+  position: sticky;
+  top: clamp(380px, 50vh, 520px);
+  left: auto;
+  margin-left: 98%;
+}
+
+/* The two rings that cross the clause index, and only those two. Stickiness is
+   why they have to give: the rings and the rail are both anchored to the
+   viewport now, so these arcs stand across the same eight labels for the whole
+   2820px of the section and never move relative to them — and an arc at the
+   weight of the rules it crosses, held still, is a stray column rule in a table
+   rather than ground.
+
+   Measured at 1440 wide and 900 tall, in the state the reader is in for 84% of
+   the scroll: the rail sticks at top 96 from scrollY 355 onward and runs 96–506,
+   and ring 01 crosses it over y 192–506 while ring 02 crosses over y 96–195.
+   Before the rail sticks — the origin never has a pre-stick state, since its
+   static position is doc 53.7 and the clamp puts it at 450 from scrollY 0 — the
+   two run 450–708 and 705–838.
+
+   Height is the axis that moves these numbers, not width: at 900 tall the
+   crossings shift under 5px between 1024 and 2560. The clamp on the origin is
+   what makes the *set* of crossing rings height-independent; without it this
+   paragraph would be true at one window size.
+
+   Those are scanned along y rather than along x, which matters more than it
+   sounds: between y 450 and 470 ring 01 travels 0.8px horizontally, so a scan
+   that steps integer columns sees one sample there and reports the crossing as
+   starting at 471. It starts at the rail's own top edge. A near-vertical arc is
+   exactly the shape that reads as a column rule, so the sampling axis that
+   hides it is the wrong one. Rings
+   03, 04 and 05 have no crossing in either state, at any viewport height inside
+   the origin's clamp and at any width from 1024 to 2560 — which is why this is
+   scoped to two rings rather than taken out of the layer's opacity. Dimming the
+   layer punished three arcs for a collision they cannot have, and those three
+   are the only ground in the gap the wide-cap decision above deliberately
+   leaves open — that is the horizontal cap 350 lines up, and these are widths:
+   190px at 1600 wide, 510 at 1920, 1150 at 2560. The paragraph below gives
+   bare-paper figures at 1600 and 2000 *tall*, so the same numeral means two
+   axes within one comment; say which every time.
+
+   The travelling nodes are clean for the same reason and by a narrower margin.
+   Only path 01's circle reaches the rail, and sampled at 400 points through its
+   34s turn at 700, 900 and 1300 tall, its node is at opacity 0 for every one of
+   those crossings: the long fade's dark band happens to cover exactly the arc
+   that passes the index. That is luck rather than design, and the clamp is what
+   makes it luck that holds.
+
+   It is *not* scoped to a width, though, and that is deliberate rather than an
+   oversight. Below 1000px the index is a static full-width block rather than a
+   sticky rail, so the frozen relationship this fixes does not exist there —
+   arcs travel across a static block as the page scrolls, which is what every
+   orbit set on the site does to every block. The dim stays global anyway
+   because the second reason survives the first: at 620px ring 02 crosses 779
+   rows of the reading measure, and 20% cyan across a phone's whole column is
+   louder than anything else on the page whether it is standing still or not.
+
+   The cyan one is the real offender and the innermost is not, which is worth
+   naming because it is the opposite of what it looks like. Sampled off the
+   render against paper at rgb(249,250,251) and the index's own hairlines at
+   rgb(228,230,233): at their drawn weights the cyan ring composites to
+   rgb(209,228,235) — heavier than the rules it crosses, in the accent's own hue,
+   two rows from the index's "you are here" mark — while the innermost ink ring
+   lands at rgb(231,232,233), a dead heat. At 6% and 10% they sit at
+   rgb(238,239,240) and rgb(229,239,243): both clear of the hairline, both still
+   ground.
+
+   Moving the origin was the other candidate and it does not work: the first
+   offset that clears the rail with ring 01 puts ring 02 inside it. */
+.orbits--notice .orbits__ring--01 {
+  border-color: color-mix(in oklch, var(--sa-ink) 6%, transparent);
+}
+
+.orbits--notice .orbits__ring--02 {
+  border-color: color-mix(in oklch, var(--sa-cyan) 10%, transparent);
+}
+
+/* The long fade, for the reason the insights index takes it: on a ground this
+   tall a node lit for two fifths of its turn reads as a blink. */
+.orbits--notice .orbits__node {
+  animation-name: sa-orbit-fade-long;
+}
+
+/* Stickiness is scroll-coupled motion, which is the one kind this site has
+   nowhere else: every other orbit set and the node field are anchored to the
+   document and travel with it. Held against the viewport this layer stands
+   still while the page moves past it, and that is parallax by the plain reading
+   of it. The clause rail is sticky too and is deliberately not treated this
+   way: the rail is navigation a reader is using, and taking it away under
+   `reduce` would cost them the thing the page was built around. A decoration is
+   the half that can be given up.
+
+   `top: 34%` and not the middle. It is the value this set was struck at before
+   it stuck, so `reduce` gets exactly the composition that shipped — and it is
+   not arbitrary: at 50% the rings reach doc 618-2308 and leave the whole
+   opening screen bare, which is the thing the note above says a nailed origin
+   does wrong. At 34% they reach 167-1857, so the head and the first clauses
+   keep their ground and the page runs out of arcs at the foot instead, which is
+   the compromise every non-sticky orbit set on the site already makes. */
+@media (prefers-reduced-motion: reduce) {
+  .orbits--notice .orbits__origin {
+    position: absolute;
+    top: 34%;
+  }
+}
+
+/* There is no phone override, and that is a measurement rather than an
+   omission. Every other orbit set on the site pushes its origin further out on
+   a phone, on the reasoning that an origin a few percent out puts the strong
+   inner rings through the reading measure. Half of that is true and the
+   conclusion does not follow: pushing right does lift ring 01 out of the middle
+   — its leftmost point goes from x 122 to x 325 against a column running 20 to
+   370 — but it also shortens the vertical reach the outer rings need in order
+   to arrive, so rings that could not reach the column start doing so.
+
+   Counted at 390px, rows of the reading measure each ring crosses, 98% against
+   150%: ring 01 519 -> 293, ring 02 (cyan) 490 -> 651, ring 03 (11% ink, the
+   darkest on the page) 72 -> 845, ring 04 0 -> 88, ring 05 0 -> 0. The override
+   trades 226 rows of the faintest ink ring for 161 more of the cyan one and the
+   whole height of the column in the darkest one. It is worse on every ring but
+   the one it was aimed at.
+
+   `.orbits--insights` carries the same override and the same reversal (its
+   tangents run 16 -> 195). It is left alone: that is another page's rendering,
+   its section is a third the height and its origin starts from 104% rather than
+   98%, so it wants measuring against its own geometry rather than inheriting
+   this result. CLAUDE.md records it under the follow-ups. */
 
 /* A rail, not a second column: 260px on the right page gutter, so its right edge
    is the nav's and the footer's. It sticks, and it clears the sticky header. */
 .article__rail {
   position: sticky;
   top: var(--space-16);
+}
+
+/* The clause index is the one rail a reader jumps *from*, so its own top has to
+   be where an anchor lands: at the article rail's 104px against a 96px
+   `scroll-padding-top`, the clause you arrived at sat 8px above the row that
+   sent you. */
+.notice__clauses {
+  top: 96px;
 }
 
 .article__rail-title {
@@ -3127,12 +3894,20 @@ sa-node-field {
 /* The body. Ink on paper at the body size, and one rhythm between blocks that
    the headings and the quote open up on their own. */
 .prose {
-  font-size: var(--text-body-lg);
+  font-size: var(--text-copy-lg);
   line-height: var(--leading-body);
 }
 
 .prose > * + * {
   margin-top: var(--space-8);
+}
+
+/* The one fact in the body that must not break across a line, for the reason
+   every fact in the footer's legal microline carries the same rule: four
+   ordinary spaces make a phone number five words to a line breaker, and it
+   broke at an English tablet, a French phone and a Dutch laptop. */
+.prose a[href^="tel:"] {
+  white-space: nowrap;
 }
 
 .prose__heading {
@@ -3215,152 +3990,122 @@ sa-node-field {
 /* ------------------------------------------------------------------ *
  * De weg ernaartoe — the three stages
  *
- * Each stage is a label beside one continuous hairline with the five phases of
- * that stage set along it, and a mark sitting on the rule at the phase that
- * decides the stage: ink where the work waits, cyan where a person decides.
- * Read the three rules top to bottom and the mark travels outward and changes
- * colour, which is the claim the block makes.
+ * Each stage is a name, the one clause it makes, and one bar divided into the
+ * five phases of that stage, where the phase that holds the cycle up takes the
+ * room. The reasoning — and the rule that the width may never become a
+ * measurement — is in the block comment in `src/pages/sdlc.mjs`.
  *
- * The rule belongs to the row, not to the cells. The deck this page is drawn
- * from tried a rule over every phase first and it read as a spreadsheet — the
- * eye had to be told which cell was the bottleneck instead of seeing it. One
- * line with a heavy dot on it is a line with a dot on it, and three of them are
- * a movement.
+ * The bar is the site's own vocabulary rather than a drawing: a panel radius, a
+ * hairline between cells, one accent. Three earlier figures were drawn instead
+ * (a dot, a thickened run, a navy heap on a rule) and all three read as
+ * decoration on a page built out of panels and rules.
  * ------------------------------------------------------------------ */
 
 .journey {
   display: grid;
   gap: var(--space-12);
+  margin-top: var(--space-12);
 }
 
-/* Centred, not `start`. Ranged from the top the hairline lands level with the
-   11px index and the stage name — the largest type in the label column — sits
-   53px below its own rule with nothing across the gap on its line, and each
-   flow column carries 40px of content over 145px of blank paper. Centred, the
-   rule crosses the label rather than heading it, and the void closes. */
-.stage {
-  display: grid;
-  grid-template-columns: 1fr 1.6fr;
-  gap: var(--gap-column);
-  align-items: center;
-}
-
-.stage__index {
-  color: var(--text-accent);
-  font-family: var(--font-mono);
-  font-size: var(--text-micro);
+/* Name and clause share a baseline and one line. The clause is what three stage
+   paragraphs were reduced to, and it is set at body size beside a name at h3: at
+   the same size the two read as a heading that ran on. */
+.stage__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2) var(--space-6);
+  margin-bottom: var(--space-6);
 }
 
 .stage__name {
-  margin-top: var(--space-4);
   font-size: var(--text-h3);
   font-weight: var(--weight-semibold);
   letter-spacing: var(--track-h3);
 }
 
 .stage__body {
-  margin-top: var(--space-4);
-  max-width: var(--measure);
   color: var(--text-body);
-  font-size: var(--text-body);
+  font-size: var(--text-copy);
   line-height: var(--leading-body);
 }
 
-/* One rule for the five phases, and the phases are only words on it. The dots
-   straddle it the way the approach steps' dots straddle theirs. */
-.stage__flow {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: var(--space-5);
-  border-top: 1px solid var(--sa-line-2);
+/* One bar, always full and always the same length on all three rows: that is
+   what keeps the width a share of a cycle rather than a duration. `overflow`
+   plus the radius is what makes five cells read as one object; without it the
+   end cells keep square corners and the row reads as five chips. */
+.cycle {
+  display: flex;
+  border-radius: var(--radius-panel);
+  overflow: hidden;
   list-style: none;
 }
 
-.phase {
-  position: relative;
-  padding-top: var(--space-6);
-  color: var(--text-faint);
+/* `--share` comes from the markup, where the table that sets it lives. `flex`
+   with a zero basis divides the whole bar by those shares, so a row is
+   normalised by construction and cannot drift when a phase is added. */
+.cycle__phase {
+  flex: var(--share) 1 0;
+  min-width: 0;
+  display: grid;
+  place-items: center;
+  padding: var(--space-7) var(--space-3);
+  background: var(--surface-chip);
+  color: var(--text-muted);
   font-size: var(--text-ui-sm);
   line-height: var(--leading-snug);
+  text-align: center;
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
 }
 
-/* Ink, not a colour: a phase everything upstream of it is waiting behind is
-   not one of several categories, it is the thing that is wrong with the row.
-   A phase a person still owns is ink too, because in the third row it is the
-   same pause seen differently — waiting on judgement rather than on capacity.
-   What separates the two is the mark, not the type: a phase set in a second
-   weight as well as a second colour would read as two unrelated figures.
-
-   The mark's colour is a variable on the phase rather than a rule on its
-   pseudo-element, because the same dot is drawn a second time in the legend and
-   the two have to agree. `--mark` is the only thing either of them carries. */
-.phase--block,
-.legend__mark--block {
-  --mark: var(--sa-ink);
+/* The division is a gap in the paper, not a drawn line: a border would sit
+   inside the last cell's radius and show as a nick at both ends of the bar. */
+.cycle__phase + .cycle__phase {
+  box-shadow: -1px 0 0 var(--surface-page);
 }
 
-.phase--human,
-.legend__mark--human {
-  --mark: var(--sa-cyan);
-}
-
-.phase--block {
-  color: var(--text-strong);
+/* A phase the whole cycle waits behind. Ink, not a colour: it is not one of
+   several categories, it is the thing that is wrong with the row. */
+.cycle__phase--block {
+  background: var(--sa-field);
+  color: var(--sa-white);
   font-weight: var(--weight-semibold);
 }
 
-.phase--human {
-  color: var(--text-strong);
+/* A phase a person owns. White type on it, not the dark cyan ink the on-navy
+   button uses: measured against `--sa-cyan`, white is 4.93:1 and `--sa-cyan-ink`
+   is 3.93:1, so the pairing that looks like the safer one is the one that fails.
+   Measure before swapping either of these two. */
+.cycle__phase--human {
+  background: var(--sa-cyan);
+  color: var(--sa-white);
+  font-weight: var(--weight-semibold);
 }
 
-/* The one dot, in both the places it is drawn. It is deliberately not
-   `.step::before` reused: that dot is a fixed grey sitting on a rule the step
-   owns, and it moves three times between here and a phone. This one takes its
-   colour from the phase and sits on a rule the row owns. Two dots that look
-   alike and are told apart by different things. */
-.phase--block::before,
-.phase--human::before,
-.legend__mark {
-  width: 7px;
-  height: 7px;
-  border-radius: var(--radius-pill);
-  background: var(--mark);
+/* A phase's own name never wraps to a second line inside the bar: the bar's
+   height is set by the tallest cell, so one wrap in the narrowest cell would
+   deepen every bar on the page. The narrow cells are 10% of the bar in the
+   worst row, which is 131px at the widest desk and 100px at 1000px, against
+   about 90px for the longest word in the three languages. Below 1000px the bar
+   stands up instead, which is where that stops holding. */
+.cycle__name {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
 }
 
-.phase--block::before,
-.phase--human::before {
-  content: "";
-  position: absolute;
-  top: -4px;
-  left: 0;
-}
-
-/* The legend is copy, not decoration: without it the two marks are two colours.
-   It carries the same dots at the same size, so the reader matches them by
-   shape rather than by being told which is which. The phases name their mark in
-   text as well (`.visually-hidden` in sdlc.mjs), so nothing here is the only
-   carrier. */
+/* The legend is copy, not decoration: it is what says the wide block is where
+   the work waits rather than where most of it happens — the one reading a bar
+   chart invites that this figure must not carry. */
 .journey__legend {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-6) var(--space-11);
-  list-style: none;
-}
-
-/* The legend and the note belong under the marks, not under the label column.
-   Ranged left off the page they sat 545px from the dots they key and read as a
-   fourth paragraph of the last stage; in the flow column they are directly
-   under the thing they explain. Same grid as a stage, with the label cell left
-   empty, so they line up with the rules above them to the pixel. */
-.journey__foot {
-  display: grid;
-  grid-template-columns: 1fr 1.6fr;
-  gap: var(--gap-column);
   margin-top: var(--space-10);
-}
-
-.journey__foot > * {
-  grid-column: 2;
+  list-style: none;
 }
 
 .legend {
@@ -3373,70 +4118,69 @@ sa-node-field {
 
 .legend__mark {
   flex: none;
+  width: 34px;
+  height: 14px;
+  border-radius: var(--radius-chip);
+  background: var(--mark);
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
 }
 
-/* Where the figure comes from. A footnote, so it is the smallest type in the
-   section and sits under the legend rather than beside it. */
-.journey__note {
-  margin-top: var(--space-5);
-  color: var(--text-faint);
-  font-size: var(--text-meta);
-  line-height: var(--leading-body-tight);
+.legend__mark--block {
+  --mark: var(--sa-field);
 }
 
-/* The label beside the lifecycle is the tablet's first casualty: at this width
-   a five-phase rule in 60% of the page sets "Specificatie" over three lines.
-   The label goes over the top and the rule takes the whole column, which is
-   also the line every other two-column block on the site stacks on. */
+.legend__mark--human {
+  --mark: var(--sa-cyan);
+}
+
+/* Below the width where every other two-abreast block on the site collapses,
+   the bar stands up. Five cells across a tablet put the narrowest at 62px, which
+   is under the longest phase name in all three languages, and the fix cannot be
+   a smaller type: the bar is the figure, so a truncated word in it is the figure
+   failing. Standing up, every cell has the whole column for its name and the
+   share becomes a height, which reads the same way. */
 @media (max-width: 1000px) {
-  /* More air between the stages, not less: with the label over the rule rather
-     than beside it, the gap between two stages is the only thing left saying
-     where one ends. */
+  .cycle {
+    flex-direction: column;
+    height: 320px;
+  }
+
+  .cycle__phase {
+    place-items: center start;
+    padding: var(--space-3) var(--space-6);
+    text-align: left;
+  }
+
+  .cycle__phase + .cycle__phase {
+    box-shadow: 0 -1px 0 var(--surface-page);
+  }
+}
+
+/* On a phone the bar keeps its proportions but not its height: 320px of bar
+   three times over is three screens of figure. The narrowest cell at 260px is
+   26px, which still carries a line of 14px type. */
+@media (max-width: 620px) {
   .journey {
     gap: var(--space-14);
   }
 
-  .stage {
-    grid-template-columns: minmax(0, 1fr);
-    gap: var(--space-8);
-    align-items: start;
-  }
-
-  .journey__foot {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .journey__foot > * {
-    grid-column: 1;
-  }
-
-  .stage__body {
-    max-width: none;
+  .cycle {
+    height: 260px;
   }
 }
 
-/* On a phone five words across the page is five stacks of two letters. The rule
-   stands up and runs down the left of the phases with the marks sitting on it,
-   which is what the five approach steps already do at this width: a sequence
-   read down wants a spine. The movement the figure is about survives as the
-   mark changing place in the list rather than as it travelling right. */
-@media (max-width: 620px) {
-  .stage__flow {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 0;
-    padding-left: var(--space-8);
-    border-top: none;
-    border-left: 1px solid var(--sa-line-2);
+/* Forced colours drop every background, so the whole figure would come out as
+   five identical cells. A border is kept, and the marked ones take a thicker
+   one, so the bar still says which phase holds the cycle up. */
+@media (forced-colors: active) {
+  .cycle__phase {
+    border: 1px solid CanvasText;
   }
 
-  .phase {
-    padding-block: var(--space-3);
-  }
-
-  .phase--block::before,
-  .phase--human::before {
-    top: calc(var(--space-3) + 5px);
-    left: calc(-1 * var(--space-8) - 4px);
+  .cycle__phase--block,
+  .cycle__phase--human {
+    border-width: 4px;
   }
 }
 
@@ -3507,9 +4251,201 @@ sa-node-field {
   margin-bottom: var(--space-9);
   max-width: var(--measure);
   color: var(--text-body);
-  font-size: var(--text-lead);
+  font-size: var(--text-lede);
 }
 
 .error-page .btn {
   justify-self: start;
+}
+
+/* ------------------------------------------------------------------ *
+ * Forced colours
+ *
+ * A forced palette substitutes a system colour for every border and background
+ * and drops the alpha with them, so what survives is whatever the page said in
+ * shape rather than in weight. That cuts two ways: a figure that carries meaning
+ * is given a border it can keep, and a decoration that has no weight it can be
+ * given in a palette it does not choose is dropped.
+ *
+ * Only the second lives here. The first is `.cycle__phase`, filed with the
+ * figure it belongs to — so this file groups by media feature in one place and
+ * colocates in the other, and neither is wrong so much as unstated. The rule of
+ * thumb, if a third is ever added: a rule that changes how a component *reads*
+ * goes with the component; a rule that removes something outright goes here,
+ * beside the print block that does the same.
+ * ------------------------------------------------------------------ */
+
+/* The five orbit rings are drawn at 5% to 11% precisely so they sit under the
+   type, and a forced palette hands all five back as `CanvasText` at the layer's
+   full 0.8 — ground designed to be barely there becoming the strongest line on
+   the screen, straight through the reading column. There is no weight to
+   re-colour them to: the palette is not ours to pick from. So they go, the way
+   `@media print` already drops them.
+
+   Site-wide and not scoped to the notice, because no orbit set on the site
+   means anything. The notice is only where it lands hardest: a sticky origin
+   puts the same arcs on every screen of a 2820px document rather than behind
+   one hero. */
+@media (forced-colors: active) {
+  .orbits {
+    display: none;
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * Print
+ *
+ * One page on this site is printed and saved as PDF far more than the rest —
+ * the privacy notice, by a DPO, a procurement reviewer or a client's lawyer —
+ * and until this block existed that print carried a solid navy shape, the orbit
+ * rings, the sticky header, the phone's action bar and a rail beside a column.
+ * The rules are written for every page rather than scoped to that one, because
+ * nothing here is page-specific: hide what is chrome or texture, unstack what is
+ * a share of a viewport that no longer exists, and let a link say where it goes.
+ * ------------------------------------------------------------------ */
+
+@media print {
+  /* `.field` as well as `.field-slot`: only the two hero shapes are wrapped in a
+     slot, so the homepage's disc, its blob and the transformation slab printed
+     as solid navy blocks. `visibility` rather than `display` for the shapes,
+     because the team page's petal is in normal flow below 940px and taking it
+     out of flow there moves the copy beside it. */
+  .site-header,
+  .mobile-actions,
+  .skip-link,
+  .orbits,
+  .footer-mark,
+  .header-wedge {
+    display: none !important;
+  }
+
+  .field-slot,
+  .field,
+  sa-node-field {
+    visibility: hidden !important;
+  }
+
+  .shell {
+    overflow: visible;
+  }
+
+  .section {
+    padding: var(--space-13) 0 0;
+  }
+
+  /* Every two-column block on the site is a share of a viewport width, and a
+     sheet of paper is not one. The rail goes under the copy it belongs to, at
+     the width it is given. */
+  .article,
+  .notice__head + .article {
+    display: block;
+    max-width: none;
+  }
+
+  .article__main,
+  .notice__head + .article .article__main {
+    max-width: none;
+  }
+
+  /* The article's rail prints *below* the copy and wants air above it; the
+     notice's index prints above and does not. Un-scoped, the two paddings
+     stacked and the first sheet spent 60% of itself on chrome. */
+  .article__rail {
+    position: static;
+  }
+
+  .article__rail:not(.notice__clauses) {
+    padding-top: var(--space-13);
+  }
+
+  /* Two abreast on paper too. A4 is 794px, so the ≤1000px rule would have given
+     it two columns; forcing one spent 475px of the first sheet — a third of the
+     page — on eight labels before the notice began. */
+  .notice__clause-list {
+    columns: 2;
+    column-gap: var(--gap-column);
+  }
+
+  /* On screen the index and the copy are two grid tracks with a gap between
+     them; on paper they are two blocks in a row, so the first clause heading
+     needs back the space the grid was giving it. Without this it sat on the
+     contents list's last rule. */
+  .notice__head + .article .prose > :first-child {
+    margin-top: var(--space-11);
+  }
+
+  /* A clause heading stranded as the last line of a sheet is the one thing that
+     ruins a printed legal document. */
+  .prose__heading,
+  .article__rail-title {
+    break-after: avoid;
+    break-inside: avoid;
+  }
+
+  .prose p,
+  .prose li,
+  .prose__quote,
+  .notice__clauses,
+  .notice__head {
+    break-inside: avoid;
+  }
+
+  .prose p,
+  .prose li {
+    orphans: 3;
+    widows: 3;
+  }
+
+  /* A printed link that says "hieronder" and points at a URL the reader cannot
+     see is worth its ink; an in-page anchor is not, and neither is a mailto —
+     every mailto on this site is labelled with the address itself, so printing
+     the href turned "info@smartagents.be" into
+     "info@smartagents.be (mailto:info@smartagents.be)". */
+  .prose a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.85em;
+    word-break: break-all;
+  }
+
+  /* The notice's own index is navigation, and paper has none. It stays as a
+     contents list, which is what it is on paper, and the back-link goes. */
+  .notice__back {
+    display: none;
+  }
+
+  /* Paper has no reading position. Both "you are here" marks are screen state
+     that outlives the gesture that set it — the spy never clears `aria-current`
+     and a hash outlives its jump — so whichever happened to be live when Print
+     was pressed came out on the PDF as a stray cyan rule in the margin and a
+     contents list with seven grey rows and one black one. Two people printing
+     the same notice got two different documents, one clause arbitrarily
+     emphasised. `:target` is left unscoped here so a deep-linked article prints
+     clean too. */
+  .prose__heading:target,
+  .prose__heading.is-current-clause {
+    padding-left: 0;
+    border-left: 0;
+    margin-left: 0;
+  }
+
+  .notice__clauses .rail-row[aria-current] {
+    border-left: 0;
+    margin-left: calc(-1 * var(--space-3));
+  }
+
+  .notice__clauses:has([aria-current]) .rail-row__title {
+    color: var(--text-strong);
+  }
+
+  /* The header carries the wordmark and it is hidden here, so the printed sheet
+     would say who wrote it only in the footer's legal line, and would never say
+     where it came from. */
+  .notice__head::before {
+    content: attr(data-print-url);
+    display: block;
+    padding-bottom: var(--space-8);
+    color: var(--text-faint);
+    font-size: var(--text-meta-sm);
+    font-weight: var(--weight-medium-plus);
+  }
 }

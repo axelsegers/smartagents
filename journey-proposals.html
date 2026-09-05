@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>De weg ernaartoe — tien voorstellen</title>i
+<link rel="stylesheet" href="src/styles/tokens.css">
+<style>
+  /* Scratch page. Not part of the build, not linked from anything: it exists to
+     pick a direction for the #journey block on /nl/ai-native-sdlc/. Every
+     proposal below shows the same three stages, the same five phases and the
+     same two marks, so only the drawing differs. Tokens come from the real
+     src/styles/tokens.css, so the colours and the type are the site's. */
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--sa-paper);
+    color: var(--sa-ink);
+    font-family: var(--font-sans);
+    font-size: var(--text-copy);
+    line-height: var(--leading-body);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page { max-width: 1440px; margin: 0 auto; padding: 64px 64px 160px; }
+  .page > header { max-width: 62ch; margin-bottom: 72px; }
+  h1 { font-size: var(--text-h1-sm); font-weight: var(--weight-semibold); letter-spacing: var(--track-h1); margin: 0 0 16px; }
+  .page > header p { color: var(--text-body); margin: 0 0 10px; }
+
+  .prop { padding-top: 56px; border-top: 1px solid var(--sa-line-2); margin-top: 72px; }
+  .prop__head { display: flex; align-items: baseline; gap: 18px; flex-wrap: wrap; margin-bottom: 10px; }
+  .prop__no { font-family: var(--font-mono); font-size: var(--text-micro); color: var(--text-accent); }
+  .prop__name { font-size: var(--text-h3); font-weight: var(--weight-semibold); letter-spacing: var(--track-h3); margin: 0; }
+  .prop__note { color: var(--text-muted); font-size: var(--text-meta); max-width: 92ch; margin: 0 0 40px; }
+  .prop__note b { color: var(--text-strong); font-weight: var(--weight-semibold); }
+
+  /* The words every proposal sets above its own figure. */
+  .thead { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 18px; margin-bottom: 18px; }
+  .tname { font-size: var(--text-h3); font-weight: var(--weight-semibold); letter-spacing: var(--track-h3); }
+  .tclause { color: var(--text-body); font-size: var(--text-copy); }
+  .row + .row { margin-top: 48px; }
+  .legend { display: flex; gap: 36px; flex-wrap: wrap; margin-top: 36px; color: var(--text-muted); font-size: var(--text-meta); }
+  .legend span { display: flex; align-items: center; gap: 12px; }
+
+  /* ------------------------------------------------------------------ *
+   * 1 — Dark panel, lit step
+   * ------------------------------------------------------------------ */
+  .p1 { background: var(--sa-field); border-radius: 22px; padding: 46px 48px; color: #fff; }
+  .p1 .tclause { color: rgba(255,255,255,.62); }
+  .p1 .row + .row { margin-top: 38px; padding-top: 34px; border-top: 1px solid rgba(255,255,255,.10); }
+  .p1 .steps { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+  .p1 .step { border: 1px solid rgba(255,255,255,.18); border-radius: 10px; padding: 15px 12px; text-align: center; font-size: var(--text-ui-sm); color: rgba(255,255,255,.6); }
+  .p1 .step[data-mark="block"] { background: #fff; border-color: #fff; color: var(--sa-ink); font-weight: var(--weight-semibold); }
+  .p1 .step[data-mark="human"] { border: 2px solid var(--sa-cyan-bright); color: var(--sa-cyan-bright); font-weight: var(--weight-semibold); }
+  .p1 .legend { color: rgba(255,255,255,.6); }
+
+  /* ------------------------------------------------------------------ *
+   * 2 — Paper, solid step
+   * ------------------------------------------------------------------ */
+  .p2 .steps { display: grid; grid-template-columns: repeat(5, 1fr); }
+  .p2 .step { position: relative; padding: 17px 10px; text-align: center; font-size: var(--text-ui-sm); color: var(--text-faint); }
+  .p2 .step::after { content: ""; position: absolute; inset: auto 0 0; height: 1px; background: var(--sa-line-2); }
+  .p2 .step[data-mark] { border-radius: 10px; font-weight: var(--weight-semibold); }
+  .p2 .step[data-mark]::after { display: none; }
+  .p2 .step[data-mark="block"] { background: var(--sa-field); color: #fff; }
+  .p2 .step[data-mark="human"] { box-shadow: inset 0 0 0 2px var(--sa-cyan); color: var(--sa-ink); }
+
+  /* ------------------------------------------------------------------ *
+   * 3 — The flow, pinched
+   * ------------------------------------------------------------------ */
+  .p3 .river { display: block; width: 100%; height: 76px; color: var(--sa-field); }
+  .p3 .steps { display: grid; grid-template-columns: repeat(5, 1fr); margin-top: 12px; }
+  .p3 .step { text-align: center; font-size: var(--text-ui-sm); color: var(--text-faint); padding: 0 8px; }
+  .p3 .step[data-mark] { color: var(--sa-ink); font-weight: var(--weight-semibold); }
+
+  /* ------------------------------------------------------------------ *
+   * 4 — The heap on the rule (what is in the build today)
+   * ------------------------------------------------------------------ */
+  .p4 .rule { position: relative; height: 30px; border-bottom: 1px solid var(--sa-line-2); }
+  .p4 .rule--loaded { height: 116px; }
+  .p4 .heap { position: absolute; bottom: 0; color: var(--sa-field); }
+  .p4 .heap--under { top: 100%; bottom: auto; }
+  .p4 .gate { position: absolute; bottom: -1px; height: 3px; background: var(--sa-cyan); }
+  .p4 .steps { display: grid; grid-template-columns: repeat(5, 1fr); margin-top: 14px; }
+  .p4 .steps--cleared { margin-top: 46px; }
+  .p4 .step { text-align: center; font-size: var(--text-ui-sm); color: var(--text-faint); padding: 0 8px; }
+  .p4 .step[data-mark] { color: var(--sa-ink); font-weight: var(--weight-semibold); }
+
+  /* ------------------------------------------------------------------ *
+   * 5 — The queue, in units of work
+   * ------------------------------------------------------------------ */
+  .p5 .yard { display: grid; grid-template-columns: repeat(5, 1fr); align-items: end; height: 116px; border-bottom: 1px solid var(--sa-line-2); }
+  .p5 .stack { display: flex; flex-direction: column-reverse; align-items: center; gap: 3px; padding: 0 10px; }
+  .p5 .unit { width: 100%; max-width: 92px; height: 12px; border-radius: 2px; background: var(--sa-field); }
+  .p5 .stack[data-mark="human"] .unit { background: none; box-shadow: inset 0 0 0 1.5px var(--sa-cyan); }
+  .p5 .steps { display: grid; grid-template-columns: repeat(5, 1fr); margin-top: 14px; }
+  .p5 .step { text-align: center; font-size: var(--text-ui-sm); color: var(--text-faint); padding: 0 8px; }
+  .p5 .step[data-mark] { color: var(--sa-ink); font-weight: var(--weight-semibold); }
+
+  /* ------------------------------------------------------------------ *
+   * 6 — The flow, cut
+   * ------------------------------------------------------------------ */
+  .p6 .track { display: grid; grid-template-columns: repeat(5, 1fr); align-items: center; height: 64px; }
+  .p6 .cell { position: relative; height: 100%; display: grid; place-items: center; }
+  .p6 .cell::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: var(--sa-line-2); }
+  .p6 .cell[data-mark]::before { display: none; }
+  .p6 .bar { position: relative; width: 4px; height: 46px; border-radius: 2px; background: var(--sa-field); }
+  .p6 .cell[data-mark="human"] .bar { background: var(--sa-cyan); }
+  .p6 .steps { display: grid; grid-template-columns: repeat(5, 1fr); margin-top: 6px; }
+  .p6 .step { text-align: center; font-size: var(--text-ui-sm); color: var(--text-faint); padding: 0 8px; }
+  .p6 .step[data-mark] { color: var(--sa-ink); font-weight: var(--weight-semibold); }
+
+  /* ------------------------------------------------------------------ *
+   * 7 — Three columns, compared
+   * ------------------------------------------------------------------ */
+  .p7 .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0 20px; }
+  .p7 .colhead { padding-bottom: 16px; border-bottom: 1px solid var(--sa-ink); font-weight: var(--weight-semibold); }
+  .p7 .rowhead { display: flex; align-items: center; padding: 14px 0; color: var(--text-faint); font-family: var(--font-mono); font-size: var(--text-micro); border-bottom: 1px solid var(--sa-line-2); }
+  .p7 .cell { display: flex; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--sa-line-2); }
+  .p7 .box { width: 100%; padding: 11px 14px; border-radius: 8px; font-size: var(--text-ui-sm); color: var(--text-faint); background: color-mix(in oklch, var(--sa-line-2) 45%, transparent); }
+  .p7 .box[data-mark="block"] { background: var(--sa-field); color: #fff; font-weight: var(--weight-semibold); }
+  .p7 .box[data-mark="human"] { background: none; box-shadow: inset 0 0 0 2px var(--sa-cyan); color: var(--sa-ink); font-weight: var(--weight-semibold); }
+  .p7 .colclause { color: var(--text-muted); font-size: var(--text-meta); padding-top: 14px; }
+
+  /* ------------------------------------------------------------------ *
+   * 8 — Nodes and edges
+   * ------------------------------------------------------------------ */
+  .p8 .net { position: relative; height: 88px; }
+  .p8 .wire { position: absolute; left: 10%; right: 10%; top: 50%; height: 1px; background: var(--sa-line-2); }
+  .p8 .node { position: absolute; top: 50%; transform: translate(-50%, -50%); width: 13px; height: 13px; border-radius: 50%; background: var(--sa-line-2); }
+  .p8 .node[data-mark="block"] { width: 46px; height: 46px; background: var(--sa-field); }
+  .p8 .node[data-mark="human"] { width: 20px; height: 20px; background: var(--sa-cyan); box-shadow: 0 0 0 9px color-mix(in oklch, var(--sa-cyan) 16%, transparent); }
+  .p8 .steps { display: grid; grid-template-columns: repeat(5, 1fr); margin-top: 8px; }
+  .p8 .step { text-align: center; font-size: var(--text-ui-sm); color: var(--text-faint); padding: 0 8px; }
+  .p8 .step[data-mark] { color: var(--sa-ink); font-weight: var(--weight-semibold); }
+
+  /* ------------------------------------------------------------------ *
+   * 9 — Where the time goes
+   * ------------------------------------------------------------------ */
+  .p9 .bar { display: flex; height: 54px; border-radius: 8px; overflow: hidden; }
+  .p9 .seg { flex: 1; background: color-mix(in oklch, var(--sa-line-2) 55%, transparent); display: grid; place-items: center; font-size: var(--text-meta); color: var(--text-muted); border-right: 1px solid var(--sa-paper); }
+  .p9 .seg:last-child { border-right: none; }
+  .p9 .seg[data-mark="block"] { flex: 3.4; background: var(--sa-field); color: #fff; font-weight: var(--weight-semibold); }
+  .p9 .seg[data-mark="human"] { flex: 1.6; background: var(--sa-cyan); color: #fff; font-weight: var(--weight-semibold); }
+
+  /* ------------------------------------------------------------------ *
+   * 10 — The gate that is shut
+   * ------------------------------------------------------------------ */
+  .p10 .lane { display: grid; grid-template-columns: repeat(5, 1fr); height: 92px; }
+  .p10 .cell { position: relative; display: grid; place-items: center; }
+  .p10 .cell::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 2px; background: color-mix(in oklch, var(--sa-line-2) 80%, transparent); }
+  .p10 .gate { position: relative; width: 26px; height: 92px; border-radius: 4px; background: var(--sa-field); }
+  .p10 .cell[data-mark="human"] .gate { background: none; box-shadow: inset 0 0 0 2px var(--sa-cyan); height: 60px; }
+  .p10 .steps { display: grid; grid-template-columns: repeat(5, 1fr); margin-top: 12px; }
+  .p10 .step { text-align: center; font-size: var(--text-ui-sm); color: var(--text-faint); padding: 0 8px; }
+  .p10 .step[data-mark] { color: var(--sa-ink); font-weight: var(--weight-semibold); }
+
+  .swatch { display: inline-block; }
+</style>
+</head>
+<body>
+<div class="page">
+<header>
+  <h1>De weg ernaartoe — tien voorstellen</h1>
+  <p>Dezelfde drie stappen, dezelfde vijf fases, dezelfde twee markeringen. Alleen de
+     tekening verschilt. Kleuren en type komen uit <code>src/styles/tokens.css</code>,
+     dus dit is wat het op de site zou worden.</p>
+  <p>Het argument dat elk voorstel moet dragen: <b>het knelpunt verdwijnt niet, het
+     verschuift</b> — van het midden, naar de twee uiteinden, naar twee punten waar een
+     mens beslist.</p>
+</header>
+<main id="proposals"></main>
+</div>
+
+<script>
+const STAGES = [
+  { name: 'Traditioneel', clause: 'Bouwen is het knelpunt.',
+    phases: ['Vereisten', 'Ontwerp', 'Bouw', 'Test', 'Uitrol'], marks: [0, 0, 'block', 0, 0] },
+  { name: 'Agentic', clause: 'Agents bouwen. Het knelpunt schuift naar wat u vraagt en wie het nakijkt.',
+    phases: ['Vereisten', 'Ontwerp', 'Bouw', 'Review', 'Uitrol'], marks: ['block', 0, 0, 'block', 0] },
+  { name: 'AI-native', clause: 'Een mens bepaalt de intentie en aanvaardt het resultaat.',
+    phases: ['Intentie', 'Specificatie', 'Bouw', 'Gates', 'Aanvaarding'], marks: ['human', 0, 0, 0, 'human'] }
+];
+
+const RIVER = [
+  'M0,0.09 L0.415,0.09 C0.4575,0.09 0.4575,0.43 0.5,0.43 L0.5,0.43 C0.5425,0.43 0.5425,0.09 0.585,0.09 L1,0.09 L1,0.91 L0.585,0.91 C0.5425,0.91 0.5425,0.57 0.5,0.57 L0.5,0.57 C0.4575,0.57 0.4575,0.91 0.415,0.91 L0,0.91 Z',
+  'M0,0.09 L0.015,0.09 C0.0575,0.09 0.0575,0.43 0.1,0.43 L0.1,0.43 C0.1425,0.43 0.1425,0.09 0.185,0.09 L0.615,0.09 C0.6575,0.09 0.6575,0.43 0.7,0.43 L0.7,0.43 C0.7425,0.43 0.7425,0.09 0.785,0.09 L1,0.09 L1,0.91 L0.785,0.91 C0.7425,0.91 0.7425,0.57 0.7,0.57 L0.7,0.57 C0.6575,0.57 0.6575,0.91 0.615,0.91 L0.185,0.91 C0.1425,0.91 0.1425,0.57 0.1,0.57 L0.1,0.57 C0.0575,0.57 0.0575,0.91 0.015,0.91 L0,0.91 Z',
+  'M0,0.09 L0.015,0.09 C0.0575,0.09 0.0575,0.3 0.1,0.3 L0.1,0.3 C0.1425,0.3 0.1425,0.09 0.185,0.09 L0.815,0.09 C0.8575,0.09 0.8575,0.3 0.9,0.3 L0.9,0.3 C0.9425,0.3 0.9425,0.09 0.985,0.09 L1,0.09 L1,0.91 L0.985,0.91 C0.9425,0.91 0.9425,0.7 0.9,0.7 L0.9,0.7 C0.8575,0.7 0.8575,0.91 0.815,0.91 L0.185,0.91 C0.1425,0.91 0.1425,0.7 0.1,0.7 L0.1,0.7 C0.0575,0.7 0.0575,0.91 0.015,0.91 L0,0.91 Z'
+];
+
+const HEAP = 'M0,1 C0.2791,0.8256 0.3717,0.5814 0.46,0.44 C0.5942,0.2252 0.5588,0.06 0.72,0.06 C1.0633,0.06 0.9596,0.8098 1,1 Z';
+
+const el = (tag, cls, html) => {
+  const node = document.createElement(tag);
+  if (cls) node.className = cls;
+  if (html !== undefined) node.innerHTML = html;
+  return node;
+};
+
+const head = (stage) =>
+  `<div class="thead"><span class="tname">${stage.name}</span><span class="tclause">${stage.clause}</span></div>`;
+
+const steps = (stage, cls = 'steps') =>
+  `<div class="${cls}">${stage.phases
+    .map((p, i) => `<div class="step"${stage.marks[i] ? ` data-mark="${stage.marks[i]}"` : ''}>${p}</div>`)
+    .join('')}</div>`;
+
+const centre = (i) => ((i + 0.5) / 5) * 100;
+
+/* Each proposal returns the markup for its whole figure. */
+const PROPOSALS = [
+  {
+    name: 'Het donkere paneel',
+    note: '<b>Wat het zegt:</b> de stap die vastloopt is de enige die oplicht. ' +
+      '<b>Wat het kost:</b> geen enkel donker vlak op de publieke site draagt vandaag tekst; ' +
+      'dit wordt het eerste, en de hero van deze pagina heeft er 800px hoger al een.',
+    render: () => `<div class="p1">${STAGES.map((s) => `<div class="row">${head(s)}${steps(s)}</div>`).join('')}
+      <div class="legend"><span>Wit — waar het werk wacht</span><span>Cyaan — waar een mens beslist</span></div></div>`
+  },
+  {
+    name: 'Papier, één vol blok',
+    note: '<b>Wat het zegt:</b> vier fases lopen door op een haarlijn, één staat er massief in de weg. ' +
+      '<b>Wat het kost:</b> niets — dit is het bestaande vocabulaire van de site. Rustig, maar misschien te rustig.',
+    render: () => `<div class="p2">${STAGES.map((s) => `<div class="row">${head(s)}${steps(s)}</div>`).join('')}
+      <div class="legend"><span>Vol — waar het werk wacht</span><span>Cyaan omlijnd — waar een mens beslist</span></div></div>`
+  },
+  {
+    name: 'De stroom, dichtgeknepen',
+    note: '<b>Wat het zegt:</b> een knelpunt is een vernauwing. De stroom versmalt waar het vastloopt en ' +
+      'loopt weer open waar het niet meer vastloopt. <b>Wat het kost:</b> drie donkere banden vullen hun ' +
+      'eigen kader helemaal, en dan is het kader de vorm — precies wat het merkboek van een vorm niet wil.',
+    render: () => `<div class="p3">${STAGES.map((s, i) => `<div class="row">${head(s)}
+      <svg class="river" viewBox="0 0 1 1" preserveAspectRatio="none" aria-hidden="true"><path d="${RIVER[i]}" fill="currentColor"/></svg>
+      ${steps(s)}</div>`).join('')}</div>`
+  },
+  {
+    name: 'De hoop op de lijn',
+    note: '<b>Wat het zegt:</b> het werk stapelt zich op vóór wat het tegenhoudt. ' +
+      '<b>Wat het kost:</b> dit staat vandaag in de build en het is precies wat u lelijk noemde. ' +
+      'Het staat hier alleen om eerlijk naast de rest te liggen.',
+    render: () => `<div class="p4">${STAGES.map((s) => {
+      const two = s.marks.filter(Boolean).length > 1;
+      const w = two ? 177 : 250;
+      const hasHeap = s.marks.some((m) => m === 'block');
+      const hasPocket = s.marks.some((m) => m === 'human');
+      const marks = s.marks.map((m, i) => {
+        if (!m) return '';
+        const left = `left:calc(${centre(i)}% - ${0.72 * w}px);width:${w}px`;
+        if (m === 'human') {
+          return `<span class="gate" style="left:${centre(i) - 10}%;width:20%"></span>
+            <svg class="heap heap--under" style="${left};height:30px" viewBox="0 0 1 1" preserveAspectRatio="none" aria-hidden="true"><path d="${HEAP}" transform="translate(0,1) scale(1,-1)" fill="currentColor"/></svg>`;
+        }
+        return `<svg class="heap" style="${left};height:${Math.round(w / 2.15)}px" viewBox="0 0 1 1" preserveAspectRatio="none" aria-hidden="true"><path d="${HEAP}" fill="currentColor"/></svg>`;
+      }).join('');
+      return `<div class="row">${head(s)}
+        <div class="rule${hasHeap ? ' rule--loaded' : ''}" style="${hasHeap ? `height:${Math.round(w / 2.15)}px` : ''}">${marks}</div>
+        ${steps(s, hasPocket ? 'steps steps--cleared' : 'steps')}</div>`;
+    }).join('')}</div>`
+  },
+  {
+    name: 'De wachtrij, in stukken werk',
+    note: '<b>Wat het zegt:</b> werk is telbaar. Waar het vastloopt liggen er vijf stukken op elkaar, ' +
+      'waar het doorloopt één. <b>Wat het kost:</b> vijf is een getal dat nergens vandaan komt; ' +
+      'het suggereert een meting die de tekst niet doet.',
+    render: () => `<div class="p5">${STAGES.map((s) => {
+      const yard = s.phases.map((p, i) => {
+        const mark = s.marks[i];
+        const n = mark === 'block' ? 6 : mark === 'human' ? 3 : 1;
+        return `<div class="stack"${mark ? ` data-mark="${mark}"` : ''}>${'<div class="unit"></div>'.repeat(n)}</div>`;
+      }).join('');
+      return `<div class="row">${head(s)}<div class="yard">${yard}</div>${steps(s)}</div>`;
+    }).join('')}</div>`
+  },
+  {
+    name: 'De lijn, doorgesneden',
+    note: '<b>Wat het zegt:</b> de lijn loopt en stopt. Waar hij stopt staat een balk dwars; ' +
+      'aan het einde staan er twee in cyaan. <b>Wat het kost:</b> het is klein en stil — ' +
+      'dichter bij wat er nu staat dan bij een figuur die opvalt.',
+    render: () => `<div class="p6">${STAGES.map((s) => {
+      const track = s.phases.map((p, i) =>
+        `<div class="cell"${s.marks[i] ? ` data-mark="${s.marks[i]}"` : ''}>${s.marks[i] ? '<span class="bar"></span>' : ''}</div>`).join('');
+      return `<div class="row">${head(s)}<div class="track">${track}</div>${steps(s)}</div>`;
+    }).join('')}</div>`
+  },
+  {
+    name: 'Drie kolommen naast elkaar',
+    note: '<b>Wat het zegt:</b> lees van links naar rechts en het volle vlak zakt naar de randen. ' +
+      'De drie stappen staan naast elkaar in plaats van onder elkaar, dus u vergelijkt ze in één blik. ' +
+      '<b>Wat het kost:</b> de fases heten per stap anders (Vereisten wordt Intentie, Test wordt Gates), ' +
+      'dus elke cel draagt haar eigen woord en de rijen zijn posities, geen namen.',
+    render: () => {
+      const rows = [0, 1, 2, 3, 4];
+      const cells = rows.map((r) =>
+        STAGES.map((s) => `<div class="cell"><span class="box"${s.marks[r] ? ` data-mark="${s.marks[r]}"` : ''}>${s.phases[r]}</span></div>`).join('')).join('');
+      return `<div class="p7"><div class="grid">
+        ${STAGES.map((s) => `<div class="colhead">${s.name}</div>`).join('')}
+        ${cells}
+        ${STAGES.map((s) => `<div class="colclause">${s.clause}</div>`).join('')}
+      </div></div>`;
+    }
+  },
+  {
+    name: 'Knopen en verbindingen',
+    note: '<b>Wat het zegt:</b> de vijf fases zijn knopen op één draad, en de knoop die het werk ' +
+      'ophoudt is de zware. Het is het merk zijn eigen motief — het logo is een netwerk. ' +
+      '<b>Wat het kost:</b> een cyaan knoop staat elders op de site voor decoratie; hier moet hij betekenis dragen.',
+    render: () => `<div class="p8">${STAGES.map((s) => {
+      const nodes = s.phases.map((p, i) =>
+        `<span class="node" style="left:${centre(i)}%"${s.marks[i] ? ` data-mark="${s.marks[i]}"` : ''}></span>`).join('');
+      return `<div class="row">${head(s)}<div class="net"><span class="wire"></span>${nodes}</div>${steps(s)}</div>`;
+    }).join('')}</div>`
+  },
+  {
+    name: 'Waar de tijd heen gaat',
+    note: '<b>Wat het zegt:</b> één balk per stap, vijf vakken, en het vak dat vastloopt neemt de ruimte. ' +
+      'Meteen leesbaar. <b>Wat het kost:</b> het is een meting, en de tekst meet niets — ' +
+      'dit voorstel beweert het hardst van alle tien.',
+    render: () => `<div class="p9">${STAGES.map((s) => `<div class="row">${head(s)}
+      <div class="bar">${s.phases.map((p, i) => `<span class="seg"${s.marks[i] ? ` data-mark="${s.marks[i]}"` : ''}>${p}</span>`).join('')}</div>
+      </div>`).join('')}</div>`
+  },
+  {
+    name: 'De poort die dicht staat',
+    note: '<b>Wat het zegt:</b> het werk loopt over de lijn tot het tegen een dichte poort komt. ' +
+      'In de laatste stap staan er twee open poorten in cyaan: een mens laat door. ' +
+      '<b>Wat het kost:</b> "Gates" is ook de naam van een fase in de derde rij, dus het beeld en het woord kunnen botsen.',
+    render: () => `<div class="p10">${STAGES.map((s) => {
+      const lane = s.phases.map((p, i) =>
+        `<div class="cell"${s.marks[i] ? ` data-mark="${s.marks[i]}"` : ''}>${s.marks[i] ? '<span class="gate"></span>' : ''}</div>`).join('');
+      return `<div class="row">${head(s)}<div class="lane">${lane}</div>${steps(s)}</div>`;
+    }).join('')}</div>`
+  }
+];
+
+const host = document.getElementById('proposals');
+PROPOSALS.forEach((p, i) => {
+  const section = el('section', 'prop');
+  section.id = `proposal-${i + 1}`;
+  section.innerHTML =
+    `<div class="prop__head"><span class="prop__no">${String(i + 1).padStart(2, '0')}</span>` +
+    `<h2 class="prop__name">${p.name}</h2></div>` +
+    `<p class="prop__note">${p.note}</p>` + p.render();
+  host.append(section);
+});
+</script>
+</body>
+</html>

@@ -141,7 +141,7 @@ The production implementation of all of this lives in `src/`; see `SKILL.md` for
 
 ## Deviations from the design doc
 
-The doc is a fixed 1180px canvas rendered in a preview host. Ten things had to be decided
+The doc is a fixed 1180px canvas rendered in a preview host. Eleven things had to be decided
 outside it, and are decided the same way everywhere in `src/`:
 
 1. **Responsive behaviour.** The three page measures (`--gutter-page`, `--gap-column`,
@@ -335,12 +335,17 @@ outside it, and are decided the same way everywhere in `src/`:
    inside a paragraph colour alone is not a reliable cue. Nothing else — no drop cap, no aside, no
    figure inside the body.
 
-8. **Every hero carries a lede, and the homepage's wordmark is not its heading.** The doc draws a
-   hero as an eyebrow, a headline and two buttons, and on a desk that leaves about 550px of bare
-   paper under the buttons: a first-time visitor scrolls a full screen before learning what is
-   sold. One or two sentences go between the headline and the actions, at the reading measure, in
-   `--text-lead` on `--text-body` — `.hero__lede`, and `<page>.hero.lede` in `src/i18n`. The
-   headline is the claim; the lede is the offer, and it is where the service words live.
+8. **A hero is an eyebrow, a headline and two buttons, and the homepage's wordmark is not its
+   heading.** The hero is the doc's, unchanged. Every one of the five carried a lede for a while —
+   one or two sentences between the headline and the actions, `.hero__lede` and `<page>.hero.lede`
+   in `src/i18n` — because the doc's hero leaves about 550px of bare paper under the buttons on a
+   desk and a first-time visitor scrolls a full screen before learning what is sold. They are gone
+   at the client's call: five paragraphs written to the same shape read as generated copy, which
+   costs more than the scroll they saved. The block under the hero is what says what is sold now.
+   If a hero ever gets a sentence back it is one sentence, in the client's own words, not the same
+   sentence five times. `--text-lede` survives as a size, on `--text-body` ink — the first is the
+   16.5px step, the second the body ink; they were both called `--text-lead`/`--text-body` until
+   the size ramp and the ink ramp were found to be overwriting each other in `:root`.
 
    On the homepage the wordmark lockup stays exactly as drawn but is a `<p>` beside the heading
    rather than the first line inside it. As part of the `h1` the page's one heading read
@@ -377,3 +382,126 @@ outside it, and are decided the same way everywhere in `src/`:
     article rows from the same function (`articleRows()` in `src/pages/insights/insights.mjs`), so
     the two lists cannot drift. It opens the way an article does: no hero, no dark shape, the
     orbit rings the homepage section carries and nothing else.
+
+11. **The privacy notice keeps the rail and loses the shape**, and the two halves of that are
+    worth separating. An insight answers the emptiness beside a single column with three more
+    articles; a legal notice has no "read next", and the same layout minus the rail leaves a
+    1022px column of GDPR prose (133 characters to the line, the longest measure on the site) with
+    354px of bare paper beside it for four fifths of the page. That is the "single column with the
+    rest of the band empty" this README already refuses at page scale, and decoration does not
+    answer it: two shapes at the extreme ends of a 2820px section bookend a void rather than filling
+    it.
+
+    **What goes in the rail is the notice's own clauses.** It is the one piece of navigation a
+    legal page genuinely needs — nobody reads a privacy statement end to end, they arrive wanting
+    one thing — and it brings the column back to the article's own 980px on the way. Same
+    component, same rows, one line each and no date, and it is a `<nav>` rather than the article
+    rail's `<aside>`. Below 1000px it goes *first* rather than under the article, in two columns at
+    half the row padding, and the body ends on a link back to it: an index at the foot of a long
+    notice is an index nobody reaches, and an index that scrolls away on the first jump is an
+    index that works once.
+
+    **The dark field is not on this page.** A silhouette was drawn for the air beside the head,
+    went through three drafts, and came off; a second one standing on the footer's hairline came
+    off before it. The notice is paper end to end now, the way the four insight articles are, and
+    the brand on it is the rings.
+
+    **The rings stick, and no others on the site do.** Every other orbit set is nailed to its
+    section, which is right for a hero and for a list one screen tall. This section is 2820px and
+    the outermost ring is 845px in radius, so an origin nailed anywhere in it leaves a third of the
+    page with no ground under it at all. Struck against the viewport — `position: sticky` on the
+    origin, not on the layer, since a sticky box is in flow and a 0x0 origin costs no height while
+    a layer would cost a screen — the arcs hold the right flank the whole way down and the reading
+    column travels past a field that is holding still. The layer takes `overflow: clip` and not
+    `hidden` for the reason `.shell` does, and fades out over its last 200px, because a set held at
+    full radius when the section's bottom edge arrives is four arcs stopping dead on one line.
+
+    **Its offset is clamped rather than `50vh`, and that is the part worth carrying off this page.**
+    A sticky decoration and a sticky rail are both pinned to the viewport, but at *different*
+    offsets — so the distance between them is a function of viewport height, and therefore so is
+    which of five concentric rings crosses the rail. Plain `50vh` gave rings 01 and 02 at 900 tall,
+    plus ring 03 at 1100 and ring 04 at 1600; ring 03 is the heaviest of the five and the one
+    deliberately left undimmed, so a taller window reintroduced the artefact the dimming exists to
+    remove, with a heavier arc. Six review passes measured this across widths, where the crossings
+    move by under 5px, and none of them thought to sweep the axis the geometry actually turns on.
+    **When two sticky things are pinned at different offsets, the variable is the viewport dimension
+    they are pinned along.** Clamped under the height at which the next ring's window opens, the
+    crossing set is invariant and two dim rules are a complete answer rather than one that happens
+    to hold at the size it was checked at.
+
+    Two corollaries, both of which cost a round to learn. **A threshold like that is struck off a
+    corner, so check which corner** — this one comes off the rail's top-left, which means it moves
+    with the page's width (lowest at 1280px, not at the 1440 it was derived at) and does not move
+    with the index's height at all; a taller index opens a second window from the *other* corner
+    instead, which lowering the cap makes worse. And **a cap has a cost at the end you were not
+    looking at**: held under 520, the ring field reaches 1365px of viewport and no further, so a
+    window taller than that has bare paper under the arcs — the same failure the stickiness was
+    introduced to fix, moved from the document's axis onto the viewport's. It is the right trade
+    only because it begins above 1500px while the collision begins at 1100.
+
+    **And an arc that never moves has to be quieter than one that sweeps past.** The rings and the
+    clause index are both anchored to the viewport now, so the two arcs that cross the index stand
+    across the same eight labels for the whole section and never move relative to them — and a
+    hairline at the weight of the rules it crosses, held still, is a stray column rule rather than
+    ground. Two things about the fix are worth carrying to the next case.
+
+    It is **scoped to the two rings that actually collide**, not taken out of the layer's opacity.
+    Rings 03, 04 and 05 have no crossing of the rail; dimming the layer punished
+    three arcs for a collision they cannot have, and those three are the only ground in the gap the
+    wide-gutter decision deliberately leaves open at 1600px and up. And **the offender was not the
+    one it looked like**: sampled off the render, the cyan ring composites to rgb(209,228,235)
+    against hairlines at rgb(228,230,233) while the innermost ink ring is a dead heat at
+    rgb(231,232,233). Diagnosing it by eye, or by interpolating lightness in OKLCH rather than
+    sampling the sRGB the browser actually composites in, points at the wrong ring and makes
+    halving the whole layer look necessary. Moving the origin is not an option either: the first
+    offset that clears the rail with ring 01 puts ring 02 inside it.
+
+    **And the phone override that every other orbit set carries was measured and dropped here.**
+    The reasoning behind it — push the origin out so the strong inner rings leave the reading
+    measure — is half true, and the half that is missing reverses the conclusion: moving the origin
+    out also shortens the vertical reach the *outer* rings need to arrive, so rings that could not
+    reach the column start doing so. Counted at 390px, rows of the measure each ring crosses at 98%
+    against 150%: ring 01 519 → 293, the cyan ring 490 → 651, the darkest ink ring 72 → 845. It
+    trades the faintest ring's crossings for the two strongest ones'. The number is inherited on
+    the insights index and left alone there, because that is a different page's rendering and its
+    geometry has not been measured; the comment there says so. **Measure a decorative offset
+    against the rings it lets in, not only the ones it takes out.**
+
+    **What the three failed crests taught is worth keeping even though the crest is not.** Each is
+    a way a new silhouette can fail, anywhere on this site:
+
+    - **Welded along the top edge**, it put 490px of flat navy against the header's own bottom
+      line: the hairline stopped two thirds across and the black CTA sat 11px above a mass of
+      nearly its own colour. The homepage petal does not do that — it enters that corner and falls
+      away fast, so the actions keep paper under them.
+    - **Drawn with two lobes** separated by an 11% rise, it read as a wave divider rather than as a
+      drawn shape, and the hook at its end left a droplet hanging off the corner. One belly, one
+      tongue, no local low point.
+    - **A shape needs its box held, not only its silhouette drawn.** The crest's box was the air
+      above the copy, which made it collision-proof — but that box's height barely moved across the
+      range while its width halved, so left to itself it went from 1.72 wide-to-tall on a desk to
+      0.59 on a phone and the silhouette read as a mitten with a detached drip. A `max-height`
+      keyed to the box's own width holds it landscape at every width, and because it can only ever
+      shorten the box the collision guarantee survives it.
+
+    And one rule that outlives the shape entirely: **type beside a silhouette is held off the ink,
+    not off the box.** Every silhouette has a leftmost point some way inside the box that carries
+    it, and the box is what a reader never sees. Subtracting the whole of it from the headline's
+    measure left 160px on a 390px screen, less than the French heading's longest single word;
+    subtracting only the part that could be navy left 220. The draft that trusted the box cleared
+    the ink by 2px, and only because of where the curve happened to fall, in the platform face
+    rather than the one this site will ship. A number naming the silhouette's own reach is a
+    construction; a measured clearance is a coincidence waiting for a font.
+
+    **The head carries a standfirst, like every other head on the site** (see item 8). It is the
+    sentence that says what the document is, and it was the body's first paragraph until the rail
+    arrived — where it read as one paragraph of twenty-one and, at the widths the index sits above
+    the copy, arrived after the index of the thing it summarises.
+
+    **A cap can be worse than the hole it closes.** Past about 1500px the notice's column is held
+    at the prose measure while its rail stays welded to the right page gutter, so the gap between
+    them grows with the window — 510px at 1920. Capping the whole block to
+    measure-plus-gap-plus-rail closes that and breaks two things: the rail leaves the page gutter,
+    which is the one thing the rail contract promises, and this page stops matching the four
+    insight pages built on the same grid. A wide gutter *inside* a block reads as air. The same
+    width of paper *outside* it reads as a block that has come loose. The gap stays.

@@ -100,7 +100,6 @@ ${orbitRings('processes-hero')}
     <div id="processes-hero-text" class="hero__text">
       <p id="processes-hero-eyebrow" class="page-eyebrow">${t('processes.hero.eyebrow')}</p>
       <h1 id="processes-hero-title">${t('processes.hero.title')}</h1>
-      <p id="processes-hero-lede" class="hero__lede">${t('processes.hero.lede')}</p>
       <div id="processes-hero-actions" class="hero__actions">
         <a id="processes-hero-cta-talk" class="btn btn--primary" href="#contact">${t('cta.talk')}</a>
         <a id="processes-hero-cta-phases" class="btn btn--ghost" href="#phases">${t('processes.cta.phases')} <span id="processes-hero-cta-phases-arrow" aria-hidden="true">&rarr;</span></a>

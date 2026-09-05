@@ -24,8 +24,9 @@ const ISSUES = ['belief', 'capability', 'foundation', 'tooling'];
  * waits behind, `human` is a phase a person still owns. Traditional has one
  * block in the middle; agentic has two, at the ends of the build; AI-native has
  * no block at all and two human ends instead. Read the three lines top to
- * bottom and the mark travels outward and changes colour, which is the whole
- * claim of the block: the bottleneck moves, it does not disappear.
+ * bottom and the thickened run of rule travels outward and changes colour,
+ * which is the whole claim of the block: the bottleneck moves, it does not
+ * disappear.
  *
  * The phase names are shared keys (`sdlc.phase.*`) rather than per-stage ones:
  * "Bouwen" is the same word in all three lines, and three translators keeping
@@ -132,7 +133,6 @@ ${orbitRings('sdlc-hero')}
     <div id="sdlc-hero-text" class="hero__text">
       <p id="sdlc-hero-eyebrow" class="page-eyebrow">${t('sdlc.hero.eyebrow')}</p>
       <h1 id="sdlc-hero-title">${t('sdlc.hero.title')}</h1>
-      <p id="sdlc-hero-lede" class="hero__lede">${t('sdlc.hero.lede')}</p>
       <div id="sdlc-hero-actions" class="hero__actions">
         <a id="sdlc-hero-cta-talk" class="btn btn--primary" href="#contact">${t('cta.talk')}</a>
         <a id="sdlc-hero-cta-journey" class="btn btn--ghost" href="#journey">${t('sdlc.cta.journey')} <span id="sdlc-hero-cta-journey-arrow" aria-hidden="true">&rarr;</span></a>
@@ -174,77 +174,101 @@ ${join(rows)}
 /* ------------------------------------------------------------------ *
  * De weg ernaartoe — the one figure on the page
  *
- * Three stages, each a name and a sentence beside one continuous hairline with
- * the five phases of that stage set along it. One or two of those phases carry
- * a mark sitting on the rule: ink where the work waits, cyan where a person
- * decides. Read the three rules top to bottom and the mark travels outward and
- * changes colour — which is the argument, seen rather than explained.
+ * Three stages, each a name, a clause, and one bar divided into the five phases
+ * of that stage. A phase that holds the cycle up takes the room: ink where the
+ * work waits, cyan where a person decides.
  *
- * The hairline belongs to the row, not to the cells. The deck this page is
- * drawn from tried the other version first, a rule over every phase, and it
- * read as a spreadsheet: the eye had to be told which cell was the bottleneck
- * instead of seeing it. One line with a heavy dot on it is a line with a dot on
- * it, and three of them are a movement.
+ * Read the three bars top to bottom and the wide block leaves the middle, splits
+ * to the two ends, and turns cyan — the lede's own sentence, drawn instead of
+ * asserted. It is the one figure on the site a reader takes in before reading a
+ * word, which is what the block is for.
  *
- * The deck's own figure is a navy ribbon whose height is throughput, drawn in
- * SVG against a fixed 1920x1080 stage. It is the better drawing and it does not
- * survive a page that has to hold from 320px to a wide desk, so the page keeps
- * the claim and gives up the ribbon.
+ * **The width is a share of one cycle, and that is the only thing it claims.**
+ * Every bar is the same length and is always full, so nothing here says an
+ * agentic cycle is shorter than a traditional one, or counts hours, or measures
+ * anything the page has not written down. What it says is what `sdlc.legend.block`
+ * already says — this is the phase the work waits at — and it says it by letting
+ * that phase take the space. Do not add a scale, a tick or a number to this
+ * figure: the moment a reader can read a quantity off it, it is asserting one.
  *
- * No orbit diagram behind it. It was there, dimmed, the way it is under the
- * training page's offer — but that block is panels and this one is hairlines
- * and cyan dots, which is exactly what the diagram is made of. A decorative
- * cyan node landed 50px from the legend's cyan swatch and there was no way for
- * a reader to tell which of the two carried meaning. Ground goes behind a
- * figure, not inside one.
+ * Four drawings were tried before this one and each failed differently, which is
+ * worth knowing before redrawing it a fifth time.
+ * - A 7px dot on a hairline, then a 3px thickened run of it. Both are a mark you
+ *   have to go looking for and then be told the meaning of, and neither says
+ *   anything about work.
+ * - A navy band that pinched at the bottleneck. A constriction says "low
+ *   capacity here", not "the work is stacked up behind it", and three bands edge
+ *   to edge in their own boxes make the box the shape.
+ * - A drawn heap standing on the rule, feet at the angle of repose. It said the
+ *   right thing and looked wrong on this page: three dark lumps on paper, in a
+ *   system built out of hairlines, panels and one cyan.
+ * The bar is the site's own vocabulary — a panel, a radius, a hairline gap, one
+ * accent — which is why it is the one that reads as designed rather than drawn.
+ *
+ * `SHARE` is where the argument lives, so it is one table rather than a number
+ * per row: a phase that blocks holds 3.4 units of a cycle, a phase a person owns
+ * holds 2.2, and everything else holds 1. A row's bar is those units normalised,
+ * so adding a phase or a mark cannot silently rescale the claim.
  * ------------------------------------------------------------------ */
 
 /**
- * One stage: the label column, and the lifecycle it runs.
+ * What a phase holds of its own cycle. Not minutes, not a measurement: the ratio
+ * between a phase that stops the work and one that does not, which is the only
+ * comparison the copy makes. A person deciding holds less than a jam because the
+ * copy says the middle runs clear by then, and more than a phase that flows
+ * because the lede's whole point is that the bottleneck does not disappear.
+ */
+const SHARE = { block: 3.4, human: 2.2, flow: 1 };
+
+/**
+ * One stage: the name, the clause it makes, and the cycle it runs.
+ *
+ * The bar is an `<ol>` and each phase is an `<li>` carrying its own name, so it
+ * is content rather than a picture of content: with no CSS at all this is still
+ * the five phases in order with the marked ones named. `aria-describedby` points
+ * the list at the stage's own clause, because the movement between the three
+ * bars is the argument and a screen reader gets it from that sentence or not at
+ * all.
  *
  * @param {object} options
  * @param {Function} options.t
- * @param {string} options.key      stage key, also the id suffix
- * @param {Array} options.phases    `{ key, mark? }` in lifecycle order
- * @param {number} options.position 1-based, printed as the monospace index
+ * @param {string} options.key    stage key, also the id suffix
+ * @param {Array} options.phases  `{ key, mark? }` in lifecycle order
  */
-function stage({ t, key, phases, position }) {
+function stage({ t, key, phases }) {
   const id = `sdlc-stage-${key}`;
 
-  // A marked phase says so in text as well as with its dot. The dot and the
-  // legend beside it are the whole argument of this block, and neither reaches
-  // a reader who is not looking at them: without this a screen reader gets
-  // three identical lists of five words, and the ink/cyan distinction is
-  // colour carrying meaning on its own. The label is the legend's own key, so
-  // the two can never say different things.
-  const items = phases.map(
-    ({ key: phase, mark }) =>
-      html`        <li id="${id}-phase-${phase}" class="phase${mark ? ` phase--${mark}` : ''}">${t(`sdlc.phase.${phase}`)}${
-        mark
-          ? html`<span id="${id}-phase-${phase}-mark" class="visually-hidden">, ${t(`sdlc.legend.${mark}`)}</span>`
-          : ''
-      }</li>`
-  );
+  const items = phases.map(({ key: phase, mark }) => {
+    const share = SHARE[mark ?? 'flow'];
+
+    // A marked phase says so in words as well as by its width and its colour.
+    // Without it the ink/cyan distinction is colour carrying meaning on its own
+    // and the width carries none. The label is the legend's own key, so the two
+    // can never say different things.
+    return html`        <li id="${id}-phase-${phase}" class="cycle__phase${mark ? ` cycle__phase--${mark}` : ''}" style="--share: ${share}"><span id="${id}-phase-${phase}-name" class="cycle__name">${t(`sdlc.phase.${phase}`)}</span>${
+      mark
+        ? html`<span id="${id}-phase-${phase}-mark" class="visually-hidden">, ${t(`sdlc.legend.${mark}`)}</span>`
+        : ''
+    }</li>`;
+  });
 
   return html`    <div id="${id}" class="stage">
-      <div id="${id}-label" class="stage__label">
-        <span id="${id}-index" class="stage__index" aria-hidden="true">${index(position)}</span>
+      <div id="${id}-head" class="stage__head">
         <h3 id="${id}-name" class="stage__name">${t(`sdlc.stage.${key}.title`)}</h3>
         <p id="${id}-body" class="stage__body">${t(`sdlc.stage.${key}.body`)}</p>
       </div>
-      <ol id="${id}-flow" class="stage__flow">
+      <ol id="${id}-cycle" class="cycle" aria-describedby="${id}-body">
 ${join(items)}
       </ol>
     </div>`;
 }
 
 function journey(t) {
-  const stages = STAGES.map(({ key, phases }, i) =>
-    stage({ t, key, phases, position: i + 1 })
-  );
+  const stages = STAGES.map(({ key, phases }) => stage({ t, key, phases }));
 
-  // The legend is what tells the two marks apart, so it is copy and not
-  // decoration: the dot beside each line is the same mark the figure uses.
+  // The legend is copy, not decoration: it is what says the wide block is where
+  // the work waits rather than where most of it happens. Each swatch is the
+  // figure's own block at a fifth of the size.
   const legend = LEGEND.map(
     (key) => html`    <li id="sdlc-journey-legend-${key}" class="legend">
       <span id="sdlc-journey-legend-${key}-mark" class="legend__mark legend__mark--${key}" aria-hidden="true"></span>${t(`sdlc.legend.${key}`)}
@@ -259,12 +283,9 @@ function journey(t) {
   <div id="sdlc-journey-figure" class="journey">
 ${join(stages)}
   </div>
-  <div id="sdlc-journey-foot" class="journey__foot">
-    <ul id="sdlc-journey-legend" class="journey__legend">
+  <ul id="sdlc-journey-legend" class="journey__legend">
 ${join(legend)}
-    </ul>
-    <p id="sdlc-journey-note" class="journey__note">${t('sdlc.journey.note')}</p>
-  </div>
+  </ul>
 </section>`;
 }
 

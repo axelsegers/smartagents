@@ -129,15 +129,29 @@
   --text-h3: clamp(18px, 1.05rem + 0.3vw, 20px);
   --text-h4: 19px;
   --text-h5: 17px;
-  --text-lead: 16.5px;
-  --text-body-lg: 16px;
-  --text-body: 15.5px;
+  /* The lede and the two body steps are `--text-lede` / `--text-copy-lg` /
+     `--text-copy` and not `--text-lead` / `--text-body-*`, because those two
+     names are already taken forty lines up by the ink they are set in. A
+     custom property declared twice in one block keeps the last value, so the
+     sizes were silently overwriting the colours: every `color: var(--text-body)`
+     on the site resolved to the string `15.5px`, which is not a colour, so the
+     declaration was thrown away and seventeen blocks of body copy inherited the
+     page's full ink instead of the grey they ask for. Nothing warned. The check
+     that now fails the build on a repeated declaration is in `check-dist.mjs`. */
+  --text-lede: 16.5px;
+  --text-copy-lg: 16px;
+  --text-copy: 15.5px;
   --text-ui: 15px;
   --text-ui-sm: 14px;
   --text-meta: 13.5px;
   --text-meta-sm: 13px;
   --text-micro: 12.5px;
-  --text-nano: 11px;
+  /* The disclosure line in the footer, and its only consumer. Half a step under
+     `--text-micro`, and the half step is what buys the line: the four register
+     facts measure 781px at 11.5 and about 850 at 12.5, against the 799px the
+     row gives them at 1280. The colour is `--text-faint`, measured at 4.82:1 on
+     paper, so the size is what is small here and not the contrast. */
+  --text-nano: 11.5px;
 
   --weight-display: 650;
   --weight-semibold: 600;

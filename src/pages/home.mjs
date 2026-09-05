@@ -119,7 +119,6 @@ ${orbitRings('home-hero')}
            sold. It is the same lockup on screen; only the outline changed. -->
       <p id="home-hero-wordmark" class="hero__wordmark">${logoMark('ink', 'home-hero-logo')}<span id="home-hero-wordmark-text">Smart<span id="home-hero-wordmark-accent" class="brand-accent">Agents</span></span></p>
       <h1 id="home-hero-title" class="hero__claim">${t('hero.claim')}</h1>
-      <p id="home-hero-lede" class="hero__lede">${t('hero.lede')}</p>
       <div id="home-hero-actions" class="hero__actions">
         <a id="home-hero-cta-talk" class="btn btn--primary" href="#contact">${t('cta.talk')}</a>
         <a id="home-hero-cta-work" class="btn btn--ghost" href="#services">${t('cta.seeWork')} <span id="home-hero-cta-work-arrow" aria-hidden="true">&rarr;</span></a>

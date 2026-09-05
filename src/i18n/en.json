@@ -8,6 +8,7 @@
   "a11y.language": "Language",
   "a11y.menuNav": "Menu navigation",
   "a11y.languageMenu": "Language, in the menu",
+  "a11y.newTab": "opens in a new tab",
 
   "nav.menu": "Menu",
   "nav.home": "Home",
@@ -20,7 +21,6 @@
   "cta.moreInfo": "Discover",
   "cta.send": "Send",
 
-  "hero.lede": "We train your teams in AI, put AI-native engineers into your projects and build the workflows and agents that take the work over. For Belgian organisations that want to know what AI actually returns today, and where it adds nothing.",
   "hero.claim": "Digital colleagues that never sleep",
 
   "section.services": "What we do",
@@ -83,7 +83,7 @@
   "faq.where.q": "Do you work at our office or remotely?",
   "faq.where.a": "Both, and you choose. We are based in Beringen and work for Belgian organisations, from SME to enterprise. Training, coaching and staffing all run in Dutch, English and French.",
   "faq.data.q": "What happens to our data?",
-  "faq.data.a": "This site sets no cookies, runs no analytics and does no tracking; not a single third-party request leaves the page until you use the contact form. What happens to your message then, who sees it and how long we keep it is in our privacy notice. Inside a project we work in your own environment and on your own systems.",
+  "faq.data.a": "The public pages of this site set no cookies of our own, run no analytics and do no tracking; not a single third-party request leaves the page until you use the contact form. What happens to your message then, who sees it and how long we keep it is in our privacy notice. Inside a project we work in your own environment and on your own systems.",
   "article.tag.news": "News",
   "article.tag.ai": "AI",
   "article.tag.tips": "Tips",
@@ -137,7 +137,6 @@
   "training.hero.eyebrow": "Training",
   "training.hero.title": "Learn to use AI like a professional",
 
-  "training.hero.lede": "Two courses: AI for business teams, and agentic engineering for developers. At your office or remote, in groups of 5 to 20, with exercises on the work your people have on the table this week.",
   "training.cta.offer": "See our courses",
 
   "training.why.title": "Why invest in AI training?",
@@ -206,7 +205,6 @@
   "staffing.hero.eyebrow": "AI staffing and coaching",
   "staffing.hero.title": "An AI-native engineer in your team",
 
-  "staffing.hero.lede": "An engineer who uses AI every day, working in your sprints, your repository and your review. Or coaching for your own developers and business teams, on the work that is in front of them today.",
   "staffing.cta.tracks": "See what we do",
 
   "staffing.tracks.title": "What we do",
@@ -246,7 +244,6 @@
   "processes.hero.eyebrow": "AI-native business processes",
   "processes.hero.title": "From your tasks to reusable workflows",
 
-  "processes.hero.lede": "We take one process that comes back every week from end to end, and leave behind workflows, skills and agents your own team runs. We also say where AI adds nothing.",
   "processes.cta.phases": "See the approach",
 
   "processes.phases.title": "How an engagement runs",
@@ -280,7 +277,6 @@
   "sdlc.hero.eyebrow": "AI-native SDLC",
   "sdlc.hero.title": "From traditional SDLC to AI-native",
 
-  "sdlc.hero.lede": "We take software teams from traditional to agentic to AI-native: the processes, the gates in your CI/CD, and above all the people who work inside them every day.",
   "sdlc.cta.journey": "See the way there",
 
   "sdlc.issues.title": "What we see today",
@@ -295,15 +291,14 @@
   "sdlc.issue.tooling.body": "Every team works its own way, there is no shared way of working, and the average developer has too little access to AI to get any good at it.",
 
   "sdlc.journey.title": "The way there",
-  "sdlc.journey.lede": "We follow Anthropic’s AI-native SDLC playbook. The bottleneck does not disappear, it moves: every stage has one of its own, and you cannot skip ahead. Maturity and trust are what the rest is built on.",
-  "sdlc.journey.note": "This is the ideal shape. In practice there will still be hiccups in the chain, and that is part of it.",
+  "sdlc.journey.lede": "We follow Anthropic’s AI-native SDLC playbook. The bottleneck does not disappear, it moves.",
 
   "sdlc.stage.traditional.title": "Traditional",
-  "sdlc.stage.traditional.body": "Build is the bottleneck. Everything before it and everything after it waits on the people writing the code.",
+  "sdlc.stage.traditional.body": "Build is the bottleneck.",
   "sdlc.stage.agentic.title": "Agentic",
-  "sdlc.stage.agentic.body": "Agents take over the build and the bottleneck moves to the two ends: what you asked for exactly, and who checks it. This is the stage where the way your people work changes.",
+  "sdlc.stage.agentic.body": "Agents build. The bottleneck moves to what you asked for and who checks it.",
   "sdlc.stage.native.title": "AI-native",
-  "sdlc.stage.native.body": "A person stands at both ends: they set the intent and they accept the result. In between, gates hold the quality line automatically.",
+  "sdlc.stage.native.body": "A person sets the intent and accepts the result.",
 
   "sdlc.phase.requirements": "Requirements",
   "sdlc.phase.design": "Design",
@@ -361,20 +356,21 @@
   "team.cta.title": "Shall we get to know each other?",
   "team.cta.body": "Tell us briefly what could run better. You get one of the two of us at the table, and we will also say when you do not need us.",
 
-  "footer.legal": "© 2026 SmartAgents",
+  "footer.legal": "© {year} SmartAgents",
   "privacy.title": "Privacy notice · SmartAgents",
-  "privacy.description": "What personal data smartagents.be processes, why, who sees it and how long we keep it. No analytics, no tracking, no cookies.",
-  "privacy.eyebrow": "Privacy",
+  "privacy.description": "What personal data smartagents.be processes, why, who sees it and how long we keep it. No analytics, no tracking and no cookies of our own on the public pages.",
+  "privacy.eyebrow": "Legal",
   "privacy.heading": "Privacy notice",
+  "privacy.lede": "This page explains what personal data smartagents.be processes, why, and what you can do about it. It describes what the site actually does today, not what it could do.",
   "privacy.updated": "Last updated 3 September 2026",
+  "privacy.clauses": "Contents of this notice",
+  "privacy.backToClauses": "Back to contents",
   "footer.privacy": "Privacy notice",
-  "footer.customerZone": "Client zone",
   "footer.company": "SmartAgents BV",
-  "footer.legalForm": "Private limited company",
   "footer.street": "Mijnschoolstraat 18",
   "footer.city": "3580 Beringen, Belgium",
-  "footer.vat": "Company and VAT number BE 1037.114.694",
-  "footer.rpr": "RPR Enterprise Court of Antwerp, Hasselt division",
+  "footer.vat": "Company number BE 1037.114.694",
+  "footer.rpr": "RPR Antwerp, Hasselt division",
 
   "notfound.title": "Page not found",
   "notfound.description": "This page does not exist (any more).",

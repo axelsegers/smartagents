@@ -120,6 +120,40 @@ const cssTokenDefinitions = new Set(
 );
 
 /**
+ * A custom property declared twice in one block keeps the last value, and the
+ * declarations that wanted the first one do not warn — they resolve to a value
+ * of the wrong kind, the declaration is thrown away as invalid, and the
+ * property inherits instead. `--text-body` was the ink of body copy at the top
+ * of `:root` and 15.5px at the bottom of it; seventeen blocks asking for
+ * `color: var(--text-body)` had been inheriting the page's full ink since the
+ * ramp was written, and every check here passed, because the property is
+ * defined — just not as a colour.
+ *
+ * So: no name may be declared twice inside one `{ ... }`. Scoped redefinitions
+ * are the point of custom properties and are not touched — this only looks
+ * inside a single block, which is where a redefinition is always a mistake.
+ * "Tokens live once" (CLAUDE.md) is the rule; this is what enforces it.
+ *
+ * Documents are read as well as stylesheets: `tokens.css` never ships as a file
+ * of its own — `render.mjs` prepends it to the critical CSS and inlines the
+ * pair in every `<head>` — so a stylesheet-only scan would have missed the one
+ * file the rule exists for. A `{ ... }` in a document that is not CSS cannot
+ * match, because the declaration pattern needs a `--name:` inside it.
+ */
+for (const file of distFiles) {
+  if (!file.relativePath.endsWith('.css') && !file.relativePath.endsWith('.html')) continue;
+
+  for (const block of file.content.matchAll(/\{([^{}]*)\}/g)) {
+    const seen = new Set();
+    for (const declaration of block[1].matchAll(/(^|;)\s*(--[\w-]+)\s*:/g)) {
+      const name = declaration[2];
+      if (seen.has(name)) fail(file.relativePath, 'custom property declared twice in one block', name);
+      seen.add(name);
+    }
+  }
+}
+
+/**
  * Resolve one `href` or `src` to the path it would have inside `dist/`, or
  * `null` when it is not ours to check.
  *
