@@ -722,7 +722,7 @@ a.row:hover .row__cue {
 .plane--1 {
   z-index: 4;
   top: 101px;
-  border-color: oklch(0.66 0.12 210);
+  border-color: oklch(0.6622 0.1151 211.3);
   background: linear-gradient(var(--sa-cyan-soft), var(--sa-cyan-soft)), var(--surface-dark);
 }
 
@@ -755,16 +755,16 @@ a.row:hover .row__cue {
 }
 
 .plane__quadrants i:nth-child(1) {
-  border-right: 1px solid oklch(0.66 0.12 210 / 0.4);
-  border-bottom: 1px solid oklch(0.66 0.12 210 / 0.4);
+  border-right: 1px solid oklch(0.6622 0.1151 211.3 / 0.4);
+  border-bottom: 1px solid oklch(0.6622 0.1151 211.3 / 0.4);
 }
 
 .plane__quadrants i:nth-child(2) {
-  border-bottom: 1px solid oklch(0.66 0.12 210 / 0.4);
+  border-bottom: 1px solid oklch(0.6622 0.1151 211.3 / 0.4);
 }
 
 .plane__quadrants i:nth-child(3) {
-  border-right: 1px solid oklch(0.66 0.12 210 / 0.4);
+  border-right: 1px solid oklch(0.6622 0.1151 211.3 / 0.4);
 }
 
 .plane__rows {
@@ -833,12 +833,17 @@ a.row:hover .row__cue {
   border-bottom: 1px solid oklch(0.72 0.02 240 / 0.16);
 }
 
+/* The accent, mixed rather than restated. Both of these used to carry a
+   hand-copied `oklch(0.53 0.112 214 / …)`, which was the accent's old
+   out-of-gamut coordinates written out a third and fourth time — so correcting
+   the token would have left this figure on the value the token was corrected
+   away from. Mixing keeps them tied to whatever --sa-cyan is. */
 .plane__cells i:nth-child(6n + 1) {
-  background: oklch(0.53 0.112 214 / 0.16);
+  background: color-mix(in oklch, var(--sa-cyan) 16%, transparent);
 }
 
 .plane__cells i:nth-child(5n + 3) {
-  background: oklch(0.53 0.112 214 / 0.1);
+  background: color-mix(in oklch, var(--sa-cyan) 10%, transparent);
 }
 
 .stack__label {
@@ -2576,6 +2581,26 @@ sa-node-field {
   .hero--staffing .hero__field--right {
     inset: 0 0 -10% 60%;
   }
+}
+
+/* The rings run on past the hero's foot, and they have to be given the room to
+   do it. They are struck 90px below the layer's top and the outermost is 845px
+   in radius, so on the 540px hero of `.hero--page` the last three rings close
+   82px, 232px and 397px below the foot — and `.orbits` clips to its own box, so
+   all three were cut dead on the same horizontal line. Three arcs ending on one
+   rule is a seam, not ground: it is the artefact `.orbits--notice` masks away at
+   the bottom of the privacy notice, here drawn straight across the gap between
+   the hero and the track panel.
+
+   So the layer is given the height its geometry needs — 90px to the origin,
+   845px of radius, 1px of stroke — rather than the hero's. `bottom` is ignored
+   once an absolutely positioned box is over-constrained, so this grows the box
+   downward and leaves the origin, and every ring on it, exactly where it was.
+   What the arcs run into below the foot is the track panel, which is opaque and
+   paints over them: they pass under it and stop where it starts, the way the
+   arch's tail already does. Nothing is masked, because nothing is cut. */
+.hero--staffing .orbits {
+  min-height: 936px;
 }
 
 /* The pebbles are positioned inside the arch's own box rather than against the

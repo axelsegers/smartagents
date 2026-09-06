@@ -142,8 +142,9 @@ Nothing here is a GitHub Action, so a green local build is the only signal.
   them — and a page module adds its own by exporting `schema({ t, lang, url })`:
   a `Service` on each of the four service pages, a `BlogPosting` on each
   article, two `Person` nodes on the team page, a `Blog` on the insights index,
-  an `FAQPage` on the homepage, and a `BreadcrumbList` on everything below the
-  homepage. The one rule is that nothing in the graph may say something the page
+  and a `BreadcrumbList` on everything below the homepage. The homepage adds
+  none of its own: it had an `FAQPage` read off the questions block, and both
+  went when that block did. The one rule is that nothing in the graph may say something the page
   does not; every node is read off the same `t()` keys the visible page is, so a
   claim cannot outlive the sentence it was made from. `meta()` carries the other
   half of the head: `ogImage` overrides the brand share card (an article uses
@@ -338,9 +339,9 @@ Nothing here is a GitHub Action, so a green local build is the only signal.
   The **Cookies clause** is the one place this page has been factually wrong:
   two drafts said the site sets no cookies at all, and `functions/secured/login.js`
   sets `export_session` for seven days on `/secured/`. The clause is scoped to
-  the public pages now and names that one — as are `privacy.description`, which
-  is the page's own search snippet, and `faq.data.a`, which ships as `FAQPage`
-  structured data and is therefore the sentence an answer engine quotes. On a
+  the public pages now and names that one — as is `privacy.description`, the
+  page's own search snippet, which is the last summary of the clause left
+  anywhere: the homepage FAQ said it a third time and went with the block. On a
   page whose whole posture is that every claim is read off the code, an absolute
   has to be checked against the
   whole repo and not just `src/`. It is also the only page with no contact section — a notice that
@@ -431,6 +432,67 @@ Nothing here is a GitHub Action, so a green local build is the only signal.
 - **Tokens live once.** `src/styles/tokens.css` is the only place custom
   properties are defined; `build/render.mjs` prepends it to `critical.css` and
   inlines the pair in every `<head>`. Never redefine a token in `main.css`.
+- **A colour token has to name the colour that renders, and `check-dist.mjs`
+  fails the build if it does not.** Every `oklch()` in `dist/` is checked
+  against the sRGB gamut for its own lightness and hue. This is not pedantry
+  about a rounding step; an out-of-gamut colour fails in three ways at once and
+  none of them warn.
+  - **It comes back paler, not brighter.** Gamut mapping reduces chroma, so an
+    accent asked to be more vivid than the medium allows is drawn *less* vivid.
+    `--sa-cyan-bright-hover` was declared at chroma 0.128 against a ceiling of
+    0.1047 and washed out to `#5ff6ff` — a hover step that went toward grey.
+  - **It turns the hue.** The channel that has gone negative is clamped and the
+    other two are not, so the colour rotates. `--sa-cyan` said hue 214 and the
+    screen showed 218. That is why "the brand is teal, not cyan" had to be
+    re-measured off a screenshot rather than read out of the file: the token
+    said cyan, the site drew teal, and both were "correct".
+  - **Every derivative drifts.** `color-mix()` and the `/ alpha` form run on the
+    *declared* coordinates and map the result along a different path than the
+    base colour took, so a wash is not the token at lower opacity — it is a
+    different colour. `/secured/` had eight `--accent-NN` steps mixed off one
+    unreachable accent.
+  Both token files are clean now and both name the rendered hex in a trailing
+  comment. Two consequences for anyone changing a colour. **Measure in the
+  browser, not offline** — Chrome does CSS Color 4 gamut mapping, not a naive
+  channel clamp, so a hand calculation lands a step or two off; the way to pick
+  a value is to paint the candidate to a 1×1 canvas and read it back. And
+  **lowering a lightness lowers the chroma with it**, because the gamut narrows
+  as it darkens: `--sa-deep` at L 0.33 tops out at 0.066.
+- **An action changes colour and never moves.** The primary button is
+  "Diepzee", `--sa-deep` — the accent turned down until white type sits on it
+  — and its four states are four fills: rest, hover, pressed, withdrawn. It
+  used to be ink that rose 2px and threw a shadow on hover, which is a card
+  idiom borrowed by a button, and it left the one genuinely pressable control
+  on the page with nowhere to go when it was actually pressed. `--lift`,
+  `--shadow-lift` and `--shadow-lift-dark` went with it; only `/secured/`, which
+  keeps its own token file, still has them. The relief is `--shadow-action`, an
+  inset hairline along the top edge, reversed into `--shadow-action-press`.
+  Three things are load-bearing, all in the buttons block in `critical.css`.
+  - **The state order in the stylesheet is the cascade.** Five rules of equal
+    specificity — hover, focus, active, disabled — so which one wins is which
+    one is written last. Pressed beats the focus ring on purpose (while a key
+    is held, the press is what the reader is causing) and disabled beats
+    everything.
+  - **The focus ring is `--sa-cyan-ring` at 0.8, and both design canvases say
+    about a third.** A ring drawn flush against a fill has two edges and has to
+    clear 3:1 on both; at 0.32 it measures 1.56:1 against the paper, fainter
+    than the 2px outline it replaces. 0.8 is the band that clears both sides at
+    once — 3.37:1 outward, 3.42:1 against `--sa-deep` — so it is a ceiling as
+    well as a floor, with 0.75 (3.10 and 3.72) the floor. It is the only value
+    in the buttons taken off the canvas rather than from it.
+  - **The ring is a box-shadow, so a forced palette has none.** `.btn` gives up
+    the site's offset outline to draw it, and the `forced-colors` rule at the
+    foot of the block is what hands the outline back. It is in the critical
+    sheet, not in the forced-colours block at the foot of `main.css`: that block
+    is for decoration being dropped, and a focus ring arriving with `main.css`
+    arrives after the first Tab. `.btn--ondark` keeps the offset outline at all
+    times, because nothing clears 3:1 against both `#00d8ff` and the navy
+    behind it.
+  The withdrawn state is `aria-disabled`, not `disabled`: `contact-form.js`
+  marks the submit while a message is in flight and a disabled button would
+  drop the focus ring and stop being announced at the moment there is something
+  to announce. What refuses the second click is the `busy` guard at the top of
+  `submit()`, which was always the half doing the work.
 - **The dark field is one field, and where two shapes meet under the cursor it
   is one fluid.** Every navy shape is a `.field` carrying `data-magnet` and
   `data-clip`, with a `<sa-node-field>` inside. The clip path must sit on the

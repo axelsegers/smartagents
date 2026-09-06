@@ -44,6 +44,7 @@ class ContactForm extends HTMLElement {
   connectedCallback() {
     this.form = this.querySelector('form');
     this.status = this.querySelector('.form-status');
+    this.submitter = this.querySelector('button[type="submit"]');
     this.sitekey = this.dataset.sitekey;
     if (!this.form || !this.sitekey) return;
 
@@ -167,7 +168,7 @@ class ContactForm extends HTMLElement {
     if (!this.widget) return; // let the browser run the mailto: fallback
 
     event.preventDefault();
-    this.busy = true;
+    this.setBusy(true);
     this.say(this.dataset.sending, 'busy');
 
     try {
@@ -187,8 +188,22 @@ class ContactForm extends HTMLElement {
     } catch {
       this.say(this.dataset.failed, 'error');
     } finally {
-      this.busy = false;
+      this.setBusy(false);
     }
+  }
+
+  /**
+   * The status line already says the message is going; the button is what the
+   * hand is still on, and until now it said nothing. `aria-disabled` rather
+   * than `disabled`, because a disabled button leaves the focus ring nowhere
+   * and stops being announced at the moment there is something to announce —
+   * what actually refuses the second click is the guard at the top of
+   * `submit`, which was always the thing doing the work.
+   */
+  setBusy(busy) {
+    this.busy = busy;
+    if (busy) this.submitter?.setAttribute('aria-disabled', 'true');
+    else this.submitter?.removeAttribute('aria-disabled');
   }
 
   say(message, state) {

@@ -320,12 +320,26 @@ select {
 }
 
 /* ------------------------------------------------------------------ *
- * Buttons
+ * Buttons — "Diepzee"
+ *
+ * The primary action is the deep-sea step of the accent rather than ink, and
+ * every state it has is a colour step: no lift, no cast shadow, no travel.
+ * What was there before was a card idiom borrowed by a button — rise 2px,
+ * throw a shadow — and it made the one control on the page that is genuinely
+ * pressable behave like the one thing on the page that is not. A fill that
+ * darkens under the finger is the older and the truer answer, and it is the
+ * only one of the two that has somewhere left to go when the button is
+ * actually pressed.
+ *
+ * Four states, four fills, and the relief is the only thing drawn: a hairline
+ * of white along the top edge at rest, the same hairline turned into a shadow
+ * under the edge when pressed. Nothing here transitions but colour, which is
+ * why `--transition-move` is gone from the base and the press and the focus
+ * ring both land on the frame they are asked for.
  * ------------------------------------------------------------------ */
 
 .btn {
-  transition: var(--transition-move), background-color var(--dur-tint) ease,
-    border-color var(--dur-tint) ease, color var(--dur-tint) ease;
+  transition: var(--transition-tint);
   display: inline-flex;
   gap: 0.4em;
   align-items: center;
@@ -339,15 +353,49 @@ select {
   cursor: pointer;
 }
 
+/* The ring is drawn flush against the fill instead of the site's offset
+   outline, so a button swaps the two rather than wearing both. That is a
+   box-shadow, and a forced palette drops box-shadows entirely — hence the
+   `forced-colors` rule at the foot of this block, which is the only reason a
+   keyboard user in a high-contrast theme still sees where they are. */
+.btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--focus-ring-action);
+}
+
 .btn--primary {
   background: var(--action-primary-bg);
+  box-shadow: var(--shadow-action);
   color: var(--action-primary-fg);
 }
 
 .btn--primary:hover {
-  box-shadow: var(--shadow-lift);
+  background: var(--action-primary-bg-hover);
   color: var(--action-primary-fg);
-  transform: var(--lift);
+}
+
+.btn--primary:focus-visible {
+  box-shadow: var(--shadow-action), 0 0 0 3px var(--focus-ring-action);
+}
+
+/* After the ring, deliberately: while a key is held both states are live, and
+   the press is the one the reader is causing. The ring comes back the moment
+   the key is let go. */
+.btn--primary:active {
+  background: var(--action-primary-bg-press);
+  box-shadow: var(--shadow-action-press);
+}
+
+/* Last of the five, so it wins over every state above it without a second
+   selector saying so. `aria-disabled` and not `disabled`, because the form's
+   submit is only ever busy — it keeps its focus and it keeps announcing
+   itself, and what stops the second click is the guard in contact-form.js. */
+.btn--primary:disabled,
+.btn--primary[aria-disabled="true"] {
+  background: var(--action-primary-bg-off);
+  box-shadow: none;
+  color: var(--action-primary-fg-off);
+  cursor: default;
 }
 
 .btn--ghost {
@@ -358,11 +406,16 @@ select {
   font-weight: var(--weight-medium-plus);
 }
 
+/* To the primary's own colour, not to cyan. The two buttons stand side by side
+   in every hero on the site, and hovering the second one used to introduce a
+   third colour to a pair that has two. */
 .btn--ghost:hover {
-  border-color: var(--sa-cyan);
-  color: var(--sa-cyan);
+  border-color: var(--action-secondary-hover);
+  color: var(--action-secondary-hover);
 }
 
+/* On the field the accent stays the action and the steps run the other way:
+   toward the light rather than away from it. */
 .btn--ondark {
   background: var(--action-ondark-bg);
   color: var(--action-ondark-fg);
@@ -370,14 +423,41 @@ select {
 }
 
 .btn--ondark:hover {
-  box-shadow: var(--shadow-lift-dark);
+  background: var(--action-ondark-bg-hover);
   color: var(--action-ondark-fg);
-  transform: var(--lift);
+}
+
+/* The one button that keeps the site's offset outline rather than the flush
+   ring, and the fill is why: a ring drawn against a fill has two edges to
+   clear 3:1 on, and #00d8ff is light enough that nothing clears both it and
+   the navy behind it. An outline stood off by 3px only has the navy to answer
+   to, and the bright accent answers it at 10.9:1. */
+.btn--ondark:focus-visible {
+  outline: 2px solid var(--action-ondark-bg);
+  outline-offset: 3px;
+  box-shadow: none;
+}
+
+.btn--ondark:active {
+  background: var(--action-ondark-bg-press);
 }
 
 .btn--sm {
   padding: var(--space-2) var(--space-6);
   font-size: var(--text-ui-sm);
+}
+
+/* The ring is a box-shadow and a forced palette has none, so the outline the
+   button gave up comes back where it is the only thing left. Filed here rather
+   than in the forced-colours block at the foot of main.css: that block is for
+   decoration being dropped, and this is a control being given back what it
+   needs. It is also in the critical sheet on purpose — a focus ring that
+   arrives with main.css arrives after the first Tab. */
+@media (forced-colors: active) {
+  .btn:focus-visible {
+    outline: 2px solid;
+    outline-offset: 2px;
+  }
 }
 
 /* ------------------------------------------------------------------ *

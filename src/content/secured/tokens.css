@@ -25,7 +25,7 @@
     --sa-desk: oklch(0.94 0.004 247.84);
     --sa-paper: oklch(0.9846 0.0017 247.84);
     --sa-paper-2: oklch(0.985 0.003 247.84);
-    --sa-paper-3: oklch(0.998 0.002 247.84);
+    --sa-paper-3: oklch(0.998 0.001 247.84);
     --sa-white: #fff;
     --sa-wash: oklch(0.973 0.003 247.84);
     --sa-wash-2: oklch(0.968 0.003 247.84);
@@ -45,12 +45,21 @@
     --sa-line-4: oklch(0.74 0.012 247.84);
 
     /* ---------- Palette: one accent, two values ----------
-       The dark value is for paper, the bright one for the navy field. */
-    --sa-cyan: oklch(0.53 0.112 214);
-    --sa-cyan-hover: oklch(0.6 0.118 210);
+       The dark value is for paper, the bright one for the navy field.
+
+       In step with src/styles/tokens.css, and this file is where being out of
+       step cost the most. The accent used to be declared at chroma 0.112 where
+       sRGB tops out at 0.0932, so it was gamut-mapped to #027b93 on its way to
+       the screen — and the eight --accent-NN steps below are `color-mix` off
+       it, which mixes the declared coordinates and maps the *result*, along a
+       different path. Eight washes derived from a colour no display can show.
+       Every value here is now the one that renders, so the mixes start from
+       what the deck actually looks like. */
+    --sa-cyan: oklch(0.5381 0.0962 217.9); /* #027b93 — the wordmark's teal */
+    --sa-cyan-hover: oklch(0.6 0.1073 217.9); /* #038fab */
     --sa-cyan-bright: #00d8ff;
-    --sa-cyan-soft: oklch(0.53 0.112 214 / 0.2);
-    --sa-cyan-ink: oklch(0.16 0.02 220);
+    --sa-cyan-soft: oklch(0.5381 0.0962 217.9 / 0.2);
+    --sa-cyan-ink: oklch(0.1558 0.0251 214.9); /* #010f13 */
 
     /* ---------- Palette: text on the field ---------- */
     --sa-on-field: oklch(0.97 0.004 247.84);

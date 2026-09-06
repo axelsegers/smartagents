@@ -154,6 +154,77 @@ for (const file of distFiles) {
 }
 
 /**
+ * Every `oklch()` in the output has to be a colour sRGB can actually show.
+ *
+ * A colour outside the gamut is not an error and nothing warns: the browser
+ * gamut-maps it on the way to the screen and draws something near it. Three
+ * things make that worse than a rounding difference. The mapping reduces
+ * chroma, so a colour asked to be *brighter* than the medium allows comes back
+ * paler — `--sa-cyan-bright-hover` was declared at 0.128 against a ceiling of
+ * 0.1047 and washed out. It turns the hue as well, because the channel that
+ * has gone negative is clamped and the other two are not — the accent said hue
+ * 214 and the screen showed 218, which is how "the brand is teal, not cyan"
+ * came to be a thing that had to be re-measured off a screenshot. And worst,
+ * `color-mix()` and the `/ alpha` form run on the *declared* coordinates and
+ * map the result, along a different path than the base colour took, so every
+ * wash derived from an out-of-gamut token drifts off the token it came from.
+ * `/secured/` had eight such washes off one unreachable accent.
+ *
+ * So a token is required to name the colour it will actually be. The ceiling
+ * is found per (lightness, hue) by bisection, and the tolerance is one part in
+ * ten thousand of a linear channel — well inside a 1/255 step, so a value
+ * sitting deliberately on the gamut edge passes and one asking for a colour
+ * that does not exist does not.
+ *
+ * Comments are stripped first: the prose above several of these tokens quotes
+ * the out-of-gamut value it replaced, and that is documentation, not a colour.
+ */
+const OKLAB_TO_LRGB = [
+  [4.0767416621, -3.3077115913, 0.2309699292],
+  [-1.2684380046, 2.6097574011, -0.3413193965],
+  [-0.0041960863, -0.7034186147, 1.707614701]
+];
+
+function oklchToLinearRgb(L, C, h) {
+  const rad = (h * Math.PI) / 180;
+  const a = C * Math.cos(rad);
+  const b = C * Math.sin(rad);
+  const l = (L + 0.3963377774 * a + 0.2158037573 * b) ** 3;
+  const m = (L - 0.1055613458 * a - 0.0638541728 * b) ** 3;
+  const s = (L - 0.0894841775 * a - 1.291485548 * b) ** 3;
+  return OKLAB_TO_LRGB.map((row) => row[0] * l + row[1] * m + row[2] * s);
+}
+
+const inGamut = (channels) => channels.every((v) => v >= -1e-4 && v <= 1 + 1e-4);
+
+/** The largest chroma this lightness and hue can carry in sRGB. */
+function maxChroma(L, h) {
+  let low = 0;
+  let high = 0.45;
+  for (let i = 0; i < 60; i += 1) {
+    const mid = (low + high) / 2;
+    if (inGamut(oklchToLinearRgb(L, mid, h))) low = mid;
+    else high = mid;
+  }
+  return low;
+}
+
+for (const file of distFiles) {
+  if (!file.relativePath.endsWith('.css') && !file.relativePath.endsWith('.html')) continue;
+
+  const code = file.content.replace(/\/\*[\s\S]*?\*\//g, ' ');
+  for (const match of code.matchAll(/oklch\(\s*([\d.]+)\s+([\d.]+)\s+([\d.]+)/g)) {
+    const [L, C, h] = [Number(match[1]), Number(match[2]), Number(match[3])];
+    if (inGamut(oklchToLinearRgb(L, C, h))) continue;
+    fail(
+      file.relativePath,
+      `oklch() outside sRGB (chroma ${C} against a ceiling of ${maxChroma(L, h).toFixed(4)} at this lightness and hue)`,
+      match[0] + ')'
+    );
+  }
+}
+
+/**
  * Resolve one `href` or `src` to the path it would have inside `dist/`, or
  * `null` when it is not ours to check.
  *

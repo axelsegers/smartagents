@@ -169,12 +169,6 @@ function tracks(t) {
   <div id="staffing-tracks-head" class="section__head">
     <h2 id="staffing-tracks-title" class="section-heading">${t('staffing.tracks.title')}</h2>
   </div>
-  <!-- Outside the accordion on purpose. Two of the three rows are closed on
-       arrival, so with the whole offer inside the disclosure the page said
-       about forty words above the fold on the site's most commercially loaded
-       service name. This paragraph is what a reader gets before they open
-       anything. -->
-  <p id="staffing-tracks-lede" class="section-lede">${t('staffing.tracks.lede')}</p>
   <div id="staffing-tracks-ground" class="tracks">
     <div id="staffing-tracks-leaf-slot" class="field-slot tracks__leaf" aria-hidden="true">
       <div id="staffing-tracks-leaf" class="field" data-magnet data-magnet-free data-magnet-pin="left" data-magnet-points="260" data-magnet-amp="34" data-clip="tracksLeaf"><sa-node-field id="staffing-tracks-leaf-nodes"></sa-node-field></div>

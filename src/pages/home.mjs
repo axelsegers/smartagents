@@ -3,8 +3,7 @@
 // Structure, spacing, colour and motion all come from the design system:
 // see .claude/skills/smartagents-design/README.md.
 import { html, join, raw } from '../../build/lib/html.mjs';
-import { index, logoMark, orbitRings, servicePath } from '../layouts/base.mjs';
-import { absolute } from '../../build/lib/i18n.mjs';
+import { logoMark, orbitRings, servicePath } from '../layouts/base.mjs';
 import { contactSection } from '../components/contact-form/contact-form.mjs';
 import { articleRows, insightsIndexPath } from './insights/insights.mjs';
 
@@ -19,21 +18,6 @@ import { articleRows, insightsIndexPath } from './insights/insights.mjs';
 const SERVICES = ['training', 'staffing', 'sdlc', 'processes'];
 const DNA = ['1', '2', '3', '4'];
 const TRANSFORMATION = ['1', '2', '3', '4'];
-const STEPS = ['1', '2', '3', '4', '5'];
-
-/**
- * The questions we are asked before a first call, in the order they come up.
- *
- * They are here rather than in a disclosure on purpose: every answer is on the
- * page, open, at all times. A reader skims them, and an answer engine quotes
- * them — which is the point, because this block is also the site's `FAQPage`
- * (see `page.schema` below) and a question whose answer is behind a click is a
- * question the page has not answered.
- *
- * Nothing here is new: every answer is something the site already says on one
- * of its pages, collected where the question is actually asked.
- */
-export const FAQ = ['price', 'speed', 'honest', 'who', 'where', 'data'];
 
 /**
  * The cells inside one isometric plane. Pure texture and inside an `aria-hidden`
@@ -59,31 +43,12 @@ export const page = {
     description: t('home.description')
   }),
 
-  /* The `FAQPage` is the block further down this file, question for question:
-     the rule is that structured data may not say anything the page does not,
-     and here it says exactly what the page says because both read the same
-     keys. It is the format answer engines quote most, which is why the block
-     exists at all. */
-  schema: ({ t, url }) => [
-    {
-      '@type': 'FAQPage',
-      '@id': `${absolute(url)}#faq`,
-      mainEntity: FAQ.map((key) => ({
-        '@type': 'Question',
-        name: t(`faq.${key}.q`),
-        acceptedAnswer: { '@type': 'Answer', text: t(`faq.${key}.a`) }
-      }))
-    }
-  ],
-
   render: ({ t, lang }) => html`<main id="main" tabindex="-1">
 
 ${hero(t)}
 ${services(t, lang)}
 ${dna(t)}
 ${transformation(t)}
-${approach(t)}
-${faq(t)}
 ${insights(t, lang)}
 ${contact(t, lang)}
 
@@ -256,52 +221,6 @@ ${join(items)}
 ${join(labels)}
       </div>
     </div>
-  </div>
-</section>`;
-}
-
-/* ------------------------------------------------------------------ *
- * Van vraag tot werkende oplossing — five steps
- * ------------------------------------------------------------------ */
-
-function approach(t) {
-  const steps = STEPS.map(
-    (n) => html`<div id="home-approach-step-${n}" class="step${n === '1' ? ' step--first' : ''}">
-      <span id="home-approach-step-${n}-index" class="step__index" aria-hidden="true">${index(n)}</span>
-      <h3 id="home-approach-step-${n}-title">${t(`step.${n}.title`)}</h3>
-      <p id="home-approach-step-${n}-body">${t(`step.${n}.body`)}</p>
-    </div>`
-  );
-
-  return html`<section class="section" id="approach" aria-labelledby="home-approach-title">
-  <div id="home-approach-head" class="section__head section__head--wide">
-    <h2 id="home-approach-title" class="section-heading">${t('section.approach')}</h2>
-  </div>
-  <div id="home-approach-steps" class="steps">
-${join(steps)}
-  </div>
-</section>`;
-}
-
-/* ------------------------------------------------------------------ *
- * Veelgestelde vragen — the same hairline rows every other list uses, with the
- * question in the title column and the answer in the body one.
- * ------------------------------------------------------------------ */
-
-function faq(t) {
-  const rows = FAQ.map(
-    (key) => html`    <div id="home-faq-${key}" class="row">
-      <h3 id="home-faq-${key}-question" class="row__title">${t(`faq.${key}.q`)}</h3>
-      <p id="home-faq-${key}-answer" class="row__body">${t(`faq.${key}.a`)}</p>
-    </div>`
-  );
-
-  return html`<section class="section" id="faq" aria-labelledby="home-faq-title">
-  <div id="home-faq-head" class="section__head">
-    <h2 id="home-faq-title" class="section-heading">${t('section.faq')}</h2>
-  </div>
-  <div id="home-faq-rows" class="rows">
-${join(rows)}
   </div>
 </section>`;
 }

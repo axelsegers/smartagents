@@ -19,13 +19,14 @@
 //     where it is an art. 13(1)(a) contact detail rather than a convenience.
 //     `.prose a[href^="tel:"]` is `white-space: nowrap`, which is the same
 //     answer the footer's legal microline already gives.
-//   • The clause says "no cookies *of our own*", not "no cookies", and the two
-//     strings outside this file that summarise it — `privacy.description`, which
-//     is the page's own search snippet, and `faq.data.a`, which ships as
-//     `FAQPage` structured data — carry the same qualifier. They did not, for a
+//   • The clause says "no cookies *of our own*", not "no cookies", and the one
+//     string outside this file that summarises it — `privacy.description`, the
+//     page's own search snippet — carries the same qualifier. It did not, for a
 //     round: the body conceded that touching the form loads Turnstile, which may
 //     place a technical value of its own, while the snippet a reviewer reads
-//     first said none ever is.
+//     first said none ever is. The homepage's FAQ said it a third time, in
+//     `faq.data.a` and in `FAQPage` structured data; both are gone with the
+//     block, so this is the last place the qualifier has to hold.
 //   • /secured/ does set one cookie, and the notice says so. `export_session` is
 //     written by `functions/secured/login.js` — HttpOnly, Secure, SameSite=Strict,
 //     `Max-Age=604800`, scoped to the secured path. Two drafts of the Cookies

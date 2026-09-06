@@ -26,15 +26,13 @@
   "section.services": "What we do",
   "section.dna": "Our DNA",
   "section.transformation": "Digital transformation",
-  "section.approach": "From question to working solution",
-  "section.faq": "Frequently asked questions",
   "section.insights": "Insights",
 
   "service.training.title": "Training",
   "service.training.body": "Workshops built on projects, exercises and supporting slides. For the teams who work with AI and the developers who build with it.",
   "service.staffing.title": "AI staffing and coaching",
   "service.staffing.body": "On paper everyone is an AI expert. We screen profiles the way we would want to be screened ourselves: on what they have built.",
-  "service.sdlc.title": "AI-native SDLC",
+  "service.sdlc.title": "AI-native SDLC transformation",
   "service.sdlc.body": "From traditional to agentic to AI-native. We guide that shift: the process, the guardrails, and above all the people who work inside it every day.",
   "service.processes.title": "AI-native business processes",
   "service.processes.body": "We start from the work your teams do today, find where AI genuinely pays off, and leave reusable workflows, skills and agents behind.",
@@ -61,29 +59,6 @@
   "transformation.4.label": "Rollout",
   "transformation.4.body": "Rolling out in your own systems and adjusting as you go.",
 
-  "step.1.title": "SmartScan",
-  "step.1.body": "We map your processes and bottlenecks, and say honestly where AI adds nothing.",
-  "step.2.title": "Design",
-  "step.2.body": "We draw out the new workflow and pick where agents and integrations pay off most.",
-  "step.3.title": "Development",
-  "step.3.body": "We build in short rounds. You test along on real files and steer while it takes shape.",
-  "step.4.title": "Implementation",
-  "step.4.body": "Rolling out in your environment, connecting to your systems, and bringing along the people who have to work with it.",
-  "step.5.title": "Optimisation",
-  "step.5.body": "We keep measuring and adjusting. Whatever goes unused, we take back out.",
-
-  "faq.price.q": "What does an engagement cost?",
-  "faq.price.a": "It depends on what is needed, and we only know that after the SmartScan. In it we map your processes and bottlenecks and propose a programme built for them. You get a price for the work that is actually in it, not for a package. A training course is quoted the same way, after a short intake.",
-  "faq.speed.q": "How long before we see something working?",
-  "faq.speed.a": "We build in short rounds and you test along on real files while it takes shape. The first working workflow therefore comes out of the engagement itself, not out of a final delivery. With a training course it is the next day: the exercises are about the work your people have on the table that week.",
-  "faq.honest.q": "And if AI returns nothing for us?",
-  "faq.honest.a": "Then we say so. In the SmartScan we say honestly where AI adds nothing, and that is almost always part of the answer. What we build and nobody uses, we take back out. A workflow nobody runs only costs you maintenance.",
-  "faq.who.q": "Who are your training courses for?",
-  "faq.who.a": "Two groups. AI for business teams is for people who work with AI and need no prior knowledge. Agentic engineering is for developers who build with it every day. Both run in groups of 5 to 20, in-house or remote.",
-  "faq.where.q": "Do you work at our office or remotely?",
-  "faq.where.a": "Both, and you choose. We are based in Beringen and work for Belgian organisations, from SME to enterprise. Training, coaching and staffing all run in Dutch, English and French.",
-  "faq.data.q": "What happens to our data?",
-  "faq.data.a": "The public pages of this site set no cookies of our own, run no analytics and do no tracking; not a single third-party request leaves the page until you use the contact form. What happens to your message then, who sees it and how long we keep it is in our privacy notice. Inside a project we work in your own environment and on your own systems.",
   "article.tag.news": "News",
   "article.tag.ai": "AI",
   "article.tag.tips": "Tips",
@@ -104,7 +79,6 @@
   "article.launch.title": "Hello world, hello AI era",
   "article.launch.body": "Why two tech founders start a new company in the middle of an AI wave: because “where do I begin?” is still unanswered at most companies.",
   "article.launch.alt": "Axel Segers and Tom Haeldermans, the founders of SmartAgents",
-
 
   "insight.more": "More insights",
   "insights.index.title": "Insights · SmartAgents",
@@ -209,7 +183,6 @@
 
   "staffing.tracks.title": "What we do",
 
-  "staffing.tracks.lede": "Three tracks, and which one it is depends on what is stuck today. Stuck on capacity, and we put an engineer in. Stuck on capability, and we coach your own people. Most engagements start with the first and end with the second: we work alongside your team until it runs without us.",
   "staffing.track.fitLabel": "Right when",
   "staffing.track.engineer.title": "AI engineer staffing",
   "staffing.track.engineer.tag.1": "Immediate impact on your project",
@@ -274,7 +247,7 @@
   "sdlc.title": "AI-native SDLC · SmartAgents",
   "sdlc.description": "From traditional to agentic to AI-native. We guide software teams through that shift: the bottleneck travels with it, and most of the work is not technical but human.",
 
-  "sdlc.hero.eyebrow": "AI-native SDLC",
+  "sdlc.hero.eyebrow": "AI-native SDLC transformation",
   "sdlc.hero.title": "From traditional SDLC to AI-native",
 
   "sdlc.cta.journey": "See the way there",

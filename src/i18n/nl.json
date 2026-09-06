@@ -26,15 +26,13 @@
   "section.services": "Wat we doen",
   "section.dna": "Ons DNA",
   "section.transformation": "Digitale transformatie",
-  "section.approach": "Van vraag tot werkende oplossing",
-  "section.faq": "Veelgestelde vragen",
   "section.insights": "Inzichten",
 
   "service.training.title": "Training",
   "service.training.body": "Workshops gebaseerd op projecten, oefeningen en begeleidende slides. Voor de teams die met AI werken en voor de developers die ermee bouwen.",
   "service.staffing.title": "AI staffing en coaching",
   "service.staffing.body": "Op papier is iedereen AI-expert. Wij screenen profielen zoals we zelf gescreend willen worden: op wat ze gebouwd hebben.",
-  "service.sdlc.title": "AI-native SDLC",
+  "service.sdlc.title": "AI-native SDLC-transformatie",
   "service.sdlc.body": "Van traditioneel naar agentic naar AI-native. Wij begeleiden die omslag: de processen, de gates en vooral de mensen die er elke dag in werken.",
   "service.processes.title": "AI-native businessprocessen",
   "service.processes.body": "We vertrekken van het werk dat uw teams vandaag doen, zoeken waar AI echt iets oplevert, en laten herbruikbare workflows, skills en agents achter.",
@@ -61,29 +59,6 @@
   "transformation.4.label": "Toepassing",
   "transformation.4.body": "Uitrollen in uw eigen systemen en bijsturen.",
 
-  "step.1.title": "SmartScan",
-  "step.1.body": "We brengen processen en knelpunten in kaart en zeggen eerlijk waar AI niets toevoegt.",
-  "step.2.title": "Ontwerp",
-  "step.2.body": "We tekenen de nieuwe workflow uit en kiezen waar agents en integraties het meeste opleveren.",
-  "step.3.title": "Ontwikkeling",
-  "step.3.body": "We bouwen in korte rondes. U test mee op echte dossiers en stuurt bij terwijl het ontstaat.",
-  "step.4.title": "Implementatie",
-  "step.4.body": "Uitrollen in uw omgeving, koppelen aan uw systemen, en de mensen erbij die ermee moeten werken.",
-  "step.5.title": "Optimalisatie",
-  "step.5.body": "We blijven meten en bijsturen. Wat niet gebruikt wordt, halen we er weer uit.",
-
-  "faq.price.q": "Wat kost een traject?",
-  "faq.price.a": "Dat hangt af van wat er nodig is, en dat weten we pas na de SmartScan. Daarin brengen we uw processen en knelpunten in kaart en stellen we een programma op maat voor. U krijgt een prijs voor het werk dat er echt in zit, niet voor een pakket. Een training wordt op dezelfde manier begroot, na een korte intake.",
-  "faq.speed.q": "Hoe lang duurt het voor we iets zien werken?",
-  "faq.speed.a": "We bouwen in korte rondes en u test mee op echte dossiers terwijl het ontstaat. De eerste werkende workflow komt dus uit het traject zelf en niet uit een eindoplevering. Bij een training is het de dag erna: de oefeningen gaan over het werk dat uw mensen die week op tafel hebben.",
-  "faq.honest.q": "En als AI voor ons niets oplevert?",
-  "faq.honest.a": "Dan zeggen we dat. In de SmartScan zeggen we eerlijk waar AI niets toevoegt, en dat is bijna altijd een deel van het antwoord. Wat we bouwen en niet gebruikt wordt, halen we er ook weer uit. Een workflow die niemand draait, kost u alleen maar onderhoud.",
-  "faq.who.q": "Voor wie zijn jullie trainingen bedoeld?",
-  "faq.who.a": "Voor twee groepen. AI voor business teams is voor mensen die met AI werken en geen voorkennis nodig hebben. Agentic engineering is voor developers die er dagelijks mee bouwen. Beide draaien in groepen van 5 tot 20, in-house of remote.",
-  "faq.where.q": "Werken jullie bij ons op kantoor of remote?",
-  "faq.where.a": "Allebei, en dat kiest u. We zitten in Beringen en werken voor Belgische organisaties, van KMO tot enterprise. Trainingen, coaching en staffing lopen in het Nederlands, het Engels en het Frans.",
-  "faq.data.q": "Wat gebeurt er met onze gegevens?",
-  "faq.data.a": "Op de publieke pagina's van deze site staan geen eigen cookies, geen analytics en geen tracking; er vertrekt geen enkel verzoek naar een derde partij tot u het contactformulier gebruikt. Wat er dan met uw bericht gebeurt, wie het te zien krijgt en hoe lang we het bijhouden, staat in ons privacybeleid. In een project werken we in uw eigen omgeving en op uw eigen systemen.",
   "article.tag.news": "Nieuws",
   "article.tag.ai": "AI",
   "article.tag.tips": "Tips",
@@ -104,7 +79,6 @@
   "article.launch.title": "Hello world, hello AI era",
   "article.launch.body": "Waarom twee tech-ondernemers midden in de AI-golf een nieuw bedrijf starten: omdat “waar begin ik?” bij de meeste bedrijven onbeantwoord blijft.",
   "article.launch.alt": "Axel Segers en Tom Haeldermans, de oprichters van SmartAgents",
-
 
   "insight.more": "Meer inzichten",
   "insights.index.title": "Inzichten · SmartAgents",
@@ -209,7 +183,6 @@
 
   "staffing.tracks.title": "Wat we doen",
 
-  "staffing.tracks.lede": "Drie sporen, en welk spoor het wordt hangt af van wat er vandaag vastloopt. Loopt het project vast op capaciteit, dan zetten we er een engineer bij. Loopt het vast op vaardigheid, dan coachen we uw eigen mensen. Meestal begint een traject met het eerste en eindigt het met het tweede: wij draaien mee tot uw team het zonder ons draait.",
   "staffing.track.fitLabel": "Past wanneer",
   "staffing.track.engineer.title": "AI engineer staffing",
   "staffing.track.engineer.tag.1": "Direct impact op uw project",
@@ -274,7 +247,7 @@
   "sdlc.title": "AI-native SDLC · SmartAgents",
   "sdlc.description": "Van traditioneel naar agentic naar AI-native. Wij begeleiden softwareteams door die omslag: het knelpunt verschuift mee, en het meeste werk zit niet in de techniek maar in de mensen.",
 
-  "sdlc.hero.eyebrow": "AI-native SDLC",
+  "sdlc.hero.eyebrow": "AI-native SDLC-transformatie",
   "sdlc.hero.title": "Van traditionele SDLC naar AI-native",
 
   "sdlc.cta.journey": "Bekijk de weg ernaartoe",

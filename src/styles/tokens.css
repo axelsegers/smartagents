@@ -19,7 +19,13 @@
   --sa-desk: oklch(0.94 0.004 247.84);
   --sa-paper: oklch(0.9846 0.0017 247.84);
   --sa-paper-2: oklch(0.985 0.003 247.84);
-  --sa-paper-3: oklch(0.998 0.002 247.84);
+  /* Chroma 0.001, not the 0.002 it was declared at: 0.001 is the sRGB ceiling
+     at this lightness, and the old value was mapped down to about here anyway.
+     Held on the paper ramp's own hue rather than on the hue the mapped colour
+     came out at (197, which is nothing at chroma 0.002 and would read as a
+     typo in a ramp where everything else is 247.84). Costs 1/255 on one
+     channel of the input surface. */
+  --sa-paper-3: oklch(0.998 0.001 247.84);
   --sa-white: #fff;
   --sa-wash: oklch(0.973 0.003 247.84);
   --sa-wash-2: oklch(0.968 0.003 247.84);
@@ -56,13 +62,78 @@
      5.98:1 on white, so it clears AA everywhere the form is printed. */
   --sa-red: oklch(0.52 0.16 25);
 
-  /* one accent, two values: paper and field */
-  --sa-cyan: oklch(0.53 0.112 214);
-  --sa-cyan-hover: oklch(0.6 0.118 210);
+  /* One accent, two values: paper and field. The brand is teal, not cyan, and
+     that sentence had to be recovered from the render rather than read off
+     this file. `--sa-cyan` was `oklch(0.53 0.112 214)` — a bluer, brighter
+     cyan than sRGB can show at that lightness, where the ceiling is 0.0932.
+     No display ever drew it. What it drew was #027b93, which is not merely the
+     same colour desaturated: clamping a channel that has gone negative turns
+     the hue as well, so the value the file named was 214 and the value on the
+     screen was 218.
+
+     That would be a footnote if the token were only ever painted. It is also
+     mixed and made translucent, and both of those run on the *declared*
+     coordinates before anything is clamped — so `--sa-cyan-soft`, `--focus-ring`
+     and every `color-mix` off this token were derived from a colour that does
+     not exist and then clamped a second time, along a different path. That is
+     the "every derived colour just slightly wrong" the design canvas measured.
+
+     Every value below is now the colour that renders, checked by converting it
+     back to a hex and comparing: name what is on the screen and the mixes come
+     out on the screen's colour too. Three of them used to clip; none do now. */
+  --sa-cyan: oklch(0.5381 0.0962 217.9); /* #027b93 — the wordmark's teal */
+  --sa-cyan-hover: oklch(0.6 0.1073 217.9); /* #038fab */
   --sa-cyan-bright: #00d8ff;
-  --sa-cyan-ink: oklch(0.16 0.02 220);
-  --sa-cyan-soft: oklch(0.53 0.112 214 / 0.2);
-  --sa-cyan-edge: oklch(0.53 0.112 214 / 0.55);
+  /* The two steps the bright accent takes under a pointer on the field. Both
+     are lighter than it, because on navy an action lifts toward the light to
+     answer a press; on paper the same action goes the other way. Measured
+     against --sa-cyan-ink, the type they carry: 13.0:1 and 7.9:1. The hover
+     used to be declared at chroma 0.128 against a ceiling of 0.1047 and washed
+     out to #5ff6ff, which is the whole failure in one swatch: an accent asked
+     to be brighter than the medium allows comes back paler, not brighter. */
+  --sa-cyan-bright-hover: oklch(0.8542 0.1231 213); /* #5ae4ff */
+  --sa-cyan-bright-press: oklch(0.7105 0.1275 217.8); /* #00b4d6 */
+  --sa-cyan-ink: oklch(0.1558 0.0251 214.9); /* #010f13 */
+  --sa-cyan-soft: oklch(0.5381 0.0962 217.9 / 0.2);
+  --sa-cyan-edge: oklch(0.5381 0.0962 217.9 / 0.55);
+  /* The button's focus ring, and the one value here taken off the design
+     canvas rather than from it. Both canvases draw it at about a third — 0.3,
+     then 0.32 — and re-measured on the corrected teal that is still 1.56:1
+     against the paper it is drawn on, fainter than the 2px outline it replaces
+     and well under the 3:1 that SC 1.4.11 asks of a focus indicator. 0.8 is
+     where both of its edges clear that floor at once: 3.37:1 against paper on
+     the outside and 3.42:1 against --sa-deep on the inside, which is the test
+     a ring drawn flush against a fill has to pass twice. Above 0.8 it gains on
+     the paper and loses on the fill — 0.9 is 3.99 and 2.89 — so this is a
+     maximum as much as a minimum, and 0.75 (3.10 and 3.72) is the floor. */
+  --sa-cyan-ring: oklch(0.5381 0.0962 217.9 / 0.8);
+
+  /* Diepzee — the accent taken down until it is dark enough to set white type
+     on. It is the primary action's fill and nothing else, which is why it sits
+     beside the teal ramp rather than on it: teal is what the brand points
+     with, this is what it asks with. Every state is measured against the white
+     it carries — 12.0:1 at rest, 8.5:1 hovered, 14.7:1 pressed — so all three
+     clear AAA several times over at the 15px the label is set in, and the
+     button never dips as it is used.
+
+     Like the ramp above it, these are the values that render, taken off the
+     screen and converted back: #013b51, #02536e, #012c3d. The lower two sit at
+     the sRGB gamut edge for their lightness, so the chroma is a consequence of
+     the lightness rather than a choice — 0.066 is as blue as L 0.33 gets, and
+     lowering the lightness lowers the chroma with it. The hue holds near 230
+     across all four, about thirteen degrees off the wordmark's 217.9 and
+     turned toward the navy field it sits beside rather than away from it. */
+  --sa-deep: oklch(0.4341 0.0811 224.5); /* #013b51 */
+  --sa-deep-hover: oklch(0.4137 0.0806 228.9); /* #02536e */
+  --sa-deep-press: oklch(0.275 0.054 230); /* #012c3d */
+  /* The same hue with the life taken out of it, for a button that cannot be
+     pressed. 4.76:1 on --sa-wash-4: disabled type is exempt from the contrast
+     floor and this clears it anyway, which is the point — "not now" has to
+     stay readable, it is only the invitation that is withdrawn. The canvas
+     draws its ground at #eef1f4 and it keeps --sa-wash-4's #ebedef, three
+     steps off and already on the paper ramp: a one-off grey for one state of
+     one control is a ramp nobody can find again. */
+  --sa-deep-muted: oklch(0.513 0.045 223); /* #4a6d7a */
 
   /* text on the dark field */
   --sa-on-field: oklch(0.97 0.004 247.84);
@@ -101,12 +172,22 @@
   --border-on-dark: var(--sa-field-line);
   --mark-dot: var(--sa-line-4);
 
-  /* semantic — actions */
-  --action-primary-bg: var(--sa-ink);
+  /* semantic — actions
+     An action has four states and every one of them is a fill, never a
+     movement: see the buttons block in critical.css for why the lift went. */
+  --action-primary-bg: var(--sa-deep);
+  --action-primary-bg-hover: var(--sa-deep-hover);
+  --action-primary-bg-press: var(--sa-deep-press);
+  --action-primary-bg-off: var(--sa-wash-4);
   --action-primary-fg: var(--sa-white);
+  --action-primary-fg-off: var(--sa-deep-muted);
+  --action-secondary-hover: var(--sa-deep);
   --action-ondark-bg: var(--sa-cyan-bright);
+  --action-ondark-bg-hover: var(--sa-cyan-bright-hover);
+  --action-ondark-bg-press: var(--sa-cyan-bright-press);
   --action-ondark-fg: var(--sa-cyan-ink);
   --focus-ring: color-mix(in oklch, var(--sa-cyan) 14%, transparent);
+  --focus-ring-action: var(--sa-cyan-ring);
 
   /* ---------------------------------------------------------------- *
    * Type — Geist at 650 for display, 400-450 for body
@@ -223,9 +304,15 @@
     0 1px 2px 0 oklch(0.148 0.02 247.84 / 0.06);
   --shadow-menu: 0 28px 60px -30px oklch(0.148 0.03 247.84 / 0.42),
     0 2px 6px -2px oklch(0.148 0.02 247.84 / 0.08);
-  --shadow-lift: 0 12px 28px -14px oklch(0.148 0.03 247.84 / 0.5);
   --shadow-lift-sm: 0 10px 24px -12px oklch(0.148 0.03 247.84 / 0.45);
-  --shadow-lift-dark: 0 10px 24px -12px oklch(0.05 0.02 240 / 0.6);
+  /* The two the buttons use, and the only shadows on the site drawn inside the
+     box rather than under it. A cast shadow says a thing is off the page; these
+     say the fill itself has a top and a bottom, which is all a button needs to
+     be pressable and is what is left after the lift was taken away. `-press`
+     reverses `-action`: the highlight along the top edge becomes a shadow under
+     it, so the same rectangle reads pushed in rather than merely darker. */
+  --shadow-action: inset 0 1px 0 oklch(1 0 0 / 0.14);
+  --shadow-action-press: inset 0 1px 3px oklch(0.203 0.0457 238.9 / 0.55);
 
   /* ---------------------------------------------------------------- *
    * Motion — two speeds: travel and colour
@@ -235,7 +322,6 @@
   --dur-move: 0.34s;
   --dur-tint: 0.22s;
   --dur-tint-fast: 0.2s;
-  --lift: translateY(-2px);
   --transition-move: transform var(--dur-move) var(--ease-out-expo),
     box-shadow var(--dur-move) var(--ease-out-expo);
   --transition-tint: color var(--dur-tint) ease, background-color var(--dur-tint) ease,

@@ -26,15 +26,13 @@
   "section.services": "Ce que nous faisons",
   "section.dna": "Notre ADN",
   "section.transformation": "Transformation numérique",
-  "section.approach": "De la question à la solution qui tourne",
-  "section.faq": "Questions fréquentes",
   "section.insights": "Analyses",
 
   "service.training.title": "Formation",
   "service.training.body": "Des ateliers bâtis sur des projets, des exercices et des slides d'accompagnement. Pour les équipes qui travaillent avec l'IA et les développeurs qui construisent avec elle.",
   "service.staffing.title": "AI staffing et coaching",
   "service.staffing.body": "Sur papier, tout le monde est expert en IA. Nous évaluons les profils comme nous voudrions l'être nous-mêmes : sur ce qu'ils ont construit.",
-  "service.sdlc.title": "SDLC AI-native",
+  "service.sdlc.title": "Transformation SDLC AI-native",
   "service.sdlc.body": "Du traditionnel à l'agentique, puis à l'AI-native. Nous accompagnons ce basculement : les processus, les gates et surtout les personnes qui y travaillent chaque jour.",
   "service.processes.title": "Processus métier AI-native",
   "service.processes.body": "Nous partons du travail que vos équipes font aujourd'hui, cherchons où l'IA fait vraiment gagner du temps, et laissons derrière nous des workflows, des skills et des agents réutilisables.",
@@ -61,29 +59,6 @@
   "transformation.4.label": "Déploiement",
   "transformation.4.body": "Déployer dans vos propres systèmes et ajuster.",
 
-  "step.1.title": "SmartScan",
-  "step.1.body": "Nous cartographions vos processus et vos blocages, et disons honnêtement où l'IA n'apporte rien.",
-  "step.2.title": "Conception",
-  "step.2.body": "Nous dessinons le nouveau flux de travail et choisissons où les agents et les intégrations rapportent le plus.",
-  "step.3.title": "Développement",
-  "step.3.body": "Nous construisons par courtes itérations. Vous testez sur de vrais dossiers et ajustez pendant que cela prend forme.",
-  "step.4.title": "Implémentation",
-  "step.4.body": "Déployer dans votre environnement, connecter vos systèmes, et embarquer les personnes qui devront travailler avec.",
-  "step.5.title": "Optimisation",
-  "step.5.body": "Nous continuons à mesurer et à ajuster. Ce qui n'est pas utilisé, nous le retirons.",
-
-  "faq.price.q": "Combien coûte une mission ?",
-  "faq.price.a": "Cela dépend de ce qui est nécessaire, et nous ne le savons qu'après le SmartScan. Nous y cartographions vos processus et vos points de blocage, puis nous proposons un programme taillé pour eux. Vous obtenez un prix pour le travail réellement engagé, pas pour un forfait. Une formation est chiffrée de la même façon, après un court entretien.",
-  "faq.speed.q": "Combien de temps avant de voir quelque chose fonctionner ?",
-  "faq.speed.a": "Nous construisons par cycles courts et vous testez avec nous sur de vrais dossiers pendant que cela se construit. Le premier workflow qui tourne sort donc de la mission elle-même, pas d'une livraison finale. Pour une formation, c'est dès le lendemain : les exercices portent sur le travail que vos équipes ont sur la table cette semaine.",
-  "faq.honest.q": "Et si l'IA ne nous apporte rien ?",
-  "faq.honest.a": "Alors nous le disons. Dans le SmartScan, nous disons honnêtement où l'IA n'apporte rien, et c'est presque toujours une partie de la réponse. Ce que nous construisons et que personne n'utilise, nous le retirons. Un workflow que personne ne fait tourner ne vous coûte que de la maintenance.",
-  "faq.who.q": "À qui s'adressent vos formations ?",
-  "faq.who.a": "À deux publics. L'IA pour les équipes business s'adresse aux personnes qui travaillent avec l'IA et n'ont besoin d'aucun prérequis. L'agentic engineering s'adresse aux développeurs qui construisent avec elle tous les jours. Les deux se donnent en groupes de 5 à 20, chez vous ou à distance.",
-  "faq.where.q": "Travaillez-vous chez nous ou à distance ?",
-  "faq.where.a": "Les deux, et c'est vous qui choisissez. Nous sommes établis à Beringen et travaillons pour des organisations belges, de la PME au grand groupe. Formation, coaching et staffing se donnent en néerlandais, en anglais et en français.",
-  "faq.data.q": "Qu'advient-il de nos données ?",
-  "faq.data.a": "Les pages publiques de ce site ne posent aucun cookie de notre fait, n'utilisent aucun outil de mesure d'audience et ne font aucun suivi ; aucune requête vers un tiers ne quitte la page tant que vous n'utilisez pas le formulaire de contact. Ce qu'il advient alors de votre message, qui le voit et combien de temps nous le conservons figure dans notre politique de confidentialité. Dans un projet, nous travaillons dans votre propre environnement et sur vos propres systèmes.",
   "article.tag.news": "Actualités",
   "article.tag.ai": "IA",
   "article.tag.tips": "Conseils",
@@ -104,7 +79,6 @@
   "article.launch.title": "Hello world, hello AI era",
   "article.launch.body": "Pourquoi deux entrepreneurs tech lancent une nouvelle entreprise en pleine vague de l’IA : parce que « par où commencer ? » reste sans réponse dans la plupart des entreprises.",
   "article.launch.alt": "Axel Segers et Tom Haeldermans, les fondateurs de SmartAgents",
-
 
   "insight.more": "Plus d'analyses",
   "insights.index.title": "Analyses · SmartAgents",
@@ -209,7 +183,6 @@
 
   "staffing.tracks.title": "Ce que nous faisons",
 
-  "staffing.tracks.lede": "Trois pistes, et laquelle dépend de ce qui bloque aujourd'hui. Si c'est la capacité, nous ajoutons un ingénieur. Si c'est la compétence, nous coachons vos propres équipes. La plupart des missions commencent par la première et se terminent par la seconde : nous travaillons avec votre équipe jusqu'à ce qu'elle tourne sans nous.",
   "staffing.track.fitLabel": "Le bon choix si",
   "staffing.track.engineer.title": "AI engineer staffing",
   "staffing.track.engineer.tag.1": "Un impact direct sur votre projet",
@@ -274,7 +247,7 @@
   "sdlc.title": "SDLC AI-native · SmartAgents",
   "sdlc.description": "Du traditionnel à l'agentique, puis à l'AI-native. Nous accompagnons vos équipes de développement : le goulot d'étranglement se déplace, et l'essentiel du travail n'est pas technique mais humain.",
 
-  "sdlc.hero.eyebrow": "SDLC AI-native",
+  "sdlc.hero.eyebrow": "Transformation SDLC AI-native",
   "sdlc.hero.title": "Du SDLC traditionnel à l'AI-native",
 
   "sdlc.cta.journey": "Voir le chemin à parcourir",
