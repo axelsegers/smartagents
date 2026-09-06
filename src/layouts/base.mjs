@@ -464,8 +464,8 @@ function navLabel(key, t) {
 /**
  * Whether a nav key names the page currently being rendered. The four services
  * and the team page are keyed on their own page id; `insights` stands for the
- * whole section — the index and the four articles — so it matches every page id
- * that starts with the word.
+ * whole section — the index and the four articles — and a service stands for
+ * itself plus anything under it, so `training` matches `training-kata` too.
  *
  * The nav used to say nothing at all about where the reader was: on
  * `/nl/training/` the "Training" item looked and read exactly like the other
@@ -474,7 +474,11 @@ function navLabel(key, t) {
 function isCurrentNavItem(key, pageId) {
   if (!pageId) return false;
   if (key === 'insights') return pageId === 'insights' || pageId.startsWith('insight-');
-  return key === pageId;
+  // A page below a service page is still in that service: `training-kata` is
+  // part of Training, so the bar marks Training while the reader is on it. The
+  // prefix is the service's own key plus a hyphen, which is why a page id below
+  // one has to be named after it.
+  return key === pageId || pageId.startsWith(`${key}-`);
 }
 
 /**

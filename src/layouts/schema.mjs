@@ -162,6 +162,55 @@ export function serviceNode({ t, lang, url, key }) {
 }
 
 /**
+ * One course the training page sells a detail page for. `Course` rather than a
+ * second `Service`: the training page already carries the `Service`, and this
+ * page is one named, dated-by-duration thing inside it — a day, a group size, a
+ * place, two languages, all of them printed in the spec strip the reader sees.
+ *
+ * `hasCourseInstance` is what turns it from a description into an offering, and
+ * every field in it is read off the same `kata.spec.*` values the strip prints:
+ * on site because the strip says "bij u op kantoor", one day because it says
+ * one day, Dutch and English because it names both. Nothing here is a fact the
+ * page does not state — the price is not in the graph for exactly that reason,
+ * because the page does not quote one, and neither is a `location`: the day is
+ * held at the client's office, so the only address we could name here is the
+ * one place the course is not.
+ *
+ * The `Course` carries no `inLanguage` either, and that one is a trap worth
+ * naming: read off `lang`, it told a French reader the course is given in
+ * French while the spec strip beside it said "Néerlandais ou anglais" and the
+ * instance below it said `["nl","en"]` — the page's language and the course's
+ * language are two different facts and only the second one belongs here.
+ *
+ * `teaches` is the theme's name *and* its sentence, joined the way the row
+ * prints them. Six bare nouns ("Waarheid", "Parallel") are a label a reader
+ * decodes from the sentence beside it; on their own they assert nothing.
+ *
+ * The page hands over its own `key` and its own list of themes, the way
+ * `serviceNode` takes a key: this reads six `<key>.theme.*` pairs and a title
+ * and a description, so a second course page needs no change here.
+ */
+export function courseNode({ t, url, key, themes }) {
+  return node({
+    '@type': 'Course',
+    '@id': `${absolute(url)}#course`,
+    name: t(`${key}.hero.title`),
+    description: t(`${key}.description`),
+    url: absolute(url),
+    provider: { '@id': ORGANISATION_ID },
+    teaches: themes.map((theme) => `${t(`${key}.theme.${theme}.title`)}: ${t(`${key}.theme.${theme}.body`)}`),
+    hasCourseInstance: node({
+      '@type': 'CourseInstance',
+      courseMode: 'onsite',
+      courseWorkload: 'P1D',
+      inLanguage: ['nl', 'en'],
+      minimumAttendeeCapacity: 5,
+      maximumAttendeeCapacity: 15
+    })
+  });
+}
+
+/**
  * One article. `author` is the company rather than a person: the pieces are
  * published under the SmartAgents byline and the site prints no byline of its
  * own, and inventing one here would be the exact thing the rule at the top of

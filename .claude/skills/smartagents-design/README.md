@@ -505,3 +505,55 @@ outside it, and are decided the same way everywhere in `src/`:
     which is the one thing the rail contract promises, and this page stops matching the four
     insight pages built on the same grid. A wide gutter *inside* a block reads as air. The same
     width of paper *outside* it reads as a block that has come loose. The gap stays.
+
+12. **A page can sit under another one, and when it does it keeps that page's shape.** The agentic
+    engineering kata (`/nl/training/agentic-engineering-kata/`, `/fr/formation/kata-agentic-engineering/`)
+    is the first: it is not a fifth service, it is one of the two courses the training page lists,
+    opened up. Two consequences the doc has no page for.
+
+    **It reuses the parent's silhouette rather than drawing its own.** Every other detail page on
+    the site hangs off a service row and draws a shape of its own — the arch, the ridge — because
+    each is a different offer, and the shape is how the page says so. This one is the *same* offer
+    read closer, and the reader arrives on it from the petal. A new silhouette here would be the
+    one thing the page is not saying. The rule generalises: **a new shape marks a new offer, not a
+    new URL.**
+
+    **The spec strip** (`.spec`, under the hero) is the block that earns the page. Four facts —
+    a day, a group size, a place, two languages — as a `<dl>` on hairlines, before a word of
+    argument, because a reader who has come down one level has already read the argument and is
+    now deciding. It is the course facts strip of item 10 at page scale, and it is deliberately
+    *not* inside the hero: that copy column is 52% of the page, and four facts in half a page is
+    four narrow columns of wrapped type. Every pair carries its own top hairline and the strip
+    carries the closing one, which is what makes the rules correct at four columns, at two and at
+    one without a rule per shape.
+
+    **Nothing announces a count.** No heading and no lede on this page says "six themes", "four
+    steps" or "three of the four": a count in a heading promises a length rather than a subject,
+    it dates the moment the list grows, and the reader can already see how many rows there are.
+    Name the block, and let the rows do the counting. This is a house rule, not a page one.
+
+    **The page is a sequence of four different shapes, and that is deliberate.** Tour (two columns,
+    copy beside video) → steps (`.numbered`, four) → themes (`.rows--pair`, six) → practice (a
+    paragraph beside a hairline band) → requirements (`.rows`, three). Three hairline lists in a
+    row is one list interrupted by headings; alternating the shape is what lets a page carry five
+    content blocks without reading as a specification sheet. The one new grid is `.practice`,
+    and it exists for the reason item 11 gives: both halves of that block are capped at the reading
+    measure, so stacked they left a 780px column down the left of a 1312px band.
+
+    **A curriculum is printed at the level the buyer decides on.** The four steps each print their
+    own units as one micro line under the paragraph, not as a nested list. A technical lead reads
+    "Tokens · Context · Uw prompt · De sessie · …" and knows whether the day is pitched at their
+    team; ten `<li>`s under a row would turn a page selling a day into the course's own table of
+    contents. The indexes are the course's own folder numbers and start at **00** — the only
+    numbered list on the site that does not start at one, and worth the oddity because a
+    participant opens `step0` on the day.
+
+    The rest is idioms that already existed — the page hero, the tour block, `.rows--pair`,
+    `.numbered`, `.tour__tags` used outside `.tour`, `.offer-course__links` and
+    `.offer-course__fiche` used outside `.offer-course`, the shared form. New CSS on the site is
+    `.spec`, `.practice`, `.numbered__units` and the two-link wrapper.
+
+    **A nested page needs its own way out.** The one-pager was reachable from the parent and from
+    nowhere else, and a reader arriving from a search — the page is in the sitemap and in
+    `llms.txt` — had no route back up to the offer but the nav bar. The closing block carries both,
+    the way an insight carries "Alle artikelen →".

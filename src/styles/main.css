@@ -499,6 +499,28 @@ a.row:hover .row__cue {
   line-height: var(--leading-body-tight);
 }
 
+/* The units inside a step, listed under it. Micro type in the faint ink, so a
+   ten-item line reads as a contents note rather than as a second sentence.
+
+   A unit is one unbreakable chunk carrying the separator behind it, so a break
+   falls only between two units: left as one string the line broke inside a name
+   at 620px and left a stranded interpunct at the end of every wrapped line. The
+   footer's legal microline is the same rule reached from the other side —
+   there the separator is the gap and never a character, because a break
+   opportunity behind a dot is what strands it. Here the items are phrases
+   rather than facts and need a mark between them, so the mark is welded to the
+   item in front of it and travels with it. */
+.numbered__units {
+  margin-top: var(--space-4);
+  color: var(--text-faint);
+  font-size: var(--text-micro);
+  line-height: var(--leading-body-tight);
+}
+
+.numbered__unit {
+  white-space: nowrap;
+}
+
 /* An entry without its index: one column, so the copy starts at the rule. */
 .numbered--plain {
   grid-template-columns: 1fr;
@@ -2248,6 +2270,20 @@ sa-node-field {
   }
 }
 
+/* Two exits from a course column: its own page, where it has one, and the
+   one-pager. The wrapper keeps them on one line wherever the column is wide
+   enough — which is what stops a second link from adding a row to one subgrid
+   column and not the other, and leaving the two courses closing on different
+   lines. Below about 1100px the pair wraps and that costs the shorter column
+   some trailing paper above the shared closing rule; that is the graceful end
+   of it, not a guarantee. The gap is horizontal only, so a wrapped second link
+   is spaced by the links' own top margin. */
+.offer-course__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--space-9);
+}
+
 .offer-course__fiche {
   transition: transform var(--dur-move) var(--ease-out-expo);
   display: inline-block;
@@ -2288,6 +2324,129 @@ sa-node-field {
 @media (max-width: 620px) {
   .offer-course {
     padding-inline: 0;
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * Hoe u oefent — the argument beside the contents band
+ * ------------------------------------------------------------------ */
+
+/* Two columns, because one is a half-empty screen. The paragraph is held to the
+   reading measure and the band is held to it too, so stacked they are a 780px
+   column down the left of a 1312px band with the rest of the page bare — the
+   "single column with the rest of the band empty" the design README refuses at
+   page scale. Side by side they fill it, and the pairing is the right one to
+   look at anyway: the sentence says how the exercises work, the band says what
+   you get. Two equal tracks: the paragraph is capped at the reading measure by
+   its own rule, so a wider track for it buys nothing the cap does not take
+   straight back. */
+.practice {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--gap-column);
+  align-items: start;
+  padding: var(--space-9) var(--space-9) 0;
+  border-top: 1px solid var(--border-hairline);
+}
+
+/* The band's own top margin is the air under a paragraph inside `.tour`. Here
+   it is the first thing in its column and has to start on the paragraph's own
+   first line — and its measure cap has to go, because the grid column is
+   already the cap. Left on, the band ran 351px inside a 604px track and its
+   hairlines stopped 228px short of the section rule directly above them, which
+   is the half-empty band this grid exists to close. */
+.practice .tour__tags {
+  margin-top: 0;
+  max-width: none;
+}
+
+/* Three columns rather than the band's own two, above the width where the grid
+   splits. The list is tuned for the tour's copy column; given a 600px track it
+   set six short words in two 288px columns with most of each one empty. Two
+   rows of three closes that up and keeps the block reading as a band. */
+@media (min-width: 941px) {
+  .practice .tour__tags-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: repeat(2, auto);
+  }
+}
+
+@media (max-width: 940px) {
+  .practice {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-9);
+  }
+}
+
+@media (max-width: 620px) {
+  .practice {
+    padding-inline: 0;
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * The spec strip — the four hard facts under a course page's hero
+ * ------------------------------------------------------------------ */
+
+/* Its own band rather than a `.section`, because the section rhythm is a break
+   between two arguments and this is the hero's own footnote: it belongs to the
+   headline above it, not to the block below. Page gutters and nothing else, so
+   the labels range off the same left edge as every heading on the page. */
+.spec-band {
+  padding: var(--space-12) var(--gutter-page) 0;
+}
+
+/* Four abreast on a desk, two on a tablet, one on a phone. Every pair carries
+   its own top hairline and the strip carries the closing one, which is what
+   makes the rules right at all three shapes without a rule per shape: at four
+   the tops line up as one rule, at two they draw the two rows, at one they are
+   an ordinary hairline list.
+
+   That only holds because the grid has **no column gap** and the air between
+   the columns is padding inside the pairs instead. With `gap: 0 var(--gap-column)`
+   the opening rule came out as four segments with three 71px holes in it while
+   the closing one ran solid underneath — a dashed top over a ruled bottom, which
+   is not an idiom this site has. A border is drawn on the border box, so moving
+   the same distance inside the pair insets the type by exactly as much and
+   leaves the rules touching. `.rows--pair` gets away with the gap because there
+   both ends of the block are segmented. */
+.spec {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-bottom: 1px solid var(--border-hairline);
+}
+
+.spec__item {
+  padding: var(--space-7) var(--gap-column) var(--space-7) 0;
+  border-top: 1px solid var(--border-hairline);
+}
+
+/* The label is the micro type every other label on the site is set in; the
+   value is a step up and set in the heading weight, because the value is the
+   fact and the label is only what to call it. */
+.spec__item dt {
+  color: var(--text-faint);
+  font-size: var(--text-micro);
+  font-weight: var(--weight-medium-plus);
+  letter-spacing: var(--track-ui);
+}
+
+.spec__item dd {
+  margin-top: var(--space-3);
+  font-size: var(--text-h4);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--track-h3);
+}
+
+@media (max-width: 1000px) {
+  .spec {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 620px) {
+  .spec {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 
@@ -2450,6 +2609,13 @@ sa-node-field {
   color: var(--text-body);
   font-size: var(--text-lede);
   line-height: var(--leading-body);
+}
+
+/* A second paragraph at the lede size, where the copy column carries two. The
+   training page's column runs body, meta, band, paragraph and never has two
+   paragraphs meeting, so the rhythm between them is set here. */
+.tour__body--follow {
+  margin-top: var(--space-7);
 }
 
 /* The one hard fact about a session: how many people are in the room. Sits

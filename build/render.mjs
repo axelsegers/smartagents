@@ -25,6 +25,7 @@ import { deckPage, securedIndexPage } from '../src/layouts/deck.mjs';
 
 import { page as homePage } from '../src/pages/home.mjs';
 import { page as trainingPage } from '../src/pages/training.mjs';
+import { page as kataPage } from '../src/pages/kata.mjs';
 import { page as staffingPage } from '../src/pages/staffing.mjs';
 import { page as sdlcPage } from '../src/pages/sdlc.mjs';
 import { page as processesPage } from '../src/pages/processes.mjs';
@@ -50,6 +51,7 @@ const contentDir = path.join(rootDir, 'src/content');
 const PAGES = [
   homePage,
   trainingPage,
+  kataPage,
   staffingPage,
   sdlcPage,
   processesPage,
@@ -344,10 +346,16 @@ function renderLlmsTxt({ strings }) {
   const lang = defaultLanguage.code;
   const line = (label, url, body) => `- [${label}](${absolute(url)}): ${body}`;
 
+  // The kata is not a fifth service: it is the developer course inside the
+  // training offer, so it is a nested bullet under the line it belongs to
+  // rather than an entry of its own in the list of four.
   const services = ['training', 'staffing', 'sdlc', 'processes']
     .map((key) => {
       const slug = SERVICE_PAGES[key].slugs[lang];
-      return line(t(`service.${key}.title`), pagePath(lang, slug), t(`service.${key}.body`));
+      const entry = line(t(`service.${key}.title`), pagePath(lang, slug), t(`service.${key}.body`));
+      if (key !== 'training') return entry;
+      const kataSlug = kataPage.slugs[lang];
+      return `${entry}\n  ${line(t('kata.hero.title'), pagePath(lang, kataSlug), t('kata.description'))}`;
     })
     .join('\n');
 

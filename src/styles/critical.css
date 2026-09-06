@@ -252,8 +252,13 @@ select {
 }
 
 .nav-link {
+  /* Named so the current item's rule can be drawn to the label rather than to
+     the hover chip: the mark is under the word, not under the padding. */
+  --nav-link-pad: clamp(4px, 0.62vw, 10px);
+
   transition: var(--transition-tint);
-  padding: var(--space-2) clamp(4px, 0.62vw, 10px);
+  position: relative;
+  padding: var(--space-2) var(--nav-link-pad);
   border-radius: var(--radius-nav);
   color: inherit;
 }
@@ -264,12 +269,89 @@ select {
   color: var(--text-strong);
 }
 
-/* The page you are on. The bar said nothing about it before: on /nl/training/
-   the "Training" item looked and read exactly like the other four. It is not
-   the hover wash — an item that is already the hover state has nothing left to
-   do on hover — but the ink and the weight, which is the same difference the
-   rest of the site uses between a label and the thing it names. */
-.nav-link.is-current,
+/* The page you are on. The bar first said nothing about it at all, and then
+   said it in ink and weight, which is a shade and a hair in a row of six names
+   set identically: nothing in the row says *which* item is marked until two of
+   them are compared, and the longest item in the row is the SDLC one at every
+   width and in all three languages (213.6px in Dutch at 1440 against 208.6 for
+   the next, and 26px clear in French), so a shade there reads as the row's own
+   unevenness rather than as a mark. What it says now is the mark the rest of
+   the site already means "you are here" with — the 2px cyan rule on the clause
+   index's current row, on the landed heading, on the pull quote it was taken
+   from — laid flat under the label, because a rule beside a name is what a
+   stacked list can carry and a rule under it is what a row can.
+
+   Turning it flat is the one thing here that was not free: a horizontal 2px
+   cyan rule already means "a block starts here" on this site
+   (`.section-heading`, `.error-page h1`, `.step--first`), and under a sticky
+   header the two are on screen together. It is taken anyway, because a rule
+   drawn under a nav item is read by its position long before it is read as a
+   rule, and because the alternative is a mark this site does not otherwise use.
+
+   Four things follow.
+
+   It is a border and not a painted 2px bar, like `.notice__clauses
+   .rail-row[aria-current]`, and for a reason that is not recorded there: a
+   forced palette substitutes a system colour for a border and keeps it, where
+   `background-color` is forced to the Canvas family and a painted bar would go.
+   Above 1180px this is the only thing left saying where the reader is once the
+   ink difference collapses, so it has to survive.
+
+   It spans the label and not the link box, because the box carries the hover
+   chip and a rule drawn to the box's edges crosses its 8px corners: 2px up from
+   the box's foot the radius has already taken 2.71px off each end, and
+   `--nav-link-pad` never falls below 7.32px in the band the bar exists in.
+   Inside the chip it also leaves the current item a hover state, which the old
+   marker did too — ink and hover shared only the colour — and which is the
+   whole reason the wash was never the marker.
+
+   It turns to ink while the item has focus, and does not go. The ring is
+   `--sa-cyan` at 2px with a 3px offset and the rule is `--sa-cyan` at 2px about
+   5px inside the ring's foot, stopping short of it at both ends: two cyan lines
+   that read as one mis-drawn ring rather than as focus on the current item.
+   Hiding the rule was the first answer and it is the wrong one — a focused
+   *non-current* item draws exactly the same ring, so with the rule gone the tab
+   stop on the marked page is the one place in the bar that says nothing about
+   where the reader is, and under a forced palette it says nothing at all. In
+   ink the two lines stop being the same line. Chrome's forced palette gives the
+   ring `Highlight` and the rule `LinkText`, so they stay two colours there too;
+   an engine that forced both to the same one would hand the doubling back, and
+   that is still the better end of the trade, because the alternative is no
+   current-page mark at that stop at all.
+
+   And weight is no longer part of it. A semibold item is a wider item, so it
+   pushed everything to its right along by up to 5px — measured: 4.88px on the
+   SDLC page, 0.75 on the homepage, 0 on the team page, whose marked item is
+   last in the row. The row's metrics are identical on all six now; only the
+   rule and the ink move. */
+.nav-link.is-current {
+  color: var(--text-strong);
+}
+
+.nav-link.is-current::after {
+  content: "";
+  position: absolute;
+  right: var(--nav-link-pad);
+  bottom: 0;
+  left: var(--nav-link-pad);
+  border-bottom: 2px solid var(--sa-cyan);
+}
+
+.nav-link.is-current:focus-visible::after {
+  border-bottom-color: var(--text-strong);
+}
+
+/* The disclosure's copy of the state, and what is left of the rule the bar and
+   the panel used to share. The ink half is inert — `.nav-toggle__panel a` sets
+   every item to `--text-strong` already, and this beats it on specificity
+   (two classes against a class and an element) rather than the other way round,
+   so the declaration stands whatever that rule says. The weight half is not
+   inert and is the reason the bar's marker is not simply copied down here: in
+   the dropdown band the current item computes 600 against 500 for the rest, and
+   under `forced-colors` it is the only mark left down there — the accent dot in
+   main.css is a background, so it goes, and that is the trade a dot makes for
+   not moving the row. Only on the phone, where every item is already semibold,
+   is the dot the whole of it. */
 .nav-sheet__item.is-current {
   color: var(--text-strong);
   font-weight: var(--weight-semibold);

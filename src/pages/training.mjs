@@ -3,12 +3,10 @@
 // today, each an editorial block rather than a card, in the redesign's own
 // language (hairlines, no numbering).
 // See .claude/skills/smartagents-design/README.md and element-ids/SKILL.md.
-import { statSync } from 'node:fs';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-
 import { html, join } from '../../build/lib/html.mjs';
 import { orbitRings } from '../layouts/base.mjs';
+import { ficheKilobytes } from './fiche.mjs';
+import { kataPath, KATA_VIDEO, KATA_POSTER, FICHE as AGENTIC_FICHE } from './kata.mjs';
 import { breadcrumbNode, homeStep, serviceNode } from '../layouts/schema.mjs';
 import { contactSection } from '../components/contact-form/contact-form.mjs';
 
@@ -20,21 +18,15 @@ import { contactSection } from '../components/contact-form/contact-form.mjs';
  * business teams", `AI_Developers` under "Agentic engineering" — and a browser
  * puts the file name in the download bar, so the reader clicked one course and
  * was handed something that looked like another.
+ *
+ * The developer course's fiche is named in `kata.mjs`, because that course has a
+ * page of its own and prints the same link at the foot of it. One name, one
+ * place; this list is the second reader of it.
  */
 const COURSES = [
   { key: 'business', fiche: 'SmartAgents_AI_Business_Teams_Onepager.pdf' },
-  { key: 'agentic', fiche: 'SmartAgents_Agentic_Engineering_Onepager.pdf' }
+  { key: 'agentic', fiche: AGENTIC_FICHE, detail: kataPath }
 ];
-
-/**
- * How big the download is, in kilobytes, read off the file itself at build
- * time. These are 400 KB documents on a link that says only "Download de
- * fiche", which on a phone connection is worth knowing before the tap — and
- * read rather than written down, so it cannot go stale when a fiche is
- * replaced.
- */
-const MEDIA_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../public/media');
-const ficheKilobytes = (file) => Math.round(statSync(path.join(MEDIA_DIR, file)).size / 1024);
 
 /** The `learn.n` lines every live course carries. */
 const LEARN = ['1', '2', '3', '4'];
@@ -53,21 +45,24 @@ const BENEFITS = ['adoption', 'productivity', 'risk', 'return', 'autonomy'];
  * line this replaced — collected where the decision is made. Duration and open
  * dates are the two facts nothing on the site knows; they are deliberately not
  * guessed at here.
+ *
+ * The format and the group size are per-course and were not always. They were
+ * one shared value each, written when the only page saying anything harder was
+ * this one; the kata page now states the developer course's own numbers — one
+ * day, five to fifteen, at the client's office — and a shared "in-house of
+ * remote, 5 tot 20" put the two strips one click apart in plain contradiction.
+ * A fact stated on two pages has to be read from one key.
  */
 const FACTS = [
   { name: 'audience', value: (key) => `training.course.${key}.audience` },
-  { name: 'format', value: () => 'training.facts.format.value' },
-  { name: 'group', value: () => 'training.facts.group.value' },
+  { name: 'format', value: (key) => `training.course.${key}.format` },
+  { name: 'group', value: (key) => `training.course.${key}.group` },
   { name: 'tools', value: (key) => `training.course.${key}.tools` },
   { name: 'price', value: () => 'training.facts.price.value' }
 ];
 
 /** What a participant walks away with, listed under `training.format.tags.title`. */
 const INCLUDED = ['material', 'exercises', 'labs', 'qa', 'slides', 'guidance'];
-
-/** The developer course tour, copied into dist/media/ by build/render.mjs. */
-const KATA_VIDEO = '/media/kata-agentic-engineering.mp4';
-const KATA_POSTER = '/media/kata-agentic-engineering-poster.jpg';
 
 export const page = {
   id: 'training',
@@ -92,7 +87,7 @@ export const page = {
 
 ${hero(t)}
 ${why(t)}
-${offer(t)}
+${offer(t, lang)}
 ${format(t)}
 ${contact(t, lang)}
 
@@ -160,10 +155,14 @@ ${join(rows)}
  *
  * @param {object} options
  * @param {Function} options.t
- * @param {string} options.key   course key, also the id suffix
- * @param {string} options.fiche file name of the one-pager in /media/
+ * @param {string} options.key      course key, also the id suffix
+ * @param {string} options.fiche    file name of the one-pager in /media/
+ * @param {string} options.lang
+ * @param {Function} [options.detail] resolves this course's own page in `lang`,
+ *   where it has one. Only the developer course does today; the business course
+ *   is the offer's whole statement of itself and has nowhere to go.
  */
-function courseColumn({ t, key, fiche }) {
+function courseColumn({ t, lang, key, fiche, detail }) {
   const id = `training-offer-course-${key}`;
 
   const items = LEARN.map(
@@ -188,12 +187,19 @@ ${join(
         '\n'
       )}
       </dl>
-      <a id="${id}-fiche" class="offer-course__fiche" href="/media/${fiche}" type="application/pdf">${t('training.download')} <span id="${id}-fiche-size" class="offer-course__fiche-size">(PDF, ${ficheKilobytes(fiche)} kB)</span> <span id="${id}-fiche-arrow" aria-hidden="true">&rarr;</span></a>
+      <p id="${id}-links" class="offer-course__links">
+${
+        detail?.(lang)
+          ? html`        <a id="${id}-detail" class="offer-course__fiche" href="${detail(lang)}">${t(`training.course.${key}.detail`)} <span id="${id}-detail-arrow" aria-hidden="true">&rarr;</span></a>
+`
+          : ''
+      }        <a id="${id}-fiche" class="offer-course__fiche" href="/media/${fiche}" type="application/pdf">${t('training.download')} <span id="${id}-fiche-size" class="offer-course__fiche-size">(PDF, ${ficheKilobytes(fiche)} kB)</span> <span id="${id}-fiche-arrow" aria-hidden="true">&rarr;</span></a>
+      </p>
     </article>`;
 }
 
-function offer(t) {
-  const columns = COURSES.map(({ key, fiche }) => courseColumn({ t, key, fiche }));
+function offer(t, lang) {
+  const columns = COURSES.map((course) => courseColumn({ t, lang, ...course }));
 
   return html`<section id="offer" class="section section--orbits" aria-labelledby="training-offer-title">
 ${orbitRings('training-offer', 'orbits--offer')}

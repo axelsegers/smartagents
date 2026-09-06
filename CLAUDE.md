@@ -2,7 +2,8 @@
 
 Pre-rendered static site, no backend, no framework. The public site is the
 redesigned homepage, five detail pages — training, AI staffing and coaching,
-the AI-native SDLC, AI-native businessprocessen, and team — the privacy notice,
+the AI-native SDLC, AI-native businessprocessen, and team — one page below one of
+them (the agentic engineering kata, under training), the privacy notice,
 the "Inzichten" index and the four articles under it (NL / EN / FR); the
 password-gated `/secured/` area (internal documents and pitch decks) is live.
 
@@ -107,6 +108,45 @@ Nothing here is a GitHub Action, so a green local build is the only signal.
   Function guarding `/secured/*` — was sent to `/nl/secured`, which is nothing.
   `scripts/start-local.mjs` reads `dist/_redirects` too, so dev routes like
   production. Nothing negotiates on `Accept-Language`.
+- **The kata page's content is read off the course, not off the marketing
+  page.** `src/pages/kata.mjs` was first ported from the client's live
+  `/services/training/developers/`, which describes the day as four
+  morning/afternoon blocks and says nothing about what is in them. The course
+  itself lives in a sibling repository, `../kata-agentic-java`, and that is the
+  source of truth: `PRODUCT.md` for what it is and who it is for, and
+  `front/src/steps/step*/locales/{nl,en}.json` for the four steps and their
+  units. Everything the page now states about the day — the step names, the
+  unit lists, the flag boards, the four workflows, the quality gates, the
+  self-study track, the soft-skills step nothing else on the site mentioned —
+  is read from there. Two rules follow. **A claim about the course is checked
+  against that repo, not against the old page**, which is behind it in several
+  places. And **nothing on the site names a language or a build tool**: the
+  course runs on one stack and the page says so once, in
+  `kata.requirement.stack.body`, where a reader deciding whether their team
+  qualifies needs it. The video and its poster are the exception and they are
+  not text — the poster still reads "on a real Java codebase", which is a
+  re-render of `presentations/enterprise-pitch/assets/`, not a copy edit.
+- **A page may sit under another page, and the slug is the only place that is
+  said.** `src/pages/kata.mjs` is the first: `training/agentic-engineering-kata`
+  in Dutch and English, `formation/kata-agentic-engineering` in French, which is
+  the parent's own slug plus a segment. Nothing in the build had to be taught
+  this — `pagePath` trims and rejoins, the generated routing table only ever
+  names the *top-level* entries of `dist/`, and the catch-all sends the
+  unprefixed URL to Dutch like any other. Three things do need saying. The
+  parent segment is written out rather than read off `training.mjs`, because
+  that page imports `kataPath` back to link down and the pair would close a
+  cycle — the same reason `PHONE_HREF` is repeated in the privacy body; rename
+  the training slug and this moves with it, and `check-dist.mjs` fails the build
+  on the broken link if it does not. The page id is the parent's plus a hyphen
+  (`training-kata`), because `isCurrentNavItem` in `src/layouts/base.mjs` now
+  marks a service while the reader is on anything under it, on exactly that
+  prefix. And the breadcrumb has three steps rather than two, which is what
+  `breadcrumbNode` was always shaped for. It carries a `Course` node rather than
+  a second `Service`: the training page already declares the `Service`, and this
+  page is one thing inside it with a duration, a group size and two languages —
+  every field read off the `kata.spec.*` values the strip prints. There is no
+  `location` in it, deliberately: the day is held at the client's office, so the
+  only address we could name is the one place the course is not.
 - **Pages are functions.** A page module exports `{ id, slugs, meta(t), render(ctx) }`
   and returns markup from the `html` tag. Never hard-code visible text: use `t()`.
 - **An insight is a page generated from a list.** `src/pages/insights/insights.mjs`
@@ -792,7 +832,17 @@ Nothing here is a GitHub Action, so a green local build is the only signal.
   for the engineering side and AI-native businessprocessen for the business
   side. The plain-row branch in `services()` survives for the case it was
   always really about: a language a page is not published in, where
-  `servicePath()` returns null. Agentic automatisatie was dropped as a service
+  `servicePath()` returns null. A course column on the training page links out
+  the same way, through `kataPath()`, and the column's closing grid row is a
+  `.offer-course__links` wrapper rather than a bare `<a>`: the two columns are
+  subgrids of six rows, and a second link as a row of its own would push one
+  column's bottom edge below the other's. Wrapped, the pair sits on one line
+  wherever the column is wide enough and wraps below about 1100px, where the
+  cost is trailing paper in the shorter column rather than a mismatched rule.
+  The two courses no longer share a format or a group size, either: those two
+  facts are per-course keys now, because the kata page states the developer
+  course's own numbers and a shared value put the two strips one click apart in
+  contradiction. Agentic automatisatie was dropped as a service
   of its own — it is part of what the staffing track does inside a project. All
   four article rows link too, through `insightPath()`. See "Deviations from the
   design doc" in the `smartagents-design` README.
