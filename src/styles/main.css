@@ -2583,25 +2583,10 @@ sa-node-field {
   }
 }
 
-/* The rings run on past the hero's foot, and they have to be given the room to
-   do it. They are struck 90px below the layer's top and the outermost is 845px
-   in radius, so on the 540px hero of `.hero--page` the last three rings close
-   82px, 232px and 397px below the foot — and `.orbits` clips to its own box, so
-   all three were cut dead on the same horizontal line. Three arcs ending on one
-   rule is a seam, not ground: it is the artefact `.orbits--notice` masks away at
-   the bottom of the privacy notice, here drawn straight across the gap between
-   the hero and the track panel.
-
-   So the layer is given the height its geometry needs — 90px to the origin,
-   845px of radius, 1px of stroke — rather than the hero's. `bottom` is ignored
-   once an absolutely positioned box is over-constrained, so this grows the box
-   downward and leaves the origin, and every ring on it, exactly where it was.
-   What the arcs run into below the foot is the track panel, which is opaque and
-   paints over them: they pass under it and stop where it starts, the way the
-   arch's tail already does. Nothing is masked, because nothing is cut. */
-.hero--staffing .orbits {
-  min-height: 936px;
-}
+/* What the arcs run into below this hero's foot is the track panel, which is
+   opaque and paints over them: they pass under it and stop where it starts, the
+   way the arch's tail already does. The height that lets them run on that far
+   is `.hero .orbits` in `critical.css`, which every hero on the site carries. */
 
 /* The pebbles are positioned inside the arch's own box rather than against the
    hero, so every rule that moves the arch moves the pair with it and the three
@@ -2613,7 +2598,7 @@ sa-node-field {
 }
 
 .hero__pebble--b {
-  inset: 17% 83.2% 68.8% 3%;
+  inset: 23.98% 76.68% 61.82% 9.52%;
 }
 
 /* The pebbles fall in the light half of the hero, and from the tablet down
@@ -4103,7 +4088,7 @@ html:not([data-clause-spy]) .prose__heading:target,
    is 3.93:1, so the pairing that looks like the safer one is the one that fails.
    Measure before swapping either of these two. */
 .cycle__phase--human {
-  background: var(--sa-cyan);
+  background: var(--sa-deep);
   color: var(--sa-white);
   font-weight: var(--weight-semibold);
 }
@@ -4156,7 +4141,7 @@ html:not([data-clause-spy]) .prose__heading:target,
 }
 
 .legend__mark--human {
-  --mark: var(--sa-cyan);
+  --mark: var(--sa-deep);
 }
 
 /* Below the width where every other two-abreast block on the site collapses,

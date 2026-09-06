@@ -419,7 +419,7 @@ export function clipDefs() {
  * What came off the bar — Ons DNA, Aanpak, Digitale transformatie — is still
  * on the homepage in that order, read on the way down rather than aimed at.
  */
-const NAV_ITEMS = ['training', 'staffing', 'sdlc', 'processes', 'team', 'insights'];
+const NAV_ITEMS = ['home', 'training', 'staffing', 'sdlc', 'processes', 'team', 'insights'];
 
 /**
  * What the bar itself prints: the four services and the team page. Inzichten
@@ -433,7 +433,7 @@ const NAV_ITEMS = ['training', 'staffing', 'sdlc', 'processes', 'team', 'insight
  * puts what the bar contains in a stylesheet instead of here, where the next
  * person editing this list will look.
  */
-const BAR_ITEMS = new Set(['training', 'staffing', 'sdlc', 'processes', 'team']);
+const BAR_ITEMS = new Set(['home', 'training', 'staffing', 'sdlc', 'processes', 'team']);
 
 /**
  * Where a nav key points from `lang`. A service, the team page and the insights
@@ -446,6 +446,7 @@ const BAR_ITEMS = new Set(['training', 'staffing', 'sdlc', 'processes', 'team'])
  * four items.
  */
 function navHref(key, lang, home) {
+  if (key === 'home') return home;
   if (key === 'team') return teamPath(lang);
   if (key === 'insights') return insightsIndexPath(lang);
   if (SERVICE_PAGES[key]) return servicePath(key, lang);
