@@ -405,9 +405,9 @@ export function clipDefs() {
  * ------------------------------------------------------------------ */
 
 /**
- * The nav in reading order: every service that has a page behind it, the team
- * page, and the one homepage section a reader arrives looking for. Nothing here
- * is a menu — the mega menu it replaced listed four services of which two had
+ * The nav in reading order: the homepage, every service that has a page behind
+ * it, the team page, and the one homepage section a reader arrives looking for.
+ * Nothing here is a menu — the mega menu it replaced listed four services of which two had
  * nowhere to go, and a dropdown whose only real items are two links is a lid
  * over two links. All four services have a page now, so the bar is the offer.
  *
@@ -418,14 +418,20 @@ export function clipDefs() {
  *
  * What came off the bar — Ons DNA, Aanpak, Digitale transformatie — is still
  * on the homepage in that order, read on the way down rather than aimed at.
+ *
+ * Home is first and it is not redundant with the brand link beside it. The
+ * wordmark is the way home to anyone who has learnt that a wordmark is; it is
+ * not labelled, it is not in the nav landmark, and it does not take the
+ * `aria-current` the other items take, so on a detail page there was nothing in
+ * the nav that named the page a reader is most likely to want next.
  */
 const NAV_ITEMS = ['home', 'training', 'staffing', 'sdlc', 'processes', 'team', 'insights'];
 
 /**
- * What the bar itself prints: the four services and the team page. Inzichten
- * is in `NAV_ITEMS` for the phone sheet and not for the bar, because with four
- * service names in the row there is no width left for a section that is read on
- * the way down the homepage anyway.
+ * What the bar itself prints: home, the four services and the team page.
+ * Inzichten is in `NAV_ITEMS` for the phone sheet and not for the bar, because
+ * with four service names in the row there is no width left for a section that
+ * is read on the way down the homepage anyway.
  *
  * The difference is emitted rather than painted over. Hiding a nav link in CSS
  * leaves it in every one of the site's HTML files at every width — never shown,
@@ -454,11 +460,29 @@ function navHref(key, lang, home) {
 }
 
 /**
- * A service is named in the nav exactly as it is named in the homepage row and
- * in its own hero, so the three can never drift: one service, one name.
+ * What a nav item is called. A service has two names and this is the shorter of
+ * them: `service.<key>.nav` for the bar and the sheet, `service.<key>.title` for
+ * the homepage row and the page's own hero.
+ *
+ * It used to be one name in all three places, on the rule that a service named
+ * twice is a service that will one day be named two different things. The rule
+ * held while the offer was four items; it stopped holding when it became six.
+ * Measured at 1181px, the narrowest width the bar is printed at, the four full
+ * service names are 706px of a row that has 533px to give — the primary action
+ * hung 53px past the window edge in French and `.shell` is `overflow: clip`, so
+ * it was cut rather than scrolled to, which is why nothing said so. Adding Home
+ * put it 113px past. The full names only fit again from about 1480px up.
+ *
+ * So the drift the old rule guarded against is bought deliberately and in one
+ * place: the short name is a truncation of the long one and always its head
+ * ("AI staffing en coaching" -> "AI staffing"), the two live on adjacent lines
+ * in `src/i18n`, and the hero of the page the link opens states the full name
+ * within a screen of the click. What is not allowed is a short name that is not
+ * the long one's opening words: that is a second name, and then the two really
+ * can say different things.
  */
 function navLabel(key, t) {
-  return SERVICE_PAGES[key] ? t(`service.${key}.title`) : t(`nav.${key}`);
+  return SERVICE_PAGES[key] ? t(`service.${key}.nav`) : t(`nav.${key}`);
 }
 
 /**

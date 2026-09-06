@@ -450,6 +450,11 @@ a.row:hover .row__cue {
 @media (max-width: 1000px) {
   .row {
     grid-template-columns: 1fr;
+    /* Stretched to its neighbour's height by `.rows--pair`, a row with two auto
+       tracks and no packing shares the leftover between them, so the taller of
+       a pair pushed its own body down and the two bodies in a row started on
+       different lines. Packed to the start, the gap is the gap. */
+    align-content: start;
     gap: var(--space-4);
     padding-inline: 0;
   }
@@ -510,7 +515,12 @@ a.row:hover .row__cue {
    opportunity behind a dot is what strands it. Here the items are phrases
    rather than facts and need a mark between them, so the mark is welded to the
    item in front of it and travels with it. */
-.numbered__units {
+/* Named through `.numbered p` rather than on its own, because that rule sets
+   the body colour, the body size and a margin, and a bare class beside it loses
+   on specificity — three of these four declarations were dead and the units
+   line rendered byte-identical to the paragraph above it. Scoped this way it
+   still leaves `.numbered p` alone on every other page that uses it. */
+.numbered p.numbered__units {
   margin-top: var(--space-4);
   color: var(--text-faint);
   font-size: var(--text-micro);

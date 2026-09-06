@@ -224,7 +224,7 @@ select {
 }
 
 /* The bar exists from 1181px up and nowhere else (see the tablet header block
-   below). Five names in three languages is more than the desk's old slack
+   below). Six names in three languages is more than the desk's old slack
    covers, so the row is fluid here too, and it is the slopes that do the work
    rather than the floors: at 1181px, the narrowest width the bar is ever
    printed at, the type is at 12.05px and the link padding at 7.3px, and both
@@ -234,11 +234,24 @@ select {
    same time, because a desk that has run out of room has run out of it there
    first.
 
-   Measured, not estimated: at 1181px the longest of the three languages leaves
-   the primary action 29px clear of the page edge, and the header's own
-   scrollWidth equals its clientWidth. That check matters because `.shell` is
+   Measured, not estimated: at 1181px the header's own scrollWidth equals its
+   clientWidth in all three languages, and the primary action ends 74px from the
+   window edge against a 59px gutter — 15px of true slack, in French, which is
+   the longest of the three. That check matters because `.shell` is
    `overflow: clip`, so a row that did overflow would be silently cut rather
-   than scrollable, and the document's own scrollWidth would never say so. */
+   than scrollable, and the document's own scrollWidth would never say so.
+
+   It is worth knowing that this was measured and found broken. The comment
+   above used to claim 29px of clearance at 1181px, and by the time the offer
+   was four services with names like "AI-native SDLC-transformatie" the real
+   number was −14px in Dutch and −53px in French: the button was hanging past
+   the window edge and being clipped, on every desk narrower than about 1300px,
+   in silence. What fixed it is that the nav prints the short name of a service
+   (`navLabel` in `src/layouts/base.mjs`) and not the full one — 706px of names
+   became 502px — which is also what made room for Home. Re-measure this row
+   whenever a name in it changes, and whenever the face does: 15px is about
+   1.5% of the nav's own width, and the Geist binaries the site asks for and
+   does not ship set wider than the platform face it is measured in. */
 .site-nav {
   display: flex;
   gap: var(--space-1);

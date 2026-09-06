@@ -824,7 +824,10 @@ Nothing here is a GitHub Action, so a green local build is the only signal.
   is measured against the face that renders today and has to be re-measured
   when they arrive: the footer's disclosure line clears a 1280px laptop by 18px
   in Dutch, and the same string sets 12px wider in some faces. See
-  `.footer-micro` in `main.css`.
+  `.footer-micro` in `main.css`. The header row is the second: at 1181px the
+  nav's six names are 502px in French with 15px of slack behind them, which is
+  about 1.5% — a face that sets 2% wider clips the primary action. See
+  `.site-nav` in `critical.css`.
 - All four service rows link out, through `servicePath()` in
   `src/layouts/base.mjs`, which is the one place the homepage rows and the nav
   bar both ask. Procesoptimalisatie is gone: it was one row standing for two
@@ -847,15 +850,38 @@ Nothing here is a GitHub Action, so a green local build is the only signal.
   four article rows link too, through `insightPath()`. See "Deviations from the
   design doc" in the `smartagents-design` README.
 - **`NAV_ITEMS` is not what the bar prints.** `BAR_ITEMS` in
-  `src/layouts/base.mjs` is: the four services and the team page. Inzichten is
-  in `NAV_ITEMS` for the phone sheet alone, because with four service names in
-  the row there is no width left for a section that is read on the way down the
-  homepage anyway, and Contact is in neither — the button two items along goes
+  `src/layouts/base.mjs` is: home, the four services and the team page.
+  Inzichten is in `NAV_ITEMS` for the phone sheet alone, because with four
+  service names in the row there is no width left for a section that is read on
+  the way down the homepage anyway, and Contact is in neither — the button two items along goes
   to the same anchor, in the bar and in the sheet. The difference is emitted
   rather than hidden in CSS: a nav link that is `display: none` at every width
   ships in every one of the site's HTML files, is out of the accessibility tree
   too, and puts what the bar contains in a stylesheet instead of beside the
   list.
+- **A service has two names, and the nav prints the shorter one.**
+  `service.<key>.nav` is what `navLabel()` reads for the bar and the sheet;
+  `service.<key>.title` is what the homepage row and the page's own hero print.
+  It used to be one name in all three places, on the rule that a service named
+  twice is a service that will one day be named two different things — and that
+  rule held while the offer was four items. It stopped holding at six. Measured
+  at 1181px, the narrowest width the bar is printed at, four full service names
+  are 706px of a row with 533px to give: the primary action hung 53px past the
+  window edge in French, 14px in Dutch, and `.shell` is `overflow: clip`, so it
+  was cut rather than scrolled to and nothing said so. The full names only fit
+  again from about 1480px up, which would have meant folding the nav to a
+  disclosure on every 1280 and 1366 laptop. The short names are 502px and the
+  row clears at 1181px in all three languages with 15px to spare. So the drift
+  the old rule guarded against is bought deliberately and in one place, under
+  one constraint: **the short name is always the long name's opening words**
+  ("AI staffing en coaching" → "AI staffing"), the two sit on adjacent lines in
+  `src/i18n`, and the hero of the page the link opens states the full name
+  within a screen of the click. A short name that is not the long one's head is
+  a second name, and then the two really can say different things. Home is
+  first in the bar and is not redundant with the wordmark beside it: the
+  wordmark is unlabelled, is outside the nav landmark, and never takes the
+  `aria-current` the other items take. The measurement lives in `.site-nav` in
+  `critical.css`; re-measure it whenever a nav name changes.
 - The live site also has a Jobs page. It has not been redesigned yet, and
   nothing links to it.
 - A URL that matches no page gets a real 404 now: `render.mjs` writes the
